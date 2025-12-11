@@ -195,6 +195,19 @@
         }
         .slide.active { opacity: 1; }
 
+        /* Input Styles */
+        .glass-input {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+        .glass-input:focus {
+            outline: none;
+            border-color: #22c55e;
+            box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
+        }
+
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -206,7 +219,7 @@
         </ul>
     </div>
 
-    <!-- Knowledge Trivia Pop-up (Replaces Score Pop-up) -->
+    <!-- Knowledge Trivia Pop-up -->
     <div id="social-proof" class="fixed bottom-4 left-4 z-50 bg-slate-900/95 backdrop-blur-md border border-slate-600 p-4 rounded-xl shadow-2xl flex items-start gap-4 max-w-sm border-l-4 border-l-yellow-500">
         <div class="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center text-yellow-400 shrink-0 border border-slate-700 mt-1">
             <i class="fas fa-lightbulb"></i>
@@ -248,7 +261,7 @@
         <!-- Start Screen (Dashboard Layout) -->
         <div id="start-screen" class="max-w-6xl w-full slide-up space-y-8">
             
-            <!-- Promo Slider Section (NEW) -->
+            <!-- Promo Slider Section -->
             <div class="glass-panel rounded-3xl p-6 relative overflow-hidden border border-green-500/30">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                     <!-- Slider -->
@@ -332,7 +345,7 @@
                     </div>
                 </div>
 
-                <!-- Test Details Section (Right / Bottom) -->
+                <!-- Test Details Section with Student Input -->
                 <div class="md:col-span-7 lg:col-span-8 flex flex-col justify-center">
                     <div class="glass-panel rounded-3xl p-8 md:p-10 shadow-2xl relative overflow-hidden h-full flex flex-col justify-center">
                         <!-- Background glow effect -->
@@ -343,7 +356,7 @@
                                 MOCK TEST SERIES
                             </span>
                             <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-2 tracking-tight">
-                                Syno/Anto Test <span class="text-green-500">01</span>
+                                Synonyms Test <span class="text-green-500">01</span>
                             </h2>
                             <p class="text-lg md:text-xl text-slate-300 italic font-light mb-8">
                                 "Let's build Vocab Stronger with Dyutimala Didi"
@@ -367,16 +380,23 @@
                                 </div>
                             </div>
 
-                            <button onclick="startQuiz()" class="btn-pulse w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white font-bold text-lg py-4 px-8 rounded-2xl shadow-lg transition-all duration-300 transform hover:scale-[1.02] flex items-center justify-center group">
-                                <span>Start Mock Test</span>
-                                <i class="fas fa-arrow-right ml-3 group-hover:translate-x-1 transition-transform"></i>
-                            </button>
+                            <!-- Name Input & Start Button -->
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-slate-400 text-xs font-bold uppercase tracking-wider mb-2 ml-1">Enter Your Name to Start</label>
+                                    <input type="text" id="student-name" placeholder="Ex: Amit Roy" class="glass-input w-full p-4 rounded-xl text-lg placeholder-slate-500 transition-all">
+                                </div>
+                                <button onclick="startQuiz()" id="start-btn" class="btn-pulse w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white font-bold text-lg py-4 px-8 rounded-2xl shadow-lg transition-all duration-300 transform hover:scale-[1.02] flex items-center justify-center group disabled:opacity-50 disabled:cursor-not-allowed">
+                                    <span>Start Mock Test</span>
+                                    <i class="fas fa-arrow-right ml-3 group-hover:translate-x-1 transition-transform"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Website & App Integration Section (Also on Start Screen) -->
+            <!-- Website & App Integration Section -->
             <div id="eco-widget" class="glass-panel rounded-3xl overflow-hidden border border-slate-700/50 relative">
                 <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-blue-600/10 to-transparent pointer-events-none"></div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 p-6 md:p-8 items-center">
@@ -452,7 +472,7 @@
                 </div>
             </div>
 
-            <!-- YouTube Showcase Section (Also on Start Screen) -->
+            <!-- YouTube Showcase Section -->
             <div id="yt-widget" class="glass-panel rounded-3xl p-6 md:p-8 border border-slate-700/50 relative overflow-hidden">
                 <div class="flex flex-col sm:flex-row justify-between items-center mb-6">
                     <div class="flex items-center space-x-4 mb-4 sm:mb-0">
@@ -593,64 +613,97 @@
             </div>
         </div>
 
-        <!-- Result Screen (Enhanced with Promo Links) -->
+        <!-- Result Screen with Leaderboard -->
         <div id="result-screen" class="hidden w-full max-w-6xl space-y-8 fade-in slide-up">
             
             <!-- Confetti Container -->
             <div id="confetti-container" class="fixed inset-0 pointer-events-none z-50 overflow-hidden"></div>
 
-            <!-- Score Card (Centered) -->
-            <div class="glass-panel rounded-3xl p-10 text-center relative max-w-2xl mx-auto border border-slate-600/50">
-                 <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-green-500/5 to-transparent pointer-events-none rounded-3xl"></div>
-                
-                <div class="relative z-10">
-                    <div class="w-24 h-24 bg-gradient-to-tr from-green-500/20 to-emerald-500/20 border border-green-500/30 rounded-full flex items-center justify-center mx-auto mb-6 shadow-[0_0_30px_rgba(34,197,94,0.2)]">
-                        <i class="fas fa-trophy text-4xl text-transparent bg-clip-text bg-gradient-to-br from-green-400 to-emerald-200"></i>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Score Card -->
+                <div class="glass-panel rounded-3xl p-10 text-center relative border border-slate-600/50 h-full flex flex-col justify-center">
+                     <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-green-500/5 to-transparent pointer-events-none rounded-3xl"></div>
+                    
+                    <div class="relative z-10">
+                        <div class="w-24 h-24 bg-gradient-to-tr from-green-500/20 to-emerald-500/20 border border-green-500/30 rounded-full flex items-center justify-center mx-auto mb-6 shadow-[0_0_30px_rgba(34,197,94,0.2)]">
+                            <i class="fas fa-trophy text-4xl text-transparent bg-clip-text bg-gradient-to-br from-green-400 to-emerald-200"></i>
+                        </div>
+                        <h2 class="text-3xl font-extrabold text-white mb-2">Test Summary</h2>
+                        <p class="text-slate-400 mb-8" id="result-message">Here is how you performed</p>
+        
+                        <!-- Metrics Grid -->
+                        <div class="grid grid-cols-2 gap-4 mb-8 text-left">
+                            <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700">
+                                <p class="text-slate-500 text-[10px] uppercase font-bold tracking-widest mb-1">Time Taken</p>
+                                <p class="text-xl font-bold text-blue-400" id="time-taken">00m 00s</p>
+                            </div>
+                            <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700">
+                                <p class="text-slate-500 text-[10px] uppercase font-bold tracking-widest mb-1">SSC Score</p>
+                                <p class="text-xl font-bold text-yellow-400" id="ssc-score">0</p>
+                                <p class="text-[9px] text-slate-500">+2.0 / -0.5</p>
+                            </div>
+                            <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700">
+                                <p class="text-slate-500 text-[10px] uppercase font-bold tracking-widest mb-1">Total Score</p>
+                                <p class="text-xl font-bold text-green-400"><span id="final-score">0</span></p>
+                            </div>
+                            <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700">
+                                <p class="text-slate-500 text-[10px] uppercase font-bold tracking-widest mb-1">Accuracy</p>
+                                <p class="text-xl font-bold text-purple-400" id="final-accuracy">0%</p>
+                            </div>
+                        </div>
+
+                        <!-- Recommendation Banner -->
+                        <div id="recommendation-card" class="hidden mb-8 bg-gradient-to-r from-blue-900/30 to-blue-800/20 border border-blue-500/30 rounded-xl p-5 text-left flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center shrink-0 mt-1">
+                                <i class="fas fa-lightbulb text-blue-400"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold mb-1 text-sm md:text-base">Strengthen Your Concepts</h4>
+                                <p class="text-xs md:text-sm text-slate-300 mb-3">Your score indicates you might benefit from stronger fundamentals.</p>
+                                <a href="https://sscinsightbengali.akamai.net.in/zero-price-courses" target="_blank" class="text-xs font-bold text-blue-400 hover:text-blue-300 uppercase tracking-wide flex items-center">Explore Course <i class="fas fa-arrow-right ml-1"></i></a>
+                            </div>
+                        </div>
+        
+                        <!-- Actions -->
+                        <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                            <button onclick="shareTest()" class="flex-1 bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition-all flex items-center justify-center">
+                                <i class="fas fa-share-alt mr-2"></i> Share
+                            </button>
+                            <button onclick="location.reload()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 px-6 rounded-xl border border-slate-600 hover:border-slate-500 shadow-lg transition-all flex items-center justify-center">
+                                <i class="fas fa-redo-alt mr-2 text-slate-400"></i> Retake
+                            </button>
+                        </div>
                     </div>
-                    <h2 class="text-3xl font-extrabold text-white mb-2">Test Summary</h2>
-                    <p class="text-slate-400 mb-8" id="result-message">Here is how you performed</p>
-    
-                    <!-- Metrics Grid (NEW) -->
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8 text-left">
-                        <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700">
-                            <p class="text-slate-500 text-[10px] uppercase font-bold tracking-widest mb-1">Time Taken</p>
-                            <p class="text-xl font-bold text-blue-400" id="time-taken">00m 00s</p>
+                </div>
+
+                <!-- Leaderboard Section -->
+                <div class="glass-panel rounded-3xl p-8 relative border border-slate-600/50 flex flex-col">
+                    <div class="flex justify-between items-end mb-6">
+                        <div>
+                            <h3 class="text-2xl font-bold text-white flex items-center gap-2"><i class="fas fa-chart-line text-green-400"></i> Leaderboard</h3>
+                            <p class="text-xs text-slate-400 mt-1">Live Rankings based on SSC Score</p>
                         </div>
-                        <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700">
-                            <p class="text-slate-500 text-[10px] uppercase font-bold tracking-widest mb-1">SSC Score</p>
-                            <p class="text-xl font-bold text-yellow-400" id="ssc-score">0</p>
-                            <p class="text-[9px] text-slate-500">+2.0 / -0.5</p>
-                        </div>
-                        <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700">
-                            <p class="text-slate-500 text-[10px] uppercase font-bold tracking-widest mb-1">Total Score</p>
-                            <p class="text-xl font-bold text-green-400"><span id="final-score">0</span></p>
-                        </div>
-                        <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700">
-                            <p class="text-slate-500 text-[10px] uppercase font-bold tracking-widest mb-1">Accuracy</p>
-                            <p class="text-xl font-bold text-purple-400" id="final-accuracy">0%</p>
+                        <div class="text-right">
+                            <p class="text-xs text-slate-500 uppercase font-bold">Participants</p>
+                            <p class="text-xl font-bold text-white" id="participant-count-display">1,542</p>
                         </div>
                     </div>
 
-                    <!-- Recommendation Banner (Conditional) -->
-                    <div id="recommendation-card" class="hidden mb-8 bg-gradient-to-r from-blue-900/30 to-blue-800/20 border border-blue-500/30 rounded-xl p-5 text-left flex items-start gap-4">
-                        <div class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center shrink-0 mt-1">
-                            <i class="fas fa-lightbulb text-blue-400"></i>
+                    <div class="bg-slate-900/50 rounded-2xl border border-slate-700 flex-grow overflow-hidden flex flex-col">
+                        <div class="p-3 border-b border-slate-700 grid grid-cols-12 text-xs font-bold text-slate-500 uppercase tracking-wider">
+                            <div class="col-span-2 text-center">Rank</div>
+                            <div class="col-span-7">Student</div>
+                            <div class="col-span-3 text-right">Score</div>
                         </div>
-                        <div>
-                            <h4 class="text-white font-bold mb-1 text-sm md:text-base">Strengthen Your Concepts</h4>
-                            <p class="text-xs md:text-sm text-slate-300 mb-3">Your score indicates you might benefit from stronger fundamentals. Dyutimala Didi's Foundation Course is perfect for detailed conceptual learning.</p>
-                            <a href="https://sscinsightbengali.akamai.net.in/zero-price-courses" target="_blank" class="text-xs font-bold text-blue-400 hover:text-blue-300 uppercase tracking-wide flex items-center">Explore Course <i class="fas fa-arrow-right ml-1"></i></a>
+                        <div class="overflow-y-auto custom-scroll flex-grow" id="leaderboard-list">
+                            <!-- Dynamic Content -->
                         </div>
-                    </div>
-    
-                    <!-- Actions -->
-                    <div class="flex flex-col sm:flex-row gap-3 justify-center">
-                        <button onclick="shareTest()" class="flex-1 bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition-all flex items-center justify-center">
-                            <i class="fas fa-share-alt mr-2"></i> Share Challenge
-                        </button>
-                        <button onclick="location.reload()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 px-6 rounded-xl border border-slate-600 hover:border-slate-500 shadow-lg transition-all flex items-center justify-center">
-                            <i class="fas fa-redo-alt mr-2 text-slate-400"></i> Retake Test
-                        </button>
+                        <!-- Current User Fixed at Bottom -->
+                        <div class="p-4 bg-green-900/20 border-t border-green-500/30 grid grid-cols-12 items-center" id="user-rank-row">
+                            <div class="col-span-2 text-center font-bold text-green-400" id="user-rank">#--</div>
+                            <div class="col-span-7 font-bold text-white" id="user-name-display">You</div>
+                            <div class="col-span-3 text-right font-bold text-yellow-400" id="user-final-score">0.0</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -664,6 +717,158 @@
     <footer class="bg-slate-950 py-6 border-t border-slate-900 text-center text-slate-500 text-xs relative z-10">
         <p>&copy; 2025 SSC INSIGHT BENGALI by <span class="text-slate-400 font-semibold">DYUTIMALA DATTA</span>. All rights reserved.</p>
     </footer>
+
+    <script type="module">
+        // Import Firebase Functions from Google's CDN (using version 11.6.1 as requested in system prompt)
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js';
+        import { getAuth, signInAnonymously, signInWithCustomToken } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js';
+        import { getFirestore, collection, addDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js';
+
+        // Firebase Config from User
+        const firebaseConfig = {
+            apiKey: "AIzaSyDZLWUMldpxj6K_tabkjmS6qcAYPy97FdI",
+            authDomain: "sscinsight-test-portal.firebaseapp.com",
+            projectId: "sscinsight-test-portal",
+            storageBucket: "sscinsight-test-portal.firebasestorage.app",
+            messagingSenderId: "92985848140",
+            appId: "1:92985848140:web:130acb96effb1b0c58dfe9"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        
+        // Static App ID for storing data
+        const appId = 'ssc-insight-synonyms-test-01';
+
+        let currentUserId = null;
+
+        // Initialize App & Auth
+        async function initApp() {
+            try {
+                if (typeof window.__initial_auth_token !== 'undefined' && window.__initial_auth_token) {
+                    await signInWithCustomToken(auth, window.__initial_auth_token);
+                } else {
+                    // This handles the "auth/configuration-not-found" error fallback to local if needed
+                    // In a real scenario, Anonymous Auth MUST be enabled in Firebase Console
+                    await signInAnonymously(auth).catch(e => {
+                        console.warn("Auth failed, leaderboard will be local-only.", e);
+                    });
+                }
+                
+                if (auth.currentUser) {
+                    currentUserId = auth.currentUser.uid;
+                    setupLeaderboardListener();
+                } else {
+                    // Fallback for local testing without valid auth
+                    console.log("Running in offline mode.");
+                    currentUserId = 'local-user-' + Date.now();
+                }
+                
+            } catch (error) {
+                console.error("Auth Init Error:", error);
+            }
+        }
+        
+        initApp();
+
+        // Firestore Listener
+        const leaderboardList = document.getElementById('leaderboard-list');
+        const participantCountDisplay = document.getElementById('participant-count-display');
+        let allScoresLocal = []; // Store scores locally to handle fallback
+        
+        function setupLeaderboardListener() {
+             if (!auth.currentUser) return; 
+
+             const leaderboardRef = collection(db, 'artifacts', appId, 'public', 'data', 'leaderboard');
+             
+             onSnapshot(leaderboardRef, (snapshot) => {
+                 const scores = [];
+                 snapshot.forEach((doc) => {
+                     scores.push(doc.data());
+                 });
+                 allScoresLocal = scores;
+                 updateLeaderboardUI();
+             }, (error) => {
+                 console.error("Leaderboard fetch error:", error);
+                 // If permission denied, UI stays empty or shows local only
+             });
+        }
+        
+        function updateLeaderboardUI() {
+            // Sort by score descending
+            allScoresLocal.sort((a, b) => b.score - a.score);
+
+            // Update Count
+            participantCountDisplay.innerText = allScoresLocal.length.toLocaleString();
+
+            // Render List
+            renderLeaderboardList(allScoresLocal);
+            
+            // Update User Rank
+            if (window.finalUserScore !== undefined) {
+                // Find rank based on score and ID
+                const rank = allScoresLocal.findIndex(s => s.userId === currentUserId && s.score === window.finalUserScore) + 1;
+                document.getElementById('user-rank').innerText = rank > 0 ? `#${rank}` : '#--';
+            }
+        }
+        
+        function renderLeaderboardList(sortedScores) {
+            leaderboardList.innerHTML = '';
+            // Top 50
+            const top50 = sortedScores.slice(0, 50);
+            
+            if (top50.length === 0) {
+                leaderboardList.innerHTML = '<div class="p-4 text-center text-slate-500 text-sm">Be the first to join!</div>';
+                return;
+            }
+
+            top50.forEach((entry, index) => {
+                const isUser = entry.userId === currentUserId;
+                const row = document.createElement('div');
+                row.className = `p-3 border-b border-slate-700/50 grid grid-cols-12 items-center hover:bg-slate-800/30 transition-colors ${isUser ? 'bg-green-900/10' : ''}`;
+                
+                let rankIcon = `<span class="text-slate-400 font-bold">#${index + 1}</span>`;
+                if(index === 0) rankIcon = '<i class="fas fa-crown text-yellow-400"></i>';
+                if(index === 1) rankIcon = '<i class="fas fa-medal text-slate-300"></i>';
+                if(index === 2) rankIcon = '<i class="fas fa-medal text-amber-600"></i>';
+
+                row.innerHTML = `
+                    <div class="col-span-2 text-center">${rankIcon}</div>
+                    <div class="col-span-7 text-sm text-slate-200 font-medium truncate">${entry.name} ${isUser ? '(You)' : ''}</div>
+                    <div class="col-span-3 text-right text-sm font-bold text-green-400">${parseFloat(entry.score).toFixed(1)}</div>
+                `;
+                leaderboardList.appendChild(row);
+            });
+        }
+
+        async function saveScoreToFirestore(userName, score) {
+            const data = {
+                name: userName,
+                score: score,
+                userId: currentUserId,
+                timestamp: new Date().toISOString()
+            };
+            
+            // Optimistic update for local UI immediately
+            allScoresLocal.push(data);
+            updateLeaderboardUI();
+
+            if (auth.currentUser) {
+                try {
+                    const leaderboardRef = collection(db, 'artifacts', appId, 'public', 'data', 'leaderboard');
+                    await addDoc(leaderboardRef, data);
+                } catch (e) {
+                    console.error("Error adding score: ", e);
+                }
+            } else {
+                console.warn("User not authenticated, score only saved locally.");
+            }
+        }
+
+        // Expose to window
+        window.saveScoreToFirestore = saveScoreToFirestore;
+    </script>
 
     <script>
         // Data Structure
@@ -701,12 +906,14 @@
         let answered = false;
         let startTime;
         let endTime;
+        let userName = "";
 
         // DOM Elements
         const startScreen = document.getElementById('start-screen');
         const quizContainer = document.getElementById('quiz-container');
         const resultScreen = document.getElementById('result-screen');
         
+        const studentNameInput = document.getElementById('student-name');
         const questionText = document.getElementById('question-text');
         const optionsContainer = document.getElementById('options-container');
         const currentQNum = document.getElementById('current-q-num');
@@ -727,9 +934,29 @@
         const sscScoreDisplay = document.getElementById('ssc-score');
         const resultMessage = document.getElementById('result-message');
         const recommendationCard = document.getElementById('recommendation-card');
+        
+        const leaderboardList = document.getElementById('leaderboard-list');
+        const participantCountDisplay = document.getElementById('participant-count-display');
+        const userRank = document.getElementById('user-rank');
+        const userNameDisplay = document.getElementById('user-name-display');
+        const userFinalScore = document.getElementById('user-final-score');
 
-        // Functions
+
+        // Attach Functions to Window for Global Access
+        window.startQuiz = startQuiz;
+        window.checkAnswer = checkAnswer;
+        window.toggleExplanation = toggleExplanation;
+        window.nextQuestion = nextQuestion;
+        window.finishQuiz = finishQuiz;
+        window.shareTest = shareTest;
+
+
         function startQuiz() {
+            userName = studentNameInput.value.trim();
+            if (!userName) {
+                alert("Please enter your name to start the test.");
+                return;
+            }
             startScreen.classList.add('hidden');
             quizContainer.classList.remove('hidden');
             startTime = new Date();
@@ -848,8 +1075,9 @@
             const ecoWidget = document.getElementById('eco-widget');
             const ytWidget = document.getElementById('yt-widget');
             const endContainer = document.getElementById('end-screen-promos');
-            endContainer.appendChild(ecoWidget);
-            endContainer.appendChild(ytWidget);
+            // Cloning ensures they persist if user restarts
+            if (ecoWidget) endContainer.appendChild(ecoWidget.cloneNode(true));
+            if (ytWidget) endContainer.appendChild(ytWidget.cloneNode(true));
 
             // Calculations
             const total = questions.length;
@@ -863,6 +1091,14 @@
             timeTakenDisplay.innerText = timeString;
             sscScoreDisplay.innerText = sscScore.toFixed(1);
 
+            // Set global var for leaderboard logic
+            window.finalUserScore = parseFloat(sscScore.toFixed(1));
+
+            // Save Score
+            if(typeof window.saveScoreToFirestore === 'function') {
+                window.saveScoreToFirestore(userName, window.finalUserScore);
+            }
+            
             // Suggestion Logic
             if (accuracy < 60) {
                 recommendationCard.classList.remove('hidden');
@@ -908,6 +1144,7 @@
         const slides = document.querySelectorAll('.slide');
         
         function nextSlide() {
+            if (slides.length === 0) return;
             slides[currentSlide].classList.remove('active');
             currentSlide = (currentSlide + 1) % slides.length;
             slides[currentSlide].classList.add('active');
@@ -918,7 +1155,7 @@
             setInterval(nextSlide, 3000);
         }
 
-        // --- Knowledge Trivia Logic (Replaces Score Popups) ---
+        // --- Knowledge Trivia Logic ---
         const triviaFacts = [
             "Singular subject হলে verb singular হয়।",
             "Plural noun করতে বেশিরভাগ শব্দে s/es লাগে।",
