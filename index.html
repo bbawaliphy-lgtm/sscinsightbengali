@@ -206,14 +206,14 @@
         </ul>
     </div>
 
-    <!-- Social Proof Toast (Hidden by default) -->
-    <div id="social-proof" class="fixed bottom-4 left-4 z-50 bg-slate-900/90 backdrop-blur-md border border-slate-700 p-4 rounded-xl shadow-2xl flex items-center gap-4 max-w-xs border-l-4 border-l-green-500">
-        <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-green-400 shrink-0 border border-slate-700">
-            <i class="fas fa-user-graduate"></i>
+    <!-- Knowledge Trivia Pop-up (Replaces Score Pop-up) -->
+    <div id="social-proof" class="fixed bottom-4 left-4 z-50 bg-slate-900/95 backdrop-blur-md border border-slate-600 p-4 rounded-xl shadow-2xl flex items-start gap-4 max-w-sm border-l-4 border-l-yellow-500">
+        <div class="w-10 h-10 rounded-full bg-yellow-500/20 flex items-center justify-center text-yellow-400 shrink-0 border border-slate-700 mt-1">
+            <i class="fas fa-lightbulb"></i>
         </div>
         <div>
-            <p class="text-sm font-bold text-white leading-tight" id="proof-text">Loading...</p>
-            <p class="text-[10px] text-slate-400 mt-0.5">Just now • Live Result</p>
+            <p class="text-sm font-bold text-white leading-snug bengali-text" id="proof-text">Did you know?</p>
+            <p class="text-[10px] text-slate-400 mt-1 font-semibold uppercase tracking-wider">Grammar Tip</p>
         </div>
     </div>
 
@@ -918,34 +918,64 @@
             setInterval(nextSlide, 3000);
         }
 
-        // --- Enhanced Random Notifications Logic ---
-        const studentNames = [
-            "Priya S.", "Rahul D.", "Ankit M.", "Sneha K.", "Rohit B.", 
-            "Amit R.", "Sonia G.", "Vikram S.", "Pooja L.", "Karan T.",
-            "Riya P.", "Suresh N.", "Meera J.", "Arjun K.", "Nisha D."
+        // --- Knowledge Trivia Logic (Replaces Score Popups) ---
+        const triviaFacts = [
+            "Singular subject হলে verb singular হয়।",
+            "Plural noun করতে বেশিরভাগ শব্দে s/es লাগে।",
+            "Countable noun-এর সাথে many আর uncountable-এর সাথে much বসে।",
+            "General meaning-এ a/an আর specific meaning-এ the ব্যবহৃত হয়।",
+            "Rivers, seas, holy books, superlatives-এর আগে অবশ্যই the লাগে।",
+            "এক বাক্যের মধ্যে tense mix হলে grammatical error ধরা পড়ে।",
+            "Present perfect ব্যবহার হয় যখন past কাজের প্রভাব এখনো থাকে।",
+            "দুইটা past action হলে যেটা আগে হয়েছে সেটা past perfect হয়।",
+            "‘Will’ sudden decision আর ‘going to’ আগের plan বোঝায়।",
+            "Can/could/may/might permission আর possibility দেখায়।",
+            "If + present হলে result clause-এ will বসে।",
+            "If + past হলে result clause-এ would বসে।",
+            "‘Than’-এর পরে object pronoun বসে—than me, than him।",
+            "Double comparative ভুল—more better, most best কখনো হয় না।",
+            "Each আলাদাভাবে বোঝায় আর every group-কে বোঝায়।",
+            "Either/Neither ব্যবহার করলে verb singular হয়।",
+            "Between দুইজনের জন্য আর among তিন বা তার বেশি জনের জন্য।",
+            "Very adjective-এর আগে বসে, কিন্তু much comparative-এর আগে।",
+            "Few = প্রায় নেই, a few = কিছু আছে, the few = যতটুকু আছে সব।",
+            "Little = প্রায় কিছুই নয়, a little = কিছুটা, the little = যতটুকু আছে সব।",
+            "Pronoun তার আগের noun-এর number আর gender-এর সাথে match করতে হয়।",
+            "Who subject, whom object, আর whose possession দেখায়।",
+            "Preposition-এর কিছু fixed combination আছে—good at, interested in, prefer to।",
+            "Do/does/did কখনো V2-এর সাথে বসে না—did + go, not did + went।",
+            "Passive voice করতে be verb + V3 ব্যবহার করতে হয়।",
+            "Reported speech-এ said to → told হয়।",
+            "Reported speech-এ tense এক ধাপ পিছিয়ে যায়।",
+            "Adverb of frequency (always, often) main verb-এর আগে বসে।",
+            "So…that adjective-এর সাথে আর such…that noun-এর সাথে।",
+            "Redundant words ভুল—return back, repeat again, join together ভুল।"
         ];
         
         function showRandomNotification() {
             const toast = document.getElementById('social-proof');
             const msg = document.getElementById('proof-text');
             
-            const randomName = studentNames[Math.floor(Math.random() * studentNames.length)];
-            // Generate a random score between 20.0 and 48.0 for realism
-            const randomScore = (Math.floor(Math.random() * (48 - 20 + 1)) + 20) + (Math.random() > 0.5 ? 0.5 : 0);
-            
-            msg.innerText = `${randomName} just scored ${randomScore.toFixed(1)}!`;
+            const randomFact = triviaFacts[Math.floor(Math.random() * triviaFacts.length)];
+            msg.innerText = `জানো কি? ${randomFact}`;
             
             toast.classList.add('show');
             
-            // Hide after 6 seconds
+            // Hide after 8 seconds (Longer duration for reading)
             setTimeout(() => {
                 toast.classList.remove('show');
-            }, 6000); 
+                // Schedule next notification randomly between 15s and 40s
+                scheduleNextNotification();
+            }, 8000); 
         }
 
-        // Trigger notifications loop (Every 25s, initial delay 5s)
-        setInterval(showRandomNotification, 25000); 
-        setTimeout(showRandomNotification, 5000); 
+        function scheduleNextNotification() {
+            const randomDelay = Math.floor(Math.random() * (40000 - 15000 + 1)) + 15000;
+            setTimeout(showRandomNotification, randomDelay);
+        }
+
+        // Initial start after 5 seconds
+        setTimeout(showRandomNotification, 5000);
 
     </script>
 </body>
