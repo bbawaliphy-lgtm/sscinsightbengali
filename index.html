@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SSC INSIGHT BENGALI - Mock Test</title>
+    <title>SSC INSIGHT BENGALI - Mock Test Series</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -207,6 +207,12 @@
             border-color: #22c55e;
             box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
         }
+        
+        /* Test Selection Card Hover */
+        .test-card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
 
     </style>
 </head>
@@ -345,50 +351,53 @@
                     </div>
                 </div>
 
-                <!-- Test Details Section with Student Input -->
+                <!-- Test Selection Section (UPDATED) -->
                 <div class="md:col-span-7 lg:col-span-8 flex flex-col justify-center">
                     <div class="glass-panel rounded-3xl p-8 md:p-10 shadow-2xl relative overflow-hidden h-full flex flex-col justify-center">
                         <!-- Background glow effect -->
-                        <div class="absolute -right-20 -top-20 w-64 h-64 bg-green-500/20 blur-[80px] rounded-full pointer-events-none"></div>
+                        <div class="absolute -right-20 -top-20 w-64 h-64 bg-green-500/10 blur-[80px] rounded-full pointer-events-none"></div>
 
                         <div class="relative z-10">
-                            <span class="inline-block py-1 px-3 rounded-md bg-green-500/10 border border-green-500/20 text-green-400 text-xs font-bold tracking-wider mb-4">
-                                MOCK TEST SERIES
+                            <span class="inline-block py-1 px-3 rounded-md bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold tracking-wider mb-4">
+                                MOCK TEST PORTAL
                             </span>
                             <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-2 tracking-tight">
-                                Syno/Anto Test <span class="text-green-500">01</span>
+                                Select Your <span class="text-blue-500">Challenge</span>
                             </h2>
                             <p class="text-lg md:text-xl text-slate-300 italic font-light mb-8">
-                                "Let's build Vocab Stronger with Dyutimala Didi"
+                                "Consistency is the key to mastering vocabulary."
                             </p>
 
-                            <div class="grid grid-cols-3 gap-4 mb-8">
-                                <div class="bg-slate-800/50 p-4 rounded-2xl border border-slate-700 text-center hover:bg-slate-800 transition-colors">
-                                    <i class="fas fa-list-ol text-2xl text-green-500 mb-2"></i>
-                                    <div class="text-2xl font-bold text-white">25</div>
-                                    <div class="text-[10px] text-slate-400 uppercase font-bold">Questions</div>
-                                </div>
-                                <div class="bg-slate-800/50 p-4 rounded-2xl border border-slate-700 text-center hover:bg-slate-800 transition-colors">
-                                    <i class="fas fa-stopwatch text-2xl text-blue-500 mb-2"></i>
-                                    <div class="text-2xl font-bold text-white">∞</div>
-                                    <div class="text-[10px] text-slate-400 uppercase font-bold">Time Limit</div>
-                                </div>
-                                <div class="bg-slate-800/50 p-4 rounded-2xl border border-slate-700 text-center hover:bg-slate-800 transition-colors">
-                                    <i class="fas fa-language text-2xl text-purple-500 mb-2"></i>
-                                    <div class="text-xl font-bold text-white mt-1">EN/BN</div>
-                                    <div class="text-[10px] text-slate-400 uppercase font-bold">Language</div>
-                                </div>
+                            <!-- Name Input First -->
+                            <div class="mb-8">
+                                <label class="block text-slate-400 text-xs font-bold uppercase tracking-wider mb-2 ml-1">Enter Your Name to Unlock Tests</label>
+                                <input type="text" id="student-name" placeholder="Ex: Amit Roy" class="glass-input w-full p-4 rounded-xl text-lg placeholder-slate-500 transition-all border-slate-600 focus:border-blue-500" onkeyup="toggleTestButtons()">
                             </div>
 
-                            <!-- Name Input & Start Button -->
-                            <div class="space-y-4">
-                                <div>
-                                    <label class="block text-slate-400 text-xs font-bold uppercase tracking-wider mb-2 ml-1">Enter Your Name to Start</label>
-                                    <input type="text" id="student-name" placeholder="Ex: Amit Roy" class="glass-input w-full p-4 rounded-xl text-lg placeholder-slate-500 transition-all">
-                                </div>
-                                <button onclick="startQuiz()" id="start-btn" class="btn-pulse w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white font-bold text-lg py-4 px-8 rounded-2xl shadow-lg transition-all duration-300 transform hover:scale-[1.02] flex items-center justify-center group disabled:opacity-50 disabled:cursor-not-allowed">
-                                    <span>Start Mock Test</span>
-                                    <i class="fas fa-arrow-right ml-3 group-hover:translate-x-1 transition-transform"></i>
+                            <!-- Test Selection Cards -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <!-- Test 01 Card -->
+                                <button onclick="startQuiz('test1')" id="btn-test-1" disabled class="test-card-hover text-left bg-slate-800/50 hover:bg-slate-800 border border-slate-700 hover:border-green-500 p-5 rounded-2xl transition-all duration-300 group disabled:opacity-50 disabled:cursor-not-allowed">
+                                    <div class="flex justify-between items-start mb-3">
+                                        <div class="p-3 bg-green-500/20 rounded-lg text-green-400 group-hover:bg-green-500 group-hover:text-slate-900 transition-colors">
+                                            <i class="fas fa-font text-xl"></i>
+                                        </div>
+                                        <span class="bg-slate-900 text-slate-400 text-[10px] font-bold px-2 py-1 rounded border border-slate-700">25 Qs</span>
+                                    </div>
+                                    <h3 class="text-lg font-bold text-white mb-1 group-hover:text-green-400 transition-colors">Syno/Anto Test 01</h3>
+                                    <p class="text-xs text-slate-400">Focus on words starting with 'A' and high frequency terms.</p>
+                                </button>
+
+                                <!-- Test 02 Card -->
+                                <button onclick="startQuiz('test2')" id="btn-test-2" disabled class="test-card-hover text-left bg-slate-800/50 hover:bg-slate-800 border border-slate-700 hover:border-blue-500 p-5 rounded-2xl transition-all duration-300 group disabled:opacity-50 disabled:cursor-not-allowed">
+                                    <div class="flex justify-between items-start mb-3">
+                                        <div class="p-3 bg-blue-500/20 rounded-lg text-blue-400 group-hover:bg-blue-500 group-hover:text-slate-900 transition-colors">
+                                            <i class="fas fa-layer-group text-xl"></i>
+                                        </div>
+                                        <span class="bg-slate-900 text-slate-400 text-[10px] font-bold px-2 py-1 rounded border border-slate-700">25 Qs</span>
+                                    </div>
+                                    <h3 class="text-lg font-bold text-white mb-1 group-hover:text-blue-400 transition-colors">Syno/Anto Test 02</h3>
+                                    <p class="text-xs text-slate-400">Mixed bag vocabulary challenge (B-Z). Test your range!</p>
                                 </button>
                             </div>
                         </div>
@@ -670,7 +679,7 @@
                                 <i class="fas fa-share-alt mr-2"></i> Share
                             </button>
                             <button onclick="location.reload()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 px-6 rounded-xl border border-slate-600 hover:border-slate-500 shadow-lg transition-all flex items-center justify-center">
-                                <i class="fas fa-redo-alt mr-2 text-slate-400"></i> Retake
+                                <i class="fas fa-redo-alt mr-2 text-slate-400"></i> Home
                             </button>
                         </div>
                     </div>
@@ -681,11 +690,11 @@
                     <div class="flex justify-between items-end mb-6">
                         <div>
                             <h3 class="text-2xl font-bold text-white flex items-center gap-2"><i class="fas fa-chart-line text-green-400"></i> Leaderboard</h3>
-                            <p class="text-xs text-slate-400 mt-1">Live Rankings based on SSC Score</p>
+                            <p class="text-xs text-slate-400 mt-1" id="leaderboard-title">Live Rankings (Test 01)</p>
                         </div>
                         <div class="text-right">
                             <p class="text-xs text-slate-500 uppercase font-bold">Participants</p>
-                            <p class="text-xl font-bold text-white" id="participant-count-display">1,542</p>
+                            <p class="text-xl font-bold text-white" id="participant-count-display">--</p>
                         </div>
                     </div>
 
@@ -697,6 +706,7 @@
                         </div>
                         <div class="overflow-y-auto custom-scroll flex-grow" id="leaderboard-list">
                             <!-- Dynamic Content -->
+                            <div class="p-4 text-center text-slate-500 text-sm">Loading rankings...</div>
                         </div>
                         <!-- Current User Fixed at Bottom -->
                         <div class="p-4 bg-green-900/20 border-t border-green-500/30 grid grid-cols-12 items-center" id="user-rank-row">
@@ -719,12 +729,12 @@
     </footer>
 
     <script type="module">
-        // Import Firebase Functions from Google's CDN (using version 11.6.1 as requested in system prompt)
+        // Import Firebase Functions
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js';
         import { getAuth, signInAnonymously, signInWithCustomToken } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js';
         import { getFirestore, collection, addDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js';
 
-        // Firebase Config from User
+        // Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyDZLWUMldpxj6K_tabkjmS6qcAYPy97FdI",
             authDomain: "sscinsight-test-portal.firebaseapp.com",
@@ -738,10 +748,10 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
         
-        // Static App ID for storing data
-        const appId = 'ssc-insight-synonyms-test-01';
-
+        // This will change based on selected test
+        let currentAppId = 'ssc-insight-synonyms-test-01'; 
         let currentUserId = null;
+        let unsubscribeLeaderboard = null;
 
         // Initialize App & Auth
         async function initApp() {
@@ -749,8 +759,6 @@
                 if (typeof window.__initial_auth_token !== 'undefined' && window.__initial_auth_token) {
                     await signInWithCustomToken(auth, window.__initial_auth_token);
                 } else {
-                    // This handles the "auth/configuration-not-found" error fallback to local if needed
-                    // In a real scenario, Anonymous Auth MUST be enabled in Firebase Console
                     await signInAnonymously(auth).catch(e => {
                         console.warn("Auth failed, leaderboard will be local-only.", e);
                     });
@@ -758,9 +766,7 @@
                 
                 if (auth.currentUser) {
                     currentUserId = auth.currentUser.uid;
-                    setupLeaderboardListener();
                 } else {
-                    // Fallback for local testing without valid auth
                     console.log("Running in offline mode.");
                     currentUserId = 'local-user-' + Date.now();
                 }
@@ -775,14 +781,25 @@
         // Firestore Listener
         const leaderboardList = document.getElementById('leaderboard-list');
         const participantCountDisplay = document.getElementById('participant-count-display');
-        let allScoresLocal = []; // Store scores locally to handle fallback
+        let allScoresLocal = []; 
         
-        function setupLeaderboardListener() {
+        function setupLeaderboardListener(testId) {
              if (!auth.currentUser) return; 
-
-             const leaderboardRef = collection(db, 'artifacts', appId, 'public', 'data', 'leaderboard');
              
-             onSnapshot(leaderboardRef, (snapshot) => {
+             // Unsubscribe previous listener if exists
+             if (unsubscribeLeaderboard) {
+                 unsubscribeLeaderboard();
+                 allScoresLocal = []; // Clear local cache when switching
+             }
+
+             // Determine Collection Path based on Test ID
+             currentAppId = testId === 'test1' ? 'ssc-insight-synonyms-test-01' : 'ssc-insight-synonyms-test-02';
+             const titleSuffix = testId === 'test1' ? '(Test 01)' : '(Test 02)';
+             document.getElementById('leaderboard-title').innerText = `Live Rankings ${titleSuffix}`;
+
+             const leaderboardRef = collection(db, 'artifacts', currentAppId, 'public', 'data', 'leaderboard');
+             
+             unsubscribeLeaderboard = onSnapshot(leaderboardRef, (snapshot) => {
                  const scores = [];
                  snapshot.forEach((doc) => {
                      scores.push(doc.data());
@@ -791,7 +808,6 @@
                  updateLeaderboardUI();
              }, (error) => {
                  console.error("Leaderboard fetch error:", error);
-                 // If permission denied, UI stays empty or shows local only
              });
         }
         
@@ -807,7 +823,6 @@
             
             // Update User Rank
             if (window.finalUserScore !== undefined) {
-                // Find rank based on score and ID
                 const rank = allScoresLocal.findIndex(s => s.userId === currentUserId && s.score === window.finalUserScore) + 1;
                 document.getElementById('user-rank').innerText = rank > 0 ? `#${rank}` : '#--';
             }
@@ -850,29 +865,30 @@
                 timestamp: new Date().toISOString()
             };
             
-            // Optimistic update for local UI immediately
+            // Optimistic update
             allScoresLocal.push(data);
             updateLeaderboardUI();
 
             if (auth.currentUser) {
                 try {
-                    const leaderboardRef = collection(db, 'artifacts', appId, 'public', 'data', 'leaderboard');
+                    const leaderboardRef = collection(db, 'artifacts', currentAppId, 'public', 'data', 'leaderboard');
                     await addDoc(leaderboardRef, data);
                 } catch (e) {
                     console.error("Error adding score: ", e);
                 }
-            } else {
-                console.warn("User not authenticated, score only saved locally.");
             }
         }
 
         // Expose to window
         window.saveScoreToFirestore = saveScoreToFirestore;
+        window.setupLeaderboardListener = setupLeaderboardListener;
     </script>
 
     <script>
-        // Data Structure
-        const questions = [
+        // --- Questions Data ---
+        
+        // Test 01 (Previous Set)
+        const questionsTest01 = [
             {q: "Select the synonym of the word: ABET", options: ["Prevent", "Incite", "Pacify", "Deter"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Abet' means to encourage or assist someone to do something wrong, often a crime. 'Incite' also means to encourage or stir up violent or unlawful behavior.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Abet' মানে কোনো দুষ্কর্ম বা খারাপ কাজে সাহায্য করা বা উৎসাহ দেওয়া। 'Incite' মানেও খারাপ কাজে প্ররোচিত করা বা উস্কানি দেওয়া।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Prevent (বাধা দেওয়া), Pacify (শান্ত করা), Deter (ভয় দেখিয়ে নিবৃত্ত করা)।</p></div>`},
             {q: "What is the meaning of ABEYANCE?", options: ["Permanent closure", "Temporary suspension", "Complete obedience", "False accusation"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Abeyance' refers to a state of temporary disuse or suspension. It means something is put "on hold" for a while.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Abeyance' মানে হলো কোনো কিছু সাময়িকভাবে স্থগিত বা অকেজো থাকা। এটি স্থায়ী সমাপ্তি নয়, বরং সাময়িক বিরতি।</p></div></div>`},
             {q: "Choose the correct antonym (opposite) for ABJURE.", options: ["Renounce", "Embrace", "Reject", "Deny"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Abjure' means to solemnly renounce or give up a belief, cause, or claim. 'Embrace' means to accept or support something willingly, making it the antonym.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Abjure' মানে শপথ করে কোনো মত বা বিশ্বাস বর্জন করা। 'Embrace' মানে কোনো কিছুকে সাদরে গ্রহণ করা, যা এর ঠিক বিপরীত।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Renounce (বর্জন করা - Synonym), Reject (প্রত্যাখ্যান করা), Deny (অস্বীকার করা)।</p></div>`},
@@ -900,13 +916,44 @@
             {q: "Select the synonym for AMELIORATE.", options: ["Worsen", "Improve", "Freeze", "Hide"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Ameliorate' means to make something bad or unsatisfactory better.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Ameliorate' মানে কোনো খারাপ অবস্থা বা পরিস্থিতির উন্নতি ঘটানো বা ভালো করা।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Worsen (অবনতি ঘটানো - Antonym), Hide (লুকানো)।</p></div>`}
         ];
 
+        // Test 02 (New Set)
+        const questionsTest02 = [
+            {q: "Select the synonym of BELLIGERENT.", options: ["Peaceful", "Hostile", "Lazy", "Weak"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Belligerent' means hostile and aggressive. It is often used to describe someone eager to fight.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Belligerent' মানে যুদ্ধংদেহী, মারমুখো বা ঝগড়াটে।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Peaceful (শান্তিপুর্ণ), Lazy (অলস), Weak (দুর্বল)।</p></div>`},
+            {q: "What is the meaning of BENEVOLENT?", options: ["Cruel", "Greedy", "Kind and charitable", "Careless"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Benevolent' means well meaning and kindly; charitable.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Benevolent' মানে দয়ালু বা হিতৈষী।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Cruel (নিষ্ঠুর - Antonym), Greedy (লোভী), Careless (অযত্নশীল)।</p></div>`},
+            {q: "Select the word that means 'Frank and outspoken'.", options: ["Candid", "Secretive", "Shy", "Cunning"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Candid' means truthful and straightforward; frank.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Candid' মানে স্পষ্টবাদী বা অকপট।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Secretive (গোপনপ্রিয়), Shy (লাজুক), Cunning (ধূর্ত)।</p></div>`},
+            {q: "Choose the antonym for DILIGENT.", options: ["Hardworking", "Lazy", "Active", "Careful"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Diligent' means having or showing care and conscientiousness in one's work or duties. 'Lazy' is the opposite.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Diligent' মানে পরিশ্রমী বা অধ্যবসায়ী। 'Lazy' মানে অলস, যা এর বিপরীত।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Hardworking (পরিশ্রমী - Synonym), Active (সক্রিয়), Careful (সতর্ক)।</p></div>`},
+            {q: "What does ELUSIVE mean?", options: ["Easy to find", "Difficult to find or catch", "Very heavy", "Bright and colorful"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Elusive' means difficult to find, catch, or achieve.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Elusive' মানে অধরা বা পলায়নপর, যা সহজে ধরা দেয় না।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Easy to find (সহজে পাওয়া যায়), Heavy (ভারী), Bright (উজ্জ্বল)।</p></div>`},
+            {q: "A person who is GREGARIOUS is:", options: ["Lonely", "Sociable and likes groups", "Rude", "Fearful"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Gregarious' describes a person who enjoys the company of others; sociable.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Gregarious' মানে মিশুকে বা যারা দলবদ্ধ হয়ে থাকতে ভালোবাসে।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Lonely (একাকী), Rude (অভদ্র), Fearful (ভীত)।</p></div>`},
+            {q: "Select the synonym for HAUGHTY.", options: ["Humble", "Arrogant", "Scared", "Polite"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Haughty' means arrogantly superior and disdainful.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Haughty' মানে উদ্ধত বা অহংকারী।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Humble (বিনয়ী - Antonym), Scared (ভীত), Polite (ভদ্র)।</p></div>`},
+            {q: "If something is IMPECCABLE, it is:", options: ["Full of mistakes", "Flawless or perfect", "Broken", "Dirty"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Impeccable' means accordance with the highest standards; faultless.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Impeccable' মানে নিখুঁত বা দোষহীন।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Full of mistakes (ভুলে ভরা), Broken (ভাঙা), Dirty (নোংরা)।</p></div>`},
+            {q: "What is the meaning of JUVENILE?", options: ["Wise", "Old", "Young or childish", "Sick"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Juvenile' refers to young people or birds; childish or immature.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Juvenile' মানে কিশোর বা অপরিণত।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Wise (জ্ঞানী), Old (বৃদ্ধ), Sick (অসুস্থ)।</p></div>`},
+            {q: "Someone who is KEEN shows:", options: ["Indifference", "Eagerness or sharpness", "Stupidity", "Laziness"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Keen' means having or showing eagerness or enthusiasm; sharp.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Keen' মানে প্রবল আগ্রহী বা তীক্ষ্ণ।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Indifference (উদাসীনতা), Stupidity (বোকামি), Laziness (অলসতা)।</p></div>`},
+            {q: "Select the synonym for LUCID.", options: ["Confusing", "Clear", "Dark", "Crazy"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Lucid' means expressed clearly; easy to understand.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Lucid' মানে সহজবোধ্য বা স্বচ্ছ।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Confusing (বিভ্রান্তিকর - Antonym), Dark (অন্ধকার), Crazy (পাগল)।</p></div>`},
+            {q: "A METICULOUS person is:", options: ["Careless", "Very careful and precise", "Messy", "Rude"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Meticulous' means showing great attention to detail; very careful and precise.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Meticulous' মানে অতি সতর্ক বা খুঁতখুঁতে।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Careless (অযত্নশীল), Messy (অগোছালো), Rude (অভদ্র)।</p></div>`},
+            {q: "What is a NOVICE?", options: ["An expert", "A beginner", "A teacher", "A rich person"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">A 'Novice' is a person new to or inexperienced in a field or situation.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Novice' মানে শিক্ষানবিস বা অনভিজ্ঞ ব্যক্তি।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: An expert (বিশেষজ্ঞ - Antonym), A teacher (শিক্ষক), A rich person (ধনী ব্যক্তি)।</p></div>`},
+            {q: "Something that is OBSOLETE is:", options: ["Modern", "Outdated or no longer used", "Popular", "New"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Obsolete' means no longer produced or used; out of date.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Obsolete' মানে সেকেলে বা অপ্রচলিত।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Modern (আধুনিক), Popular (জনপ্রিয়), New (নতুন)।</p></div>`},
+            {q: "Select the synonym for PRUDENT.", options: ["Wise", "Foolish", "Fast", "Angry"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Prudent' means acting with or showing care and thought for the future; wise.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Prudent' মানে বিচক্ষণ বা দূরদর্শী।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Foolish (বোকা - Antonym), Fast (দ্রুত), Angry (রাগান্বিত)।</p></div>`},
+            {q: "To QUELL something means to:", options: ["Start it", "Suppress or put an end to it", "Increase it", "Watch it"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Quell' means to put an end to (a rebellion or other disorder), typically by the use of force; to silence.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Quell' মানে দমন করা বা শান্ত করা।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Start it (শুরু করা), Increase it (বাড়ানো), Watch it (লক্ষ করা)।</p></div>`},
+            {q: "Which word best describes someone who is FRUGAL?", options: ["Spends money freely", "Economical and thrifty", "Very poor", "Dishonest"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Frugal' means sparing or economical with regard to money or food.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Frugal' মানে মিতব্যয়ী বা হিসেবী।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Spends money freely (বাজে খরচ করা - Antonym), Very poor (খুব গরিব), Dishonest (অসৎ)।</p></div>`},
+            {q: "If a person is ROBUST, they are:", options: ["Weak and sickly", "Strong and healthy", "Small", "Scared"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Robust' means strong and healthy; vigorous.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Robust' মানে বলিষ্ঠ বা শক্তপোক্ত।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Weak and sickly (দুর্বল ও অসুস্থ), Small (ছোট), Scared (ভীত)।</p></div>`},
+            {q: "SPORADIC means:", options: ["Continuous", "Occasional or scattered", "Permanent", "Heavy"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Sporadic' means occurring at irregular intervals or only in a few places; scattered or isolated.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Sporadic' মানে বিক্ষিপ্ত বা অনিয়মিত।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Continuous (ধারাবাহিক - Antonym), Permanent (স্থায়ী), Heavy (ভারী)।</p></div>`},
+            {q: "Select the antonym for TRANSIENT.", options: ["Permanent", "Temporary", "Short-lived", "Fleeting"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Transient' means lasting only for a short time; impermanent. 'Permanent' is the opposite.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Transient' মানে ক্ষণস্থায়ী। 'Permanent' মানে স্থায়ী, যা এর বিপরীত।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Temporary (অস্থায়ী - Synonym), Short-lived (স্বল্পস্থায়ী), Fleeting (দ্রুত পলায়নপর)।</p></div>`},
+            {q: "What does UPROAR mean?", options: ["Silence", "A public expression of protest or outrage", "A type of bird", "Peaceful agreement"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Uproar' refers to a loud and impassioned noise or disturbance; a public expression of protest.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Uproar' মানে হট্টগোল, কলরোল বা গণঅসন্তোষ।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Silence (নিস্তব্ধতা), A type of bird (একধরণের পাখি), Peaceful agreement (শান্তিপূর্ণ চুক্তি)।</p></div>`},
+            {q: "A VIGILANT person is:", options: ["Careless", "Watchful and alert", "Sleepy", "Lazy"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Vigilant' means keeping careful watch for possible danger or difficulties.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Vigilant' মানে সতর্ক বা পাহারারত।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Careless (অসাবধান), Sleepy (ঘুমন্ত), Lazy (অলস)।</p></div>`},
+            {q: "To WAIVE a right means to:", options: ["Claim it", "Refrain from insisting on or using it", "Fight for it", "Sell it"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Waive' means to refrain from insisting on or using (a right or claim).</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Waive' মানে কোনো অধিকার পরিত্যাগ করা বা মওকুফ করা।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Claim it (দাবি করা), Fight for it (লড়াই করা), Sell it (বিক্রি করা)।</p></div>`},
+            {q: "Which word is a synonym for YIELD?", options: ["Resist", "Surrender", "Attack", "Hide"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Yield' means to give way to arguments, demands, or pressure; surrender.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Yield' মানে নতি স্বীকার করা বা বশ্যতা মেনে নেওয়া।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Resist (প্রতিরোধ করা - Antonym), Attack (আক্রমণ করা), Hide (লুকানো)।</p></div>`},
+            {q: "What is the ZENITH?", options: ["The lowest point", "The time at which something is most powerful or successful", "The middle", "The end"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Zenith' is the time at which something is most powerful or successful; the highest point.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Zenith' মানে সুউচ্চ শিখর বা উন্নতির চরম সীমা।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: The lowest point (সর্বনিম্ন বিন্দু - Nadir), The middle (মাঝামাঝি), The end (সমাপ্তি)।</p></div>`}
+        ];
+
         // Global State
+        let activeQuestions = [];
         let currentQuestion = 0;
         let score = 0;
         let answered = false;
         let startTime;
         let endTime;
         let userName = "";
+        let selectedTestId = "";
 
         // DOM Elements
         const startScreen = document.getElementById('start-screen');
@@ -914,6 +961,9 @@
         const resultScreen = document.getElementById('result-screen');
         
         const studentNameInput = document.getElementById('student-name');
+        const btnTest1 = document.getElementById('btn-test-1');
+        const btnTest2 = document.getElementById('btn-test-2');
+
         const questionText = document.getElementById('question-text');
         const optionsContainer = document.getElementById('options-container');
         const currentQNum = document.getElementById('current-q-num');
@@ -934,13 +984,6 @@
         const sscScoreDisplay = document.getElementById('ssc-score');
         const resultMessage = document.getElementById('result-message');
         const recommendationCard = document.getElementById('recommendation-card');
-        
-        const leaderboardList = document.getElementById('leaderboard-list');
-        const participantCountDisplay = document.getElementById('participant-count-display');
-        const userRank = document.getElementById('user-rank');
-        const userNameDisplay = document.getElementById('user-name-display');
-        const userFinalScore = document.getElementById('user-final-score');
-
 
         // Attach Functions to Window for Global Access
         window.startQuiz = startQuiz;
@@ -949,14 +992,26 @@
         window.nextQuestion = nextQuestion;
         window.finishQuiz = finishQuiz;
         window.shareTest = shareTest;
+        window.toggleTestButtons = toggleTestButtons;
 
+        // Enable/Disable test buttons based on input
+        function toggleTestButtons() {
+            const name = studentNameInput.value.trim();
+            const hasName = name.length > 0;
+            btnTest1.disabled = !hasName;
+            btnTest2.disabled = !hasName;
+        }
 
-        function startQuiz() {
+        function startQuiz(testId) {
             userName = studentNameInput.value.trim();
             if (!userName) {
-                alert("Please enter your name to start the test.");
+                alert("Please enter your name to unlock the tests.");
                 return;
             }
+            
+            selectedTestId = testId;
+            activeQuestions = testId === 'test1' ? questionsTest01 : questionsTest02;
+
             startScreen.classList.add('hidden');
             quizContainer.classList.remove('hidden');
             startTime = new Date();
@@ -964,7 +1019,7 @@
         }
 
         function loadQuestion() {
-            const q = questions[currentQuestion];
+            const q = activeQuestions[currentQuestion];
             answered = false;
             
             // Update UI
@@ -973,7 +1028,7 @@
             scoreDisplay.innerText = `Score: ${score}`;
             
             // Update Progress Bar
-            const progress = ((currentQuestion) / questions.length) * 100;
+            const progress = ((currentQuestion) / activeQuestions.length) * 100;
             progressBar.style.width = `${progress}%`;
 
             // Reset Feedback
@@ -999,7 +1054,7 @@
             if (answered) return;
             answered = true;
             
-            const q = questions[currentQuestion];
+            const q = activeQuestions[currentQuestion];
             const allBtns = optionsContainer.children;
             
             // Highlight Correct/Wrong
@@ -1037,7 +1092,7 @@
             scoreDisplay.innerText = `Score: ${score}`;
 
             // Show Next or Finish Button
-            if (currentQuestion < questions.length - 1) {
+            if (currentQuestion < activeQuestions.length - 1) {
                 nextBtn.classList.remove('hidden');
             } else {
                 finishBtn.classList.remove('hidden');
@@ -1080,7 +1135,7 @@
             if (ytWidget) endContainer.appendChild(ytWidget.cloneNode(true));
 
             // Calculations
-            const total = questions.length;
+            const total = activeQuestions.length;
             const accuracy = Math.round((score / total) * 100);
             const wrongAnswers = total - score;
             const sscScore = (score * 2) - (wrongAnswers * 0.5);
@@ -1094,9 +1149,14 @@
             // Set global var for leaderboard logic
             window.finalUserScore = parseFloat(sscScore.toFixed(1));
 
-            // Save Score
+            // Save Score & Setup Leaderboard
             if(typeof window.saveScoreToFirestore === 'function') {
                 window.saveScoreToFirestore(userName, window.finalUserScore);
+                
+                // Immediately switch listener to show relevant leaderboard (if not already handled)
+                if(typeof window.setupLeaderboardListener === 'function') {
+                    window.setupLeaderboardListener(selectedTestId);
+                }
             }
             
             // Suggestion Logic
@@ -1201,7 +1261,6 @@
             // Hide after 8 seconds (Longer duration for reading)
             setTimeout(() => {
                 toast.classList.remove('show');
-                // Schedule next notification randomly between 15s and 40s
                 scheduleNextNotification();
             }, 8000); 
         }
@@ -1217,4 +1276,3 @@
     </script>
 </body>
 </html>
-
