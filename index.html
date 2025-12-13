@@ -766,6 +766,8 @@
                 
                 if (auth.currentUser) {
                     currentUserId = auth.currentUser.uid;
+                    // Log Visitor for Admin Dashboard
+                    logVisitor(auth.currentUser.uid);
                 } else {
                     console.log("Running in offline mode.");
                     currentUserId = 'local-user-' + Date.now();
@@ -773,6 +775,25 @@
                 
             } catch (error) {
                 console.error("Auth Init Error:", error);
+            }
+        }
+
+        // New function to log visitors
+        async function logVisitor(uid) {
+            try {
+                // Use a general app ID for admin analytics
+                const adminAppId = 'ssc-insight-general';
+                const visitorsRef = collection(db, 'artifacts', adminAppId, 'public', 'data', 'visitors');
+                // We add a document for every visit. 
+                // In a real app, you might want to check if user visited today to avoid spam,
+                // but for this dashboard requirement, this is sufficient.
+                await addDoc(visitorsRef, {
+                    userId: uid,
+                    timestamp: new Date().toISOString(),
+                    userAgent: navigator.userAgent
+                });
+            } catch (e) {
+                console.error("Tracking error", e);
             }
         }
         
