@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test 08 - SSC INSIGHT BENGALI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        body {
+            font-family: 'Poppins', 'Noto Sans Bengali', sans-serif;
+            background: #020617;
+            color: #e2e8f0;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        /* Essential Styles */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        .bengali-text { font-family: 'Noto Sans Bengali', sans-serif; }
+        .fade-in { animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar-track { background: rgba(30, 41, 59, 0.5); border-radius: 10px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #475569; border-radius: 10px; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+
+    <!-- Header for Context -->
+    <header class="fixed top-0 left-0 right-0 p-4 flex justify-between items-center z-50 bg-slate-900/50 backdrop-blur">
+         <div class="flex items-center text-slate-300">
+             <i class="fas fa-arrow-left mr-2 cursor-pointer hover:text-white" onclick="history.back()"></i>
+             <span class="font-bold">Test 08: Direct & Indirect Speech</span>
+         </div>
+         <div class="w-1/3 max-w-xs bg-slate-800 h-2 rounded-full overflow-hidden">
+             <div id="progress-bar" class="h-full bg-red-500 transition-all duration-300" style="width: 0%"></div>
+         </div>
+    </header>
+
+    <!-- Quiz Container -->
+    <div id="quiz-container" class="max-w-3xl w-full mt-10">
+        <div class="glass-panel rounded-3xl shadow-2xl overflow-hidden fade-in border border-slate-600/50">
+            <!-- Question Header -->
+            <div class="bg-slate-900/60 px-6 py-4 border-b border-slate-700 flex justify-between items-center backdrop-blur-sm">
+                <div class="flex items-center space-x-2">
+                     <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                     <span class="text-sm font-bold text-slate-300 tracking-wide">Question <span id="current-q-num" class="text-white text-base">1</span><span class="text-slate-500">/25</span></span>
+                </div>
+                <span id="score-display" class="text-sm font-bold text-red-400 bg-red-900/20 border border-red-500/30 px-4 py-1.5 rounded-full shadow-inner">Score: 0</span>
+            </div>
+
+            <!-- Question Body -->
+            <div class="p-6 md:p-10">
+                <h3 id="question-text" class="text-xl md:text-2xl font-bold text-white mb-8 leading-relaxed drop-shadow-sm">
+                    <!-- Question goes here -->
+                </h3>
+
+                <!-- Options Grid -->
+                <div id="options-container" class="grid grid-cols-1 gap-4 mb-8">
+                    <!-- Buttons injected by JS -->
+                </div>
+
+                <!-- Feedback & Explanation Section -->
+                <div id="feedback-section" class="hidden mt-8 border-t border-slate-700/50 pt-8 animation-fade-in">
+                    <!-- Correct/Wrong Message -->
+                    <div id="feedback-message" class="flex items-center mb-6 p-4 rounded-xl border">
+                        <!-- Injected by JS -->
+                    </div>
+
+                    <!-- Toggle Explanation Button -->
+                    <button id="toggle-explanation-btn" onclick="toggleExplanation()" class="group text-red-400 hover:text-red-300 font-semibold text-sm flex items-center mb-4 focus:outline-none transition-colors">
+                        <span class="bg-red-500/10 p-2 rounded-lg mr-3 group-hover:bg-red-500/20 transition-colors"><i class="fas fa-lightbulb"></i></span>
+                        <span class="underline decoration-red-500/30 underline-offset-4 group-hover:decoration-red-500">See Detailed Solution</span>
+                    </button>
+
+                    <!-- Detailed Explanation Content -->
+                    <div id="explanation-content" class="hidden bg-slate-900/60 p-6 rounded-2xl border border-slate-700/50 text-slate-300 custom-scroll max-h-96 overflow-y-auto shadow-inner leading-relaxed">
+                        <!-- Explanation injected by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Navigation -->
+            <div class="bg-slate-900/40 px-6 py-5 border-t border-slate-700/50 flex justify-end">
+                <button id="next-btn" onclick="nextQuestion()" class="hidden bg-red-600 hover:bg-red-500 text-white font-bold py-3 px-8 rounded-xl shadow-lg shadow-red-900/20 transition-all transform hover:-translate-y-0.5 flex items-center">
+                    Next Question <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+                <button id="finish-btn" onclick="finishQuiz()" class="hidden bg-yellow-600 hover:bg-yellow-500 text-white font-bold py-3 px-8 rounded-xl shadow-lg shadow-yellow-900/20 transition-all transform hover:-translate-y-0.5 flex items-center">
+                    Finish Test <i class="fas fa-flag-checkered ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Test Data (Test 08 - Direct & Indirect Speech)
+        const questionsTest08 = [
+            {q: "He said, 'I am busy now.'", options: ["He said that he was busy then.", "He said that he is busy now.", "He says that he was busy then.", "He said that I was busy then."], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Narration Rule</p><p class="text-slate-200">Present Indefinite changes to Past Indefinite. 'Now' becomes 'then'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">Direct Speech-এ Reporting verb past tense-এ থাকলে 'am' পরিবর্তিত হয়ে 'was' হয় এবং 'now' পরিবর্তিত হয়ে 'then' হয়।</p></div></div>`},
+            {q: "She said to me, 'Are you coming?'", options: ["She asked me if I was coming.", "She told me if I was coming.", "She asked me that if I was coming.", "She asked me whether I am coming."], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Narration Rule</p><p class="text-slate-200">For interrogative sentences (Yes/No questions), use 'asked' and 'if/whether'. Tense changes to Past Continuous.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">প্রশ্নবোধক বাক্যে 'said to' পাল্টে 'asked' হয় এবং 'if' যুক্ত হয়। 'Are you' পাল্টে 'I was' হবে।</p></div></div>`},
+            {q: "The teacher said, 'The sun rises in the east.'", options: ["The teacher said that the sun rose in the east.", "The teacher said that the sun rises in the east.", "The teacher told that the sun rose in the east.", "The teacher said that the sun has risen in the east."], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Narration Rule</p><p class="text-slate-200">Universal truths do not change tense in Indirect Speech.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">চিরন্তন সত্য (Universal Truth) বোঝালে Tense-এর কোনো পরিবর্তন হয় না।</p></div></div>`},
+            {q: "He said, 'I wrote a letter yesterday.'", options: ["He said that he had written a letter the previous day.", "He said that he wrote a letter yesterday.", "He said that he has written a letter the previous day.", "He said that he had wrote a letter yesterday."], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Narration Rule</p><p class="text-slate-200">Past Indefinite changes to Past Perfect. 'Yesterday' changes to 'the previous day'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">Past Indefinite (V2) থাকলে Past Perfect (had + V3) হয়। Yesterday পাল্টে the previous day হয়।</p></div></div>`},
+            {q: "She said, 'May God bless you.'", options: ["She said that God might bless me.", "She prayed that God might bless me.", "She prayed that God may bless me.", "She ordered that God might bless me."], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Narration Rule</p><p class="text-slate-200">Optative sentences use 'prayed' or 'wished'. 'May' changes to 'might'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">ইচ্ছাসূচক বাক্যে 'said' পাল্টে 'prayed' বা 'wished' হয়। May থেকে might হয়।</p></div></div>`},
+            {q: "He said, 'Hurrah! We have won the match.'", options: ["He exclaimed with joy that they had won the match.", "He said with joy that they have won the match.", "He exclaimed that they won the match.", "He exclaimed with sorrow that they had won the match."], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Narration Rule</p><p class="text-slate-200">Exclamatory sentences expressing joy use 'exclaimed with joy'. Present Perfect changes to Past Perfect.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">আনন্দ বোঝালে 'exclaimed with joy' বসে। have won পাল্টে had won হবে।</p></div></div>`},
+            {q: "Rahul said, 'I must go now.'", options: ["Rahul said that he must go then.", "Rahul said that he has to go then.", "Rahul said that he had to go then.", "Rahul said that he would go then."], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Narration Rule</p><p class="text-slate-200">'Must' indicating obligation typically changes to 'had to' in the past tense.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">অতীতের বাধ্যবাধকতা বোঝাতে 'must' পরিবর্তিত হয়ে 'had to' হয়।</p></div></div>`},
+            {q: "She said to him, 'Please help me.'", options: ["She told him to help her.", "She requested him to help her.", "She ordered him to help her.", "She asked him if he could help her."], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Narration Rule</p><p class="text-slate-200">Imperative sentences starting with 'Please' use 'requested'. Use 'to' + V1.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Please' থাকলে 'requested' বসে এবং সংযোগকারী হিসেবে 'to' ব্যবহৃত হয়।</p></div></div>`},
+            {q: "He said, 'Water boils at 100°C.'", options: ["He said that water boiled at 100°C.", "He said that water boils at 100°C.", "He told that water boiled at 100°C.", "He asked if water boils at 100°C."], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Narration Rule</p><p class="text-slate-200">Scientific facts do not change tense.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">বৈজ্ঞানিক সত্য (Scientific Fact) হলে Tense-এর কোনো পরিবর্তন হয় না।</p></div></div>`},
+            {q: "My father said to me, 'Don't waste your time.'", options: ["My father forbade me to waste my time.", "My father ordered me not to waste your time.", "My father requested me not to waste my time.", "My father told me do not waste my time."], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Narration Rule</p><p class="text-slate-200">Negative imperative can use 'forbade' + 'to'. Alternatively, 'advised me not to'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">নিষেধাজ্ঞা বোঝালে 'forbade' ব্যবহার করা হয়। Forbade নিজেই negative, তাই এর সাথে 'not' বসে না।</p></div></div>`},
+            {q: "He said, 'I shall go to Delhi tomorrow.'", options: ["He said that he should go to Delhi the next day.", "He said that he would go to Delhi the next day.", "He said that he shall go to Delhi tomorrow.", "He said that he will go to Delhi the next day."], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Narration Rule</p><p class="text-slate-200">'Shall/Will' changes to 'Would' in Indirect Speech. 'Tomorrow' changes to 'the next day'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">Indirect Speech-এ সাধারণত Subject-এর পর 'would' বসে। Tomorrow পরিবর্তিত হয়ে the next day হয়।</p></div></div>`},
+            {q: "She said, 'What a beautiful sight!'", options: ["She said that it was a beautiful sight.", "She exclaimed that it was a very beautiful sight.", "She exclaimed that it is a very beautiful sight.", "She exclaimed what a beautiful sight it was."], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Narration Rule</p><p class="text-slate-200">Exclamatory sentences starting with 'What'/'How' change to statements using 'very' or 'great'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'What' দিয়ে শুরু হওয়া বিস্ময়সূচক বাক্যে 'very' শব্দটি যোগ করতে হয়।</p></div></div>`},
+            {q: "He says, 'I am honest.'", options: ["He says that he is honest.", "He said that he was honest.", "He says that he was honest.", "He said that he is honest."], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Narration Rule</p><p class="text-slate-200">If the Reporting Verb is in Present Tense (says), the tense of the Reported Speech does not change.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">Reporting verb 'says' (Present) তাই ভেতরের tense (am -> is) পরিবর্তন হবে না, শুধু person বদলাবে।</p></div></div>`},
+            {q: "The boy said, 'Let me go out.'", options: ["The boy requested that he might be allowed to go out.", "The boy said that let him go out.", "The boy ordered to go out.", "The boy told that he might go out."], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Narration Rule</p><p class="text-slate-200">'Let' expressing wish/request changes to 'might be allowed to' or 'requested'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Let me' দিয়ে অনুমতি বোঝালে 'might be allowed to' স্ট্রাকচার ব্যবহার করা হয়।</p></div></div>`},
+            {q: "She said, 'I had finished my work.'", options: ["She said that she had finished her work.", "She said that she has finished her work.", "She said that she finished her work.", "She said that she had been finished her work."], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Narration Rule</p><p class="text-slate-200">Past Perfect Tense does not change in Indirect Speech.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">Direct Speech-এ Past Perfect (had + V3) থাকলে Indirect-এ তার কোনো পরিবর্তন হয় না।</p></div></div>`},
+            {q: "He said to me, 'Where do you live?'", options: ["He asked me where I lived.", "He asked me where do I live.", "He asked me where did I live.", "He asked me that where I lived."], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Narration Rule</p><p class="text-slate-200">For 'Wh-' questions, the wh-word acts as the connector. The sentence becomes assertive (Subject + Verb).</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">Wh-question-এ 'that' বসে না। প্রশ্নবোধক বাক্যটি সাধারণ বাক্যে পরিণত হয় (Subject আগে, Verb পরে)।</p></div></div>`},
+            {q: "Alice said, 'I was playing tennis.'", options: ["Alice said that she had been playing tennis.", "Alice said that she was playing tennis.", "Alice said that she has been playing tennis.", "Alice said that she is playing tennis."], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Narration Rule</p><p class="text-slate-200">Past Continuous changes to Past Perfect Continuous.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">Was playing (Past Continuous) পরিবর্তিত হয়ে had been playing (Past Perfect Continuous) হবে।</p></div></div>`},
+            {q: "He said, 'Let us go for a walk.'", options: ["He proposed that they should go for a walk.", "He suggested that let us go for a walk.", "He said that we must go for a walk.", "He told that let them go for a walk."], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Narration Rule</p><p class="text-slate-200">'Let us' expressing a suggestion changes to 'proposed/suggested that' + 'should'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Let us' দিয়ে প্রস্তাব বোঝালে 'proposed' বা 'suggested' বসে এবং 'should' ব্যবহৃত হয়।</p></div></div>`},
+            {q: "She said, 'My father is a doctor.'", options: ["She said that her father was a doctor.", "She said that my father was a doctor.", "She says that her father is a doctor.", "She said that her father is a doctor."], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Narration Rule</p><p class="text-slate-200">Simple Present changes to Simple Past. 'My' changes to 'Her'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'is' পাল্টে 'was' হবে এবং 'my' পাল্টে 'her' হবে।</p></div></div>`},
+            {q: "He said, 'I can solve this problem.'", options: ["He said that he could solve that problem.", "He said that he can solve this problem.", "He said that he could solve this problem.", "He asked if he could solve that problem."], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Narration Rule</p><p class="text-slate-200">'Can' changes to 'Could'. 'This' changes to 'That'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">Can -> Could এবং This -> That হবে।</p></div></div>`},
+            {q: "She said, 'Good morning, sir.'", options: ["She respectfully wished him good morning.", "She told him good morning.", "She said good morning to sir.", "She wished good morning to him."], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Narration Rule</p><p class="text-slate-200">'Sir' implies respect, so use 'respectfully'. Greeting uses 'wished'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Sir' থাকলে 'respectfully' শব্দটি ব্যবহার করা ভালো। সম্ভাষণের ক্ষেত্রে 'wished' বসে।</p></div></div>`},
+            {q: "He said, 'Thank you.'", options: ["He thanked me.", "He said thank you to me.", "He told me thank you.", "He thanked to me."], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Narration Rule</p><p class="text-slate-200">'Thank you' is changed by making 'thanked' the verb.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Thank you' থাকলে Reporting verb হিসেবে 'thanked' ব্যবহার করা হয়। (He thanked me)।</p></div></div>`},
+            {q: "The commander said to the soldiers, 'March forward.'", options: ["The commander ordered the soldiers to march forward.", "The commander requested the soldiers to march forward.", "The commander told the soldiers that march forward.", "The commander asked the soldiers to march forward."], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Narration Rule</p><p class="text-slate-200">Commands from authority use 'ordered' or 'commanded'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">সেনাপতি বা অফিসারের নির্দেশের ক্ষেত্রে 'ordered' বা 'commanded' বসে।</p></div></div>`},
+            {q: "He said, 'I lived here for ten years.'", options: ["He said that he had lived there for ten years.", "He said that he lived there for ten years.", "He said that he has lived here for ten years.", "He told that he had lived there for ten years."], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Narration Rule</p><p class="text-slate-200">Past Indefinite changes to Past Perfect. 'Here' changes to 'there'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">lived (V2) -> had lived. Here -> There.</p></div></div>`},
+            {q: "She said, 'Goodbye friends.'", options: ["She bade goodbye to her friends.", "She said goodbye to friends.", "She told goodbye to her friends.", "She wished goodbye to friends."], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Narration Rule</p><p class="text-slate-200">For farewells (Goodbye), we use 'bade'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">বিদায় জানানোর ক্ষেত্রে 'bade' শব্দটি ব্যবহৃত হয়।</p></div></div>`}
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let answered = false;
+        let startTime;
+
+        // Elements
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const currentQNum = document.getElementById('current-q-num');
+        const scoreDisplay = document.getElementById('score-display');
+        const progressBar = document.getElementById('progress-bar');
+        const feedbackSection = document.getElementById('feedback-section');
+        const feedbackMessage = document.getElementById('feedback-message');
+        const explanationContent = document.getElementById('explanation-content');
+        const toggleExplanationBtn = document.getElementById('toggle-explanation-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const finishBtn = document.getElementById('finish-btn');
+
+        // Functions
+        function loadQuestion() {
+            const q = questionsTest08[currentQuestion];
+            answered = false;
+            
+            // Update UI
+            currentQNum.innerText = currentQuestion + 1;
+            questionText.innerText = q.q;
+            scoreDisplay.innerText = `Score: ${score}`;
+            
+            // Update Progress Bar
+            const progress = ((currentQuestion) / questionsTest08.length) * 100;
+            progressBar.style.width = `${progress}%`;
+
+            // Reset Feedback
+            feedbackSection.classList.add('hidden');
+            explanationContent.classList.add('hidden');
+            explanationContent.innerHTML = q.explanation;
+            toggleExplanationBtn.innerHTML = '<span class="bg-red-500/10 p-2 rounded-lg mr-3"><i class="fas fa-lightbulb"></i></span><span class="underline decoration-red-500/30 underline-offset-4">See Detailed Solution</span>';
+            nextBtn.classList.add('hidden');
+            finishBtn.classList.add('hidden');
+
+            // Render Options
+            optionsContainer.innerHTML = '';
+            q.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-5 rounded-xl border border-slate-700/50 bg-slate-800/40 hover:bg-slate-700/60 hover:border-red-500/50 transition-all duration-200 font-medium text-slate-300 flex justify-between items-center group backdrop-blur-sm";
+                btn.innerHTML = `<span class="flex items-center"><span class="w-8 h-8 rounded-full bg-slate-700 text-slate-400 flex items-center justify-center font-bold mr-4 group-hover:bg-red-500 group-hover:text-slate-900 transition-colors text-sm">${String.fromCharCode(65 + index)}</span> ${opt}</span>`;
+                btn.onclick = () => checkAnswer(index, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selectedIndex, selectedBtn) {
+            if (answered) return;
+            answered = true;
+            
+            const q = questionsTest08[currentQuestion];
+            const allBtns = optionsContainer.children;
+            
+            if (selectedIndex === q.correct) {
+                score++;
+                selectedBtn.className = "w-full text-left p-5 rounded-xl border border-green-500 bg-green-500/10 flex justify-between items-center transition-all shadow-[0_0_15px_rgba(34,197,94,0.2)]";
+                selectedBtn.innerHTML = `<span class="flex items-center text-white font-bold"><span class="w-8 h-8 rounded-full bg-green-500 text-slate-900 flex items-center justify-center font-bold mr-4 text-sm">${String.fromCharCode(65 + selectedIndex)}</span> ${q.options[selectedIndex]}</span><i class="fas fa-check-circle text-green-400 text-2xl drop-shadow-lg"></i>`;
+                
+                feedbackMessage.className = "flex items-center mb-6 p-4 rounded-xl bg-green-900/20 border border-green-500/30 text-green-300";
+                feedbackMessage.innerHTML = '<div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center mr-4"><i class="fas fa-check text-green-400"></i></div> <span class="font-bold">Correct Answer! Well done.</span>';
+            } else {
+                selectedBtn.className = "w-full text-left p-5 rounded-xl border border-red-500 bg-red-500/10 flex justify-between items-center transition-all";
+                selectedBtn.innerHTML = `<span class="flex items-center text-red-100"><span class="w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center font-bold mr-4 text-sm">${String.fromCharCode(65 + selectedIndex)}</span> ${q.options[selectedIndex]}</span><i class="fas fa-times-circle text-red-400 text-2xl"></i>`;
+                
+                const correctBtn = allBtns[q.correct];
+                correctBtn.className = "w-full text-left p-5 rounded-xl border border-green-500 bg-green-500/10 flex justify-between items-center transition-all shadow-[0_0_15px_rgba(34,197,94,0.2)] opacity-100";
+                correctBtn.innerHTML = `<span class="flex items-center text-white font-bold"><span class="w-8 h-8 rounded-full bg-green-500 text-slate-900 flex items-center justify-center font-bold mr-4 text-sm">${String.fromCharCode(65 + q.correct)}</span> ${q.options[q.correct]}</span><i class="fas fa-check-circle text-green-400 text-2xl"></i>`;
+
+                feedbackMessage.className = "flex items-center mb-6 p-4 rounded-xl bg-red-900/20 border border-red-500/30 text-red-300";
+                feedbackMessage.innerHTML = `<div class="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center mr-4"><i class="fas fa-times text-red-400"></i></div> <span>Incorrect. The correct answer is <span class="font-bold text-green-400 border-b border-green-400/30 pb-0.5">${String.fromCharCode(65 + q.correct)}</span></span>`;
+            }
+
+            for (let btn of allBtns) {
+                btn.disabled = true;
+                if (!btn.className.includes('green') && !btn.className.includes('red')) {
+                     btn.classList.add('opacity-50', 'cursor-not-allowed');
+                     btn.classList.remove('hover:bg-slate-700/60', 'hover:border-red-500/50');
+                }
+            }
+
+            feedbackSection.classList.remove('hidden');
+            scoreDisplay.innerText = `Score: ${score}`;
+
+            if (currentQuestion < questionsTest08.length - 1) {
+                nextBtn.classList.remove('hidden');
+            } else {
+                finishBtn.classList.remove('hidden');
+            }
+        }
+
+        function toggleExplanation() {
+            if (explanationContent.classList.contains('hidden')) {
+                explanationContent.classList.remove('hidden');
+                explanationContent.classList.add('fade-in');
+                toggleExplanationBtn.innerHTML = '<span class="bg-red-500/10 p-2 rounded-lg mr-3"><i class="fas fa-eye-slash"></i></span><span class="underline decoration-red-500/30 underline-offset-4">Hide Solution</span>';
+            } else {
+                explanationContent.classList.add('hidden');
+                toggleExplanationBtn.innerHTML = '<span class="bg-red-500/10 p-2 rounded-lg mr-3"><i class="fas fa-lightbulb"></i></span><span class="underline decoration-red-500/30 underline-offset-4">See Detailed Solution</span>';
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            loadQuestion();
+        }
+
+        function finishQuiz() {
+            const endTime = new Date();
+            const timeDiff = Math.floor((endTime - startTime) / 1000); // seconds
+            const minutes = Math.floor(timeDiff / 60);
+            const seconds = timeDiff % 60;
+            const timeString = `${minutes}m ${seconds}s`;
+            
+            // Calc stats
+            const total = questionsTest08.length;
+            const accuracy = Math.round((score / total) * 100);
+            const wrongAnswers = total - score;
+            const sscScore = (score * 2) - (wrongAnswers * 0.5);
+            
+            // Get user name from URL params to pass it back
+            const urlParams = new URLSearchParams(window.location.search);
+            const name = urlParams.get('name') || "Student";
+
+            // Redirect to Master Index with results (Action = result)
+            // Note: testId is set to test8
+            const redirectUrl = `index.html?action=result&score=${score}&total=${total}&accuracy=${accuracy}&time=${encodeURIComponent(timeString)}&sscScore=${sscScore}&name=${encodeURIComponent(name)}&testId=test8`;
+            
+            window.location.href = redirectUrl;
+        }
+        
+        // Start on load
+        window.onload = function() {
+            startTime = new Date();
+            loadQuestion();
+        };
+
+        // Expose to window for buttons
+        window.checkAnswer = checkAnswer;
+        window.toggleExplanation = toggleExplanation;
+        window.nextQuestion = nextQuestion;
+        window.finishQuiz = finishQuiz;
+    </script>
+</body>
+</html>
