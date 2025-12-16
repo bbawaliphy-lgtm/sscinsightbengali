@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test 02 - SSC INSIGHT BENGALI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        body {
+            font-family: 'Poppins', 'Noto Sans Bengali', sans-serif;
+            background: #020617;
+            color: #e2e8f0;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        /* Essential Styles */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        .bengali-text { font-family: 'Noto Sans Bengali', sans-serif; }
+        .fade-in { animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar-track { background: rgba(30, 41, 59, 0.5); border-radius: 10px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #475569; border-radius: 10px; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+
+    <!-- Header for Context -->
+    <header class="fixed top-0 left-0 right-0 p-4 flex justify-between items-center z-50 bg-slate-900/50 backdrop-blur">
+         <div class="flex items-center text-slate-300">
+             <i class="fas fa-arrow-left mr-2 cursor-pointer hover:text-white" onclick="history.back()"></i>
+             <span class="font-bold">Test 02: Syno/Anto (Mixed B-Z)</span>
+         </div>
+         <div class="w-1/3 max-w-xs bg-slate-800 h-2 rounded-full overflow-hidden">
+             <div id="progress-bar" class="h-full bg-blue-500 transition-all duration-300" style="width: 0%"></div>
+         </div>
+    </header>
+
+    <!-- Quiz Container -->
+    <div id="quiz-container" class="max-w-3xl w-full mt-10">
+        <div class="glass-panel rounded-3xl shadow-2xl overflow-hidden fade-in border border-slate-600/50">
+            <!-- Question Header -->
+            <div class="bg-slate-900/60 px-6 py-4 border-b border-slate-700 flex justify-between items-center backdrop-blur-sm">
+                <div class="flex items-center space-x-2">
+                     <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+                     <span class="text-sm font-bold text-slate-300 tracking-wide">Question <span id="current-q-num" class="text-white text-base">1</span><span class="text-slate-500">/25</span></span>
+                </div>
+                <span id="score-display" class="text-sm font-bold text-blue-400 bg-blue-900/20 border border-blue-500/30 px-4 py-1.5 rounded-full shadow-inner">Score: 0</span>
+            </div>
+
+            <!-- Question Body -->
+            <div class="p-6 md:p-10">
+                <h3 id="question-text" class="text-xl md:text-2xl font-bold text-white mb-8 leading-relaxed drop-shadow-sm">
+                    <!-- Question goes here -->
+                </h3>
+
+                <!-- Options Grid -->
+                <div id="options-container" class="grid grid-cols-1 gap-4 mb-8">
+                    <!-- Buttons injected by JS -->
+                </div>
+
+                <!-- Feedback & Explanation Section -->
+                <div id="feedback-section" class="hidden mt-8 border-t border-slate-700/50 pt-8 animation-fade-in">
+                    <!-- Correct/Wrong Message -->
+                    <div id="feedback-message" class="flex items-center mb-6 p-4 rounded-xl border">
+                        <!-- Injected by JS -->
+                    </div>
+
+                    <!-- Toggle Explanation Button -->
+                    <button id="toggle-explanation-btn" onclick="toggleExplanation()" class="group text-blue-400 hover:text-blue-300 font-semibold text-sm flex items-center mb-4 focus:outline-none transition-colors">
+                        <span class="bg-blue-500/10 p-2 rounded-lg mr-3 group-hover:bg-blue-500/20 transition-colors"><i class="fas fa-lightbulb"></i></span>
+                        <span class="underline decoration-blue-500/30 underline-offset-4 group-hover:decoration-blue-500">See Detailed Solution</span>
+                    </button>
+
+                    <!-- Detailed Explanation Content -->
+                    <div id="explanation-content" class="hidden bg-slate-900/60 p-6 rounded-2xl border border-slate-700/50 text-slate-300 custom-scroll max-h-96 overflow-y-auto shadow-inner leading-relaxed">
+                        <!-- Explanation injected by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Navigation -->
+            <div class="bg-slate-900/40 px-6 py-5 border-t border-slate-700/50 flex justify-end">
+                <button id="next-btn" onclick="nextQuestion()" class="hidden bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-8 rounded-xl shadow-lg shadow-blue-900/20 transition-all transform hover:-translate-y-0.5 flex items-center">
+                    Next Question <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+                <button id="finish-btn" onclick="finishQuiz()" class="hidden bg-yellow-600 hover:bg-yellow-500 text-white font-bold py-3 px-8 rounded-xl shadow-lg shadow-yellow-900/20 transition-all transform hover:-translate-y-0.5 flex items-center">
+                    Finish Test <i class="fas fa-flag-checkered ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Test Data (Test 02 from Index Ver8)
+        const questionsTest02 = [
+            {q: "Select the synonym of BELLIGERENT.", options: ["Hostile", "Peaceful", "Lazy", "Weak"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Belligerent' means hostile and aggressive. It is often used to describe someone eager to fight.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Belligerent' মানে যুদ্ধংদেহী, মারমুখো বা ঝগড়াটে।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Peaceful (শান্তিপুর্ণ), Lazy (অলস), Weak (দুর্বল)।</p></div>`},
+            {q: "What is the meaning of BENEVOLENT?", options: ["Cruel", "Greedy", "Careless", "Kind and charitable"], correct: 3, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Benevolent' means well meaning and kindly; charitable.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Benevolent' মানে দয়ালু বা হিতৈষী।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Cruel (নিষ্ঠুর - Antonym), Greedy (লোভী), Careless (অযত্নশীল)।</p></div>`},
+            {q: "Select the word that means 'Frank and outspoken'.", options: ["Secretive", "Shy", "Candid", "Cunning"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Candid' means truthful and straightforward; frank.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Candid' মানে স্পষ্টবাদী বা অকপট।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Secretive (গোপনপ্রিয়), Shy (লাজুক), Cunning (ধূর্ত)।</p></div>`},
+            {q: "Choose the antonym for DILIGENT.", options: ["Hardworking", "Active", "Careful", "Lazy"], correct: 3, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Diligent' means having or showing care and conscientiousness in one's work or duties. 'Lazy' is the opposite.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Diligent' মানে পরিশ্রমী বা অধ্যবসায়ী। 'Lazy' মানে অলস, যা এর বিপরীত।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Hardworking (পরিশ্রমী - Synonym), Active (সক্রিয়), Careful (সতর্ক)।</p></div>`},
+            {q: "What does ELUSIVE mean?", options: ["Difficult to find or catch", "Easy to find", "Very heavy", "Bright and colorful"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Elusive' means difficult to find, catch, or achieve.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Elusive' মানে অধরা বা পলায়নপর, যা সহজে ধরা দেয় না।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Easy to find (সহজে পাওয়া যায়), Heavy (ভারী), Bright (উজ্জ্বল)।</p></div>`},
+            {q: "A person who is GREGARIOUS is:", options: ["Lonely", "Rude", "Sociable and likes groups", "Fearful"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Gregarious' describes a person who enjoys the company of others; sociable.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Gregarious' মানে মিশুকে বা যারা দলবদ্ধ হয়ে থাকতে ভালোবাসে।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Lonely (একাকী), Rude (অভদ্র), Fearful (ভীত)।</p></div>`},
+            {q: "Select the synonym for HAUGHTY.", options: ["Humble", "Scared", "Polite", "Arrogant"], correct: 3, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Haughty' means arrogantly superior and disdainful.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Haughty' মানে উদ্ধত বা অহংকারী।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Humble (বিনয়ী - Antonym), Scared (ভীত), Polite (ভদ্র)।</p></div>`},
+            {q: "If something is IMPECCABLE, it is:", options: ["Full of mistakes", "Broken", "Flawless or perfect", "Dirty"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Impeccable' means accordance with the highest standards; faultless.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Impeccable' মানে নিখুঁত বা দোষহীন।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Full of mistakes (ভুলে ভরা), Broken (ভাঙা), Dirty (নোংরা)।</p></div>`},
+            {q: "What is the meaning of JUVENILE?", options: ["Wise", "Young or childish", "Old", "Sick"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Juvenile' refers to young people or birds; childish or immature.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Juvenile' মানে কিশোর বা অপরিণত।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Wise (জ্ঞানী), Old (বৃদ্ধ), Sick (অসুস্থ)।</p></div>`},
+            {q: "Someone who is KEEN shows:", options: ["Indifference", "Stupidity", "Laziness", "Eagerness or sharpness"], correct: 3, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Keen' means having or showing eagerness or enthusiasm; sharp.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Keen' মানে প্রবল আগ্রহী বা তীক্ষ্ণ।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Indifference (উদাসীনতা), Stupidity (বোকামি), Laziness (অলসতা)।</p></div>`},
+            {q: "Select the synonym for LUCID.", options: ["Confusing", "Dark", "Clear", "Crazy"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Lucid' means expressed clearly; easy to understand.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Lucid' মানে সহজবোধ্য বা স্বচ্ছ।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Confusing (বিভ্রান্তিকর - Antonym), Dark (অন্ধকার), Crazy (পাগল)।</p></div>`},
+            {q: "A METICULOUS person is:", options: ["Careless", "Messy", "Rude", "Very careful and precise"], correct: 3, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Meticulous' means showing great attention to detail; very careful and precise.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Meticulous' মানে অতি সতর্ক বা খুঁতখুঁতে।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Careless (অযত্নশীল), Messy (অগোছালো), Rude (অভদ্র)।</p></div>`},
+            {q: "What is a NOVICE?", options: ["A beginner", "An expert", "A teacher", "A rich person"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">A 'Novice' is a person new to or inexperienced in a field or situation.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Novice' মানে শিক্ষানবিস বা অনভিজ্ঞ ব্যক্তি।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: An expert (বিশেষজ্ঞ - Antonym), A teacher (শিক্ষক), A rich person (ধনী ব্যক্তি)।</p></div>`},
+            {q: "Something that is OBSOLETE is:", options: ["Modern", "Popular", "Outdated or no longer used", "New"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Obsolete' means no longer produced or used; out of date.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Obsolete' মানে সেকেলে বা অপ্রচলিত।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Modern (আধুনিক), Popular (জনপ্রিয়), New (নতুন)।</p></div>`},
+            {q: "Select the synonym for PRUDENT.", options: ["Wise", "Foolish", "Fast", "Angry"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Prudent' means acting with or showing care and thought for the future; wise.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Prudent' মানে বিচক্ষণ বা দূরদর্শী।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Foolish (বোকা - Antonym), Fast (দ্রুত), Angry (রাগান্বিত)।</p></div>`},
+            {q: "To QUELL something means to:", options: ["Start it", "Increase it", "Watch it", "Suppress or put an end to it"], correct: 3, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Quell' means to put an end to (a rebellion or other disorder), typically by the use of force; to silence.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Quell' মানে দমন করা বা শান্ত করা।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Start it (শুরু করা), Increase it (বাড়ানো), Watch it (লক্ষ করা)।</p></div>`},
+            {q: "Which word best describes someone who is FRUGAL?", options: ["Spends money freely", "Very poor", "Economical and thrifty", "Dishonest"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Frugal' means sparing or economical with regard to money or food.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Frugal' মানে মিতব্যয়ী বা হিসেবী।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Spends money freely (বাজে খরচ করা - Antonym), Very poor (খুব গরিব), Dishonest (অসৎ)।</p></div>`},
+            {q: "If a person is ROBUST, they are:", options: ["Weak and sickly", "Small", "Scared", "Strong and healthy"], correct: 3, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Robust' means strong and healthy; vigorous.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Robust' মানে বলিষ্ঠ বা শক্তপোক্ত।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Weak and sickly (দুর্বল ও অসুস্থ), Small (ছোট), Scared (ভীত)।</p></div>`},
+            {q: "SPORADIC means:", options: ["Continuous", "Permanent", "Occasional or scattered", "Heavy"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Sporadic' means occurring at irregular intervals or only in a few places; scattered or isolated.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Sporadic' মানে বিক্ষিপ্ত বা অনিয়মিত।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Continuous (ধারাবাহিক - Antonym), Permanent (স্থায়ী), Heavy (ভারী)।</p></div>`},
+            {q: "Select the antonym for TRANSIENT.", options: ["Permanent", "Temporary", "Short-lived", "Fleeting"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Transient' means lasting only for a short time; impermanent. 'Permanent' is the opposite.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Transient' মানে ক্ষণস্থায়ী। 'Permanent' মানে স্থায়ী, যা এর বিপরীত।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Temporary (অস্থায়ী - Synonym), Short-lived (স্বল্পস্থায়ী), Fleeting (দ্রুত পলায়নপর)।</p></div>`},
+            {q: "What does UPROAR mean?", options: ["Silence", "A public expression of protest or outrage", "A type of bird", "Peaceful agreement"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Uproar' refers to a loud and impassioned noise or disturbance; a public expression of protest.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Uproar' মানে হট্টগোল, কলরোল বা গণঅসন্তোষ।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Silence (নিস্তব্ধতা), A type of bird (একধরণের পাখি), Peaceful agreement (শান্তিপূর্ণ চুক্তি)।</p></div>`},
+            {q: "A VIGILANT person is:", options: ["Careless", "Sleepy", "Watchful and alert", "Lazy"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Vigilant' means keeping careful watch for possible danger or difficulties.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Vigilant' মানে সতর্ক বা পাহারারত।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Careless (অসাবধান), Sleepy (ঘুমন্ত), Lazy (অলস)।</p></div>`},
+            {q: "To WAIVE a right means to:", options: ["Claim it", "Fight for it", "Sell it", "Refrain from insisting on or using it"], correct: 3, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Waive' means to refrain from insisting on or using (a right or claim).</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Waive' মানে কোনো অধিকার পরিত্যাগ করা বা মওকুফ করা।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Claim it (দাবি করা), Fight for it (লড়াই করা), Sell it (বিক্রি করা)।</p></div>`},
+            {q: "Which word is a synonym for YIELD?", options: ["Resist", "Attack", "Surrender", "Hide"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Yield' means to give way to arguments, demands, or pressure; surrender.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Yield' মানে নতি স্বীকার করা বা বশ্যতা মেনে নেওয়া।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Resist (প্রতিরোধ করা - Antonym), Attack (আক্রমণ করা), Hide (লুকানো)।</p></div>`},
+            {q: "What is the ZENITH?", options: ["The lowest point", "The middle", "The end", "The time at which something is most powerful or successful"], correct: 3, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Zenith' is the time at which something is most powerful or successful; the highest point.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Zenith' মানে সুউচ্চ শিখর বা উন্নতির চরম সীমা।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: The lowest point (সর্বনিম্ন বিন্দু - Nadir), The middle (মাঝামাঝি), The end (সমাপ্তি)।</p></div>`}
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let answered = false;
+        let startTime;
+
+        // Elements
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const currentQNum = document.getElementById('current-q-num');
+        const scoreDisplay = document.getElementById('score-display');
+        const progressBar = document.getElementById('progress-bar');
+        const feedbackSection = document.getElementById('feedback-section');
+        const feedbackMessage = document.getElementById('feedback-message');
+        const explanationContent = document.getElementById('explanation-content');
+        const toggleExplanationBtn = document.getElementById('toggle-explanation-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const finishBtn = document.getElementById('finish-btn');
+
+        // Functions
+        function loadQuestion() {
+            const q = questionsTest02[currentQuestion];
+            answered = false;
+            
+            // Update UI
+            currentQNum.innerText = currentQuestion + 1;
+            questionText.innerText = q.q;
+            scoreDisplay.innerText = `Score: ${score}`;
+            
+            // Update Progress Bar
+            const progress = ((currentQuestion) / questionsTest02.length) * 100;
+            progressBar.style.width = `${progress}%`;
+
+            // Reset Feedback
+            feedbackSection.classList.add('hidden');
+            explanationContent.classList.add('hidden');
+            explanationContent.innerHTML = q.explanation;
+            toggleExplanationBtn.innerHTML = '<span class="bg-blue-500/10 p-2 rounded-lg mr-3"><i class="fas fa-lightbulb"></i></span><span class="underline decoration-blue-500/30 underline-offset-4">See Detailed Solution</span>';
+            nextBtn.classList.add('hidden');
+            finishBtn.classList.add('hidden');
+
+            // Render Options
+            optionsContainer.innerHTML = '';
+            q.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-5 rounded-xl border border-slate-700/50 bg-slate-800/40 hover:bg-slate-700/60 hover:border-blue-500/50 transition-all duration-200 font-medium text-slate-300 flex justify-between items-center group backdrop-blur-sm";
+                btn.innerHTML = `<span class="flex items-center"><span class="w-8 h-8 rounded-full bg-slate-700 text-slate-400 flex items-center justify-center font-bold mr-4 group-hover:bg-blue-500 group-hover:text-slate-900 transition-colors text-sm">${String.fromCharCode(65 + index)}</span> ${opt}</span>`;
+                btn.onclick = () => checkAnswer(index, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selectedIndex, selectedBtn) {
+            if (answered) return;
+            answered = true;
+            
+            const q = questionsTest02[currentQuestion];
+            const allBtns = optionsContainer.children;
+            
+            if (selectedIndex === q.correct) {
+                score++;
+                selectedBtn.className = "w-full text-left p-5 rounded-xl border border-green-500 bg-green-500/10 flex justify-between items-center transition-all shadow-[0_0_15px_rgba(34,197,94,0.2)]";
+                selectedBtn.innerHTML = `<span class="flex items-center text-white font-bold"><span class="w-8 h-8 rounded-full bg-green-500 text-slate-900 flex items-center justify-center font-bold mr-4 text-sm">${String.fromCharCode(65 + selectedIndex)}</span> ${q.options[selectedIndex]}</span><i class="fas fa-check-circle text-green-400 text-2xl drop-shadow-lg"></i>`;
+                
+                feedbackMessage.className = "flex items-center mb-6 p-4 rounded-xl bg-green-900/20 border border-green-500/30 text-green-300";
+                feedbackMessage.innerHTML = '<div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center mr-4"><i class="fas fa-check text-green-400"></i></div> <span class="font-bold">Correct Answer! Well done.</span>';
+            } else {
+                selectedBtn.className = "w-full text-left p-5 rounded-xl border border-red-500 bg-red-500/10 flex justify-between items-center transition-all";
+                selectedBtn.innerHTML = `<span class="flex items-center text-red-100"><span class="w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center font-bold mr-4 text-sm">${String.fromCharCode(65 + selectedIndex)}</span> ${q.options[selectedIndex]}</span><i class="fas fa-times-circle text-red-400 text-2xl"></i>`;
+                
+                const correctBtn = allBtns[q.correct];
+                correctBtn.className = "w-full text-left p-5 rounded-xl border border-green-500 bg-green-500/10 flex justify-between items-center transition-all shadow-[0_0_15px_rgba(34,197,94,0.2)] opacity-100";
+                correctBtn.innerHTML = `<span class="flex items-center text-white font-bold"><span class="w-8 h-8 rounded-full bg-green-500 text-slate-900 flex items-center justify-center font-bold mr-4 text-sm">${String.fromCharCode(65 + q.correct)}</span> ${q.options[q.correct]}</span><i class="fas fa-check-circle text-green-400 text-2xl"></i>`;
+
+                feedbackMessage.className = "flex items-center mb-6 p-4 rounded-xl bg-red-900/20 border border-red-500/30 text-red-300";
+                feedbackMessage.innerHTML = `<div class="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center mr-4"><i class="fas fa-times text-red-400"></i></div> <span>Incorrect. The correct answer is <span class="font-bold text-green-400 border-b border-green-400/30 pb-0.5">${String.fromCharCode(65 + q.correct)}</span></span>`;
+            }
+
+            for (let btn of allBtns) {
+                btn.disabled = true;
+                if (!btn.className.includes('green') && !btn.className.includes('red')) {
+                     btn.classList.add('opacity-50', 'cursor-not-allowed');
+                     btn.classList.remove('hover:bg-slate-700/60', 'hover:border-blue-500/50');
+                }
+            }
+
+            feedbackSection.classList.remove('hidden');
+            scoreDisplay.innerText = `Score: ${score}`;
+
+            if (currentQuestion < questionsTest02.length - 1) {
+                nextBtn.classList.remove('hidden');
+            } else {
+                finishBtn.classList.remove('hidden');
+            }
+        }
+
+        function toggleExplanation() {
+            if (explanationContent.classList.contains('hidden')) {
+                explanationContent.classList.remove('hidden');
+                explanationContent.classList.add('fade-in');
+                toggleExplanationBtn.innerHTML = '<span class="bg-blue-500/10 p-2 rounded-lg mr-3"><i class="fas fa-eye-slash"></i></span><span class="underline decoration-blue-500/30 underline-offset-4">Hide Solution</span>';
+            } else {
+                explanationContent.classList.add('hidden');
+                toggleExplanationBtn.innerHTML = '<span class="bg-blue-500/10 p-2 rounded-lg mr-3"><i class="fas fa-lightbulb"></i></span><span class="underline decoration-blue-500/30 underline-offset-4">See Detailed Solution</span>';
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            loadQuestion();
+        }
+
+        function finishQuiz() {
+            const endTime = new Date();
+            const timeDiff = Math.floor((endTime - startTime) / 1000); // seconds
+            const minutes = Math.floor(timeDiff / 60);
+            const seconds = timeDiff % 60;
+            const timeString = `${minutes}m ${seconds}s`;
+            
+            // Calc stats
+            const total = questionsTest02.length;
+            const accuracy = Math.round((score / total) * 100);
+            const wrongAnswers = total - score;
+            const sscScore = (score * 2) - (wrongAnswers * 0.5);
+            
+            // Get user name from URL params to pass it back
+            const urlParams = new URLSearchParams(window.location.search);
+            const name = urlParams.get('name') || "Student";
+
+            // Redirect to Master Index with results (Action = result)
+            // Note: testId is set to test2
+            const redirectUrl = `index.html?action=result&score=${score}&total=${total}&accuracy=${accuracy}&time=${encodeURIComponent(timeString)}&sscScore=${sscScore}&name=${encodeURIComponent(name)}&testId=test2`;
+            
+            window.location.href = redirectUrl;
+        }
+        
+        // Start on load
+        window.onload = function() {
+            startTime = new Date();
+            loadQuestion();
+        };
+
+        // Expose to window for buttons
+        window.checkAnswer = checkAnswer;
+        window.toggleExplanation = toggleExplanation;
+        window.nextQuestion = nextQuestion;
+        window.finishQuiz = finishQuiz;
+    </script>
+</body>
+</html>

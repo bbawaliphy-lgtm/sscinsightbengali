@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test 03 - SSC INSIGHT BENGALI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        body {
+            font-family: 'Poppins', 'Noto Sans Bengali', sans-serif;
+            background: #020617;
+            color: #e2e8f0;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        /* Essential Styles */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        .bengali-text { font-family: 'Noto Sans Bengali', sans-serif; }
+        .fade-in { animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar-track { background: rgba(30, 41, 59, 0.5); border-radius: 10px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #475569; border-radius: 10px; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+
+    <!-- Header for Context -->
+    <header class="fixed top-0 left-0 right-0 p-4 flex justify-between items-center z-50 bg-slate-900/50 backdrop-blur">
+         <div class="flex items-center text-slate-300">
+             <i class="fas fa-arrow-left mr-2 cursor-pointer hover:text-white" onclick="history.back()"></i>
+             <span class="font-bold">Test 03: One Word Substitution</span>
+         </div>
+         <div class="w-1/3 max-w-xs bg-slate-800 h-2 rounded-full overflow-hidden">
+             <div id="progress-bar" class="h-full bg-purple-500 transition-all duration-300" style="width: 0%"></div>
+         </div>
+    </header>
+
+    <!-- Quiz Container -->
+    <div id="quiz-container" class="max-w-3xl w-full mt-10">
+        <div class="glass-panel rounded-3xl shadow-2xl overflow-hidden fade-in border border-slate-600/50">
+            <!-- Question Header -->
+            <div class="bg-slate-900/60 px-6 py-4 border-b border-slate-700 flex justify-between items-center backdrop-blur-sm">
+                <div class="flex items-center space-x-2">
+                     <span class="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></span>
+                     <span class="text-sm font-bold text-slate-300 tracking-wide">Question <span id="current-q-num" class="text-white text-base">1</span><span class="text-slate-500">/25</span></span>
+                </div>
+                <span id="score-display" class="text-sm font-bold text-purple-400 bg-purple-900/20 border border-purple-500/30 px-4 py-1.5 rounded-full shadow-inner">Score: 0</span>
+            </div>
+
+            <!-- Question Body -->
+            <div class="p-6 md:p-10">
+                <h3 id="question-text" class="text-xl md:text-2xl font-bold text-white mb-8 leading-relaxed drop-shadow-sm">
+                    <!-- Question goes here -->
+                </h3>
+
+                <!-- Options Grid -->
+                <div id="options-container" class="grid grid-cols-1 gap-4 mb-8">
+                    <!-- Buttons injected by JS -->
+                </div>
+
+                <!-- Feedback & Explanation Section -->
+                <div id="feedback-section" class="hidden mt-8 border-t border-slate-700/50 pt-8 animation-fade-in">
+                    <!-- Correct/Wrong Message -->
+                    <div id="feedback-message" class="flex items-center mb-6 p-4 rounded-xl border">
+                        <!-- Injected by JS -->
+                    </div>
+
+                    <!-- Toggle Explanation Button -->
+                    <button id="toggle-explanation-btn" onclick="toggleExplanation()" class="group text-purple-400 hover:text-purple-300 font-semibold text-sm flex items-center mb-4 focus:outline-none transition-colors">
+                        <span class="bg-purple-500/10 p-2 rounded-lg mr-3 group-hover:bg-purple-500/20 transition-colors"><i class="fas fa-lightbulb"></i></span>
+                        <span class="underline decoration-purple-500/30 underline-offset-4 group-hover:decoration-purple-500">See Detailed Solution</span>
+                    </button>
+
+                    <!-- Detailed Explanation Content -->
+                    <div id="explanation-content" class="hidden bg-slate-900/60 p-6 rounded-2xl border border-slate-700/50 text-slate-300 custom-scroll max-h-96 overflow-y-auto shadow-inner leading-relaxed">
+                        <!-- Explanation injected by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Navigation -->
+            <div class="bg-slate-900/40 px-6 py-5 border-t border-slate-700/50 flex justify-end">
+                <button id="next-btn" onclick="nextQuestion()" class="hidden bg-purple-600 hover:bg-purple-500 text-white font-bold py-3 px-8 rounded-xl shadow-lg shadow-purple-900/20 transition-all transform hover:-translate-y-0.5 flex items-center">
+                    Next Question <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+                <button id="finish-btn" onclick="finishQuiz()" class="hidden bg-yellow-600 hover:bg-yellow-500 text-white font-bold py-3 px-8 rounded-xl shadow-lg shadow-yellow-900/20 transition-all transform hover:-translate-y-0.5 flex items-center">
+                    Finish Test <i class="fas fa-flag-checkered ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Test Data (Test 03 - One Word Substitution)
+        const questionsTest03 = [
+            {q: "One who cannot be corrected or reformed", options: ["Incurable", "Incorrigible", "Hardened", "Invulnerable"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-purple-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Incorrigible' refers to a person or habit that is not able to be corrected, improved, or reformed.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Incorrigible' (সংশোধাতীত) মানে যাকে সংশোধন করা যায় না।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Incurable (আরোগ্যহীন), Invulnerable (অজেয়)।</p></div>`},
+            {q: "A place where bees are kept", options: ["Aviary", "Apiary", "Zoo", "Aquarium"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-purple-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">An 'Apiary' is a place where bees are kept; a collection of beehives.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Apiary' হলো মধুমক্ষিশালা বা যেখানে মৌমাছি পালন করা হয়।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Confusion Alert: 'Aviary' is where birds (পক্ষিশালা) are kept.</p></div>`},
+            {q: "A person who does not believe in the existence of God", options: ["Theist", "Heretic", "Atheist", "Fanatic"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-purple-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">An 'Atheist' is a person who disbelieves or lacks belief in the existence of God or gods.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Atheist' মানে নাস্তিক।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Theist (আস্তিক), Heretic (প্রচলিত ধর্মে অবিশ্বাসী)।</p></div>`},
+            {q: "One who can use both hands with equal ease", options: ["Ambivalent", "Amateur", "Ambidextrous", "Ambiguous"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-purple-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Ambidextrous' describes a person who is able to use the right and left hands equally well.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Ambidextrous' মানে সব্যসাচী (যিনি দুই হাত সমান দক্ষতায় ব্যবহার করতে পারেন)।</p></div></div>`},
+            {q: "A speech delivered without previous preparation", options: ["Dialogue", "Extempore", "Elocution", "Debate"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-purple-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Extempore' (or Impromptu) is a speech spoken or done without preparation.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Extempore' মানে উপস্থিত বক্তৃতা বা পূর্বপ্রস্তুতিহীন ভাষণ।</p></div></div>`},
+            {q: "One who knows everything", options: ["Omnipresent", "Omnipotent", "Omniscient", "Omnivorous"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-purple-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Omniscient' means knowing everything.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Omniscient' মানে সর্বজ্ঞ (যিনি সবকিছু জানেন)।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Omnipresent (সর্ববিরাজমান), Omnipotent (সর্বশক্তিমান)।</p></div>`},
+            {q: "A remedy for all diseases", options: ["Antiseptic", "Antibiotic", "Narcotics", "Panacea"], correct: 3, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-purple-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">A 'Panacea' is a solution or remedy for all difficulties or diseases.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Panacea' মানে সর্বরোগহর ওষুধ।</p></div></div>`},
+            {q: "One who looks at the bright side of things", options: ["Pessimist", "Optimist", "Pacifist", "Humanist"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-purple-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">An 'Optimist' is a person who tends to be hopeful and confident about the future or the success of something.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Optimist' মানে আশাবাদী। 'Pessimist' (নিরাশাবাদী) হলো এর বিপরীত।</p></div></div>`},
+            {q: "A life history of a person written by himself", options: ["Biography", "Autobiography", "Memoir", "Travelogue"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-purple-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">An 'Autobiography' is an account of a person's life written by that person.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Autobiography' মানে আত্মজীবনী। 'Biography' হলো জীবনী (অন্যের দ্বারা লিখিত)।</p></div></div>`},
+            {q: "That which cannot be read", options: ["Illegible", "Ineligible", "Incorrigible", "Negligible"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-purple-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Illegible' means not clear enough to be read.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Illegible' মানে অস্পষ্ট বা যা পড়া যায় না।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Note: 'Ineligible' means not qualified (অযোগ্য)।</p></div>`},
+            {q: "A person who eats too much", options: ["Glutton", "Reveller", "Omnivore", "Cannibal"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-purple-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">A 'Glutton' is an excessively greedy eater.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Glutton' মানে পেটুক।</p></div></div>`},
+            {q: "The killing of a King", options: ["Homicide", "Regicide", "Patricide", "Suicide"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-purple-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Regicide' is the action of killing a king.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Regicide' মানে রাজহত্যা।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Root word 'Cide' means killing. Pater (Father) + Cide = Patricide.</p></div>`},
+            {q: "A person who helps others, especially those in distress", options: ["Samaritan", "Mercenary", "Stoic", "Cynic"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-purple-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">A 'Samaritan' is a charitable or helpful person.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Samaritan' মানে পরোপকারী ব্যক্তি।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Mercenary (ভাড়াটে সৈন্য/টাকার জন্য কাজ করে), Cynic (সন্দেহবাদী)।</p></div>`},
+            {q: "Fear of closed or small spaces", options: ["Acrophobia", "Claustrophobia", "Hydrophobia", "Xenophobia"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-purple-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Claustrophobia' is the extreme or irrational fear of confined places.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Claustrophobia' মানে বদ্ধ স্থানের ভীতি।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Acrophobia (উচ্চতা ভীতি), Hydrophobia (জলাতঙ্ক)।</p></div>`},
+            {q: "One who is unable to pay his debts", options: ["Debtor", "Indebted", "Insolvent", "Borrower"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-purple-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Insolvent' (or Bankrupt) is a person unable to pay owed debts.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Insolvent' মানে দেউলিয়া।</p></div></div>`},
+            {q: "A person who loves books", options: ["Bibliophile", "Bibliophobe", "Scholar", "Reader"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-purple-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">A 'Bibliophile' is a person who collects or has a great love of books.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Bibliophile' মানে পুস্তকপ্রেমী বা গ্রন্থকীট।</p></div></div>`},
+            {q: "Government by the people", options: ["Autocracy", "Aristocracy", "Democracy", "Plutocracy"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-purple-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Democracy' is a system of government by the whole population or all the eligible members of a state.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Democracy' মানে গণতন্ত্র।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Autocracy (স্বৈরতন্ত্র), Aristocracy (অভিজাততন্ত্র), Plutocracy (ধনিকতন্ত্র)।</p></div>`},
+            {q: "Study of ancient things like tombs, buried towns", options: ["Paleontology", "Archaeology", "History", "Geology"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-purple-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Archaeology' is the study of human history and prehistory through the excavation of sites and the analysis of artifacts.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Archaeology' মানে প্রত্নতত্ত্ব।</p></div></div>`},
+            {q: "A person who withdraws from the world to live in seclusion and often in solitude", options: ["Iconoclast", "Sage", "Recluse", "Priest"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-purple-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">A 'Recluse' is a person who lives a solitary life and tends to avoid other people.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Recluse' মানে সন্ন্যাসী বা নির্জনবাসী।</p></div></div>`},
+            {q: "A decision upon which one cannot go back", options: ["Irrevocable", "Incredible", "Infallible", "Inevitable"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-purple-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Irrevocable' means not able to be changed, reversed, or recovered; final.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Irrevocable' মানে অপরিবর্তনীয় বা অনড়।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Infallible (অব্যর্থ/নির্ভুল), Inevitable (অনিবার্য)।</p></div>`},
+            {q: "One who is indifferent to pleasure or pain", options: ["Stoic", "Anarchist", "Mystic", "Hysteric"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-purple-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">A 'Stoic' is a person who can endure pain or hardship without showing their feelings or complaining.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Stoic' মানে সুখ-দুঃখে নির্বিকার ব্যক্তি।</p></div></div>`},
+            {q: "A large enclosure for keeping birds", options: ["Zoo", "Aquarium", "Aviary", "Apiary"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-purple-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">An 'Aviary' is a large cage, building, or enclosure for keeping birds in.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Aviary' মানে পক্ষিশালা।</p></div></div>`},
+            {q: "A person who hates women", options: ["Philogynist", "Misogynist", "Misanthrope", "Feminist"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-purple-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">A 'Misogynist' is a person who dislikes, despises, or is strongly prejudiced against women.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Misogynist' মানে নারীবিদ্বেষী।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Root 'Miso' = Hate, 'Gyn' = Woman.</p></div>`},
+            {q: "The study of maps", options: ["Cartography", "Geography", "Geology", "Atlas"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-purple-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Cartography' is the science or practice of drawing maps.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Cartography' মানে মানচিত্র নির্মাণ বিদ্যা।</p></div></div>`},
+            {q: "Murder of a brother", options: ["Patricide", "Fratricide", "Homicide", "Parricide"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-purple-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Fratricide' is the killing of one's brother or sister.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Fratricide' মানে ভ্রাতৃহত্যা।</p></div></div>`}
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let answered = false;
+        let startTime;
+
+        // Elements
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const currentQNum = document.getElementById('current-q-num');
+        const scoreDisplay = document.getElementById('score-display');
+        const progressBar = document.getElementById('progress-bar');
+        const feedbackSection = document.getElementById('feedback-section');
+        const feedbackMessage = document.getElementById('feedback-message');
+        const explanationContent = document.getElementById('explanation-content');
+        const toggleExplanationBtn = document.getElementById('toggle-explanation-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const finishBtn = document.getElementById('finish-btn');
+
+        // Functions
+        function loadQuestion() {
+            const q = questionsTest03[currentQuestion];
+            answered = false;
+            
+            // Update UI
+            currentQNum.innerText = currentQuestion + 1;
+            questionText.innerText = q.q;
+            scoreDisplay.innerText = `Score: ${score}`;
+            
+            // Update Progress Bar
+            const progress = ((currentQuestion) / questionsTest03.length) * 100;
+            progressBar.style.width = `${progress}%`;
+
+            // Reset Feedback
+            feedbackSection.classList.add('hidden');
+            explanationContent.classList.add('hidden');
+            explanationContent.innerHTML = q.explanation;
+            toggleExplanationBtn.innerHTML = '<span class="bg-purple-500/10 p-2 rounded-lg mr-3"><i class="fas fa-lightbulb"></i></span><span class="underline decoration-purple-500/30 underline-offset-4">See Detailed Solution</span>';
+            nextBtn.classList.add('hidden');
+            finishBtn.classList.add('hidden');
+
+            // Render Options
+            optionsContainer.innerHTML = '';
+            q.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-5 rounded-xl border border-slate-700/50 bg-slate-800/40 hover:bg-slate-700/60 hover:border-purple-500/50 transition-all duration-200 font-medium text-slate-300 flex justify-between items-center group backdrop-blur-sm";
+                btn.innerHTML = `<span class="flex items-center"><span class="w-8 h-8 rounded-full bg-slate-700 text-slate-400 flex items-center justify-center font-bold mr-4 group-hover:bg-purple-500 group-hover:text-slate-900 transition-colors text-sm">${String.fromCharCode(65 + index)}</span> ${opt}</span>`;
+                btn.onclick = () => checkAnswer(index, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selectedIndex, selectedBtn) {
+            if (answered) return;
+            answered = true;
+            
+            const q = questionsTest03[currentQuestion];
+            const allBtns = optionsContainer.children;
+            
+            if (selectedIndex === q.correct) {
+                score++;
+                selectedBtn.className = "w-full text-left p-5 rounded-xl border border-green-500 bg-green-500/10 flex justify-between items-center transition-all shadow-[0_0_15px_rgba(34,197,94,0.2)]";
+                selectedBtn.innerHTML = `<span class="flex items-center text-white font-bold"><span class="w-8 h-8 rounded-full bg-green-500 text-slate-900 flex items-center justify-center font-bold mr-4 text-sm">${String.fromCharCode(65 + selectedIndex)}</span> ${q.options[selectedIndex]}</span><i class="fas fa-check-circle text-green-400 text-2xl drop-shadow-lg"></i>`;
+                
+                feedbackMessage.className = "flex items-center mb-6 p-4 rounded-xl bg-green-900/20 border border-green-500/30 text-green-300";
+                feedbackMessage.innerHTML = '<div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center mr-4"><i class="fas fa-check text-green-400"></i></div> <span class="font-bold">Correct Answer! Well done.</span>';
+            } else {
+                selectedBtn.className = "w-full text-left p-5 rounded-xl border border-red-500 bg-red-500/10 flex justify-between items-center transition-all";
+                selectedBtn.innerHTML = `<span class="flex items-center text-red-100"><span class="w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center font-bold mr-4 text-sm">${String.fromCharCode(65 + selectedIndex)}</span> ${q.options[selectedIndex]}</span><i class="fas fa-times-circle text-red-400 text-2xl"></i>`;
+                
+                const correctBtn = allBtns[q.correct];
+                correctBtn.className = "w-full text-left p-5 rounded-xl border border-green-500 bg-green-500/10 flex justify-between items-center transition-all shadow-[0_0_15px_rgba(34,197,94,0.2)] opacity-100";
+                correctBtn.innerHTML = `<span class="flex items-center text-white font-bold"><span class="w-8 h-8 rounded-full bg-green-500 text-slate-900 flex items-center justify-center font-bold mr-4 text-sm">${String.fromCharCode(65 + q.correct)}</span> ${q.options[q.correct]}</span><i class="fas fa-check-circle text-green-400 text-2xl"></i>`;
+
+                feedbackMessage.className = "flex items-center mb-6 p-4 rounded-xl bg-red-900/20 border border-red-500/30 text-red-300";
+                feedbackMessage.innerHTML = `<div class="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center mr-4"><i class="fas fa-times text-red-400"></i></div> <span>Incorrect. The correct answer is <span class="font-bold text-green-400 border-b border-green-400/30 pb-0.5">${String.fromCharCode(65 + q.correct)}</span></span>`;
+            }
+
+            for (let btn of allBtns) {
+                btn.disabled = true;
+                if (!btn.className.includes('green') && !btn.className.includes('red')) {
+                     btn.classList.add('opacity-50', 'cursor-not-allowed');
+                     btn.classList.remove('hover:bg-slate-700/60', 'hover:border-purple-500/50');
+                }
+            }
+
+            feedbackSection.classList.remove('hidden');
+            scoreDisplay.innerText = `Score: ${score}`;
+
+            if (currentQuestion < questionsTest03.length - 1) {
+                nextBtn.classList.remove('hidden');
+            } else {
+                finishBtn.classList.remove('hidden');
+            }
+        }
+
+        function toggleExplanation() {
+            if (explanationContent.classList.contains('hidden')) {
+                explanationContent.classList.remove('hidden');
+                explanationContent.classList.add('fade-in');
+                toggleExplanationBtn.innerHTML = '<span class="bg-purple-500/10 p-2 rounded-lg mr-3"><i class="fas fa-eye-slash"></i></span><span class="underline decoration-purple-500/30 underline-offset-4">Hide Solution</span>';
+            } else {
+                explanationContent.classList.add('hidden');
+                toggleExplanationBtn.innerHTML = '<span class="bg-purple-500/10 p-2 rounded-lg mr-3"><i class="fas fa-lightbulb"></i></span><span class="underline decoration-purple-500/30 underline-offset-4">See Detailed Solution</span>';
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            loadQuestion();
+        }
+
+        function finishQuiz() {
+            const endTime = new Date();
+            const timeDiff = Math.floor((endTime - startTime) / 1000); // seconds
+            const minutes = Math.floor(timeDiff / 60);
+            const seconds = timeDiff % 60;
+            const timeString = `${minutes}m ${seconds}s`;
+            
+            // Calc stats
+            const total = questionsTest03.length;
+            const accuracy = Math.round((score / total) * 100);
+            const wrongAnswers = total - score;
+            const sscScore = (score * 2) - (wrongAnswers * 0.5);
+            
+            // Get user name from URL params to pass it back
+            const urlParams = new URLSearchParams(window.location.search);
+            const name = urlParams.get('name') || "Student";
+
+            // Redirect to Master Index with results (Action = result)
+            // Note: testId is set to test3
+            const redirectUrl = `index.html?action=result&score=${score}&total=${total}&accuracy=${accuracy}&time=${encodeURIComponent(timeString)}&sscScore=${sscScore}&name=${encodeURIComponent(name)}&testId=test3`;
+            
+            window.location.href = redirectUrl;
+        }
+        
+        // Start on load
+        window.onload = function() {
+            startTime = new Date();
+            loadQuestion();
+        };
+
+        // Expose to window for buttons
+        window.checkAnswer = checkAnswer;
+        window.toggleExplanation = toggleExplanation;
+        window.nextQuestion = nextQuestion;
+        window.finishQuiz = finishQuiz;
+    </script>
+</body>
+</html>

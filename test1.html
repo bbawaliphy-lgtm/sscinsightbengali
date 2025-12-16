@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test 01 - SSC INSIGHT BENGALI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        body {
+            font-family: 'Poppins', 'Noto Sans Bengali', sans-serif;
+            background: #020617;
+            color: #e2e8f0;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        /* Essential Styles */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        .bengali-text { font-family: 'Noto Sans Bengali', sans-serif; }
+        .fade-in { animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar-track { background: rgba(30, 41, 59, 0.5); border-radius: 10px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #475569; border-radius: 10px; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+
+    <!-- Header for Context -->
+    <header class="fixed top-0 left-0 right-0 p-4 flex justify-between items-center z-50 bg-slate-900/50 backdrop-blur">
+         <div class="flex items-center text-slate-300">
+             <i class="fas fa-arrow-left mr-2 cursor-pointer hover:text-white" onclick="history.back()"></i>
+             <span class="font-bold">Test 01: Syno/Anto (Start with A)</span>
+         </div>
+         <div class="w-1/3 max-w-xs bg-slate-800 h-2 rounded-full overflow-hidden">
+             <div id="progress-bar" class="h-full bg-green-500 transition-all duration-300" style="width: 0%"></div>
+         </div>
+    </header>
+
+    <!-- Quiz Container -->
+    <div id="quiz-container" class="max-w-3xl w-full mt-10">
+        <div class="glass-panel rounded-3xl shadow-2xl overflow-hidden fade-in border border-slate-600/50">
+            <!-- Question Header -->
+            <div class="bg-slate-900/60 px-6 py-4 border-b border-slate-700 flex justify-between items-center backdrop-blur-sm">
+                <div class="flex items-center space-x-2">
+                     <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                     <span class="text-sm font-bold text-slate-300 tracking-wide">Question <span id="current-q-num" class="text-white text-base">1</span><span class="text-slate-500">/25</span></span>
+                </div>
+                <span id="score-display" class="text-sm font-bold text-green-400 bg-green-900/20 border border-green-500/30 px-4 py-1.5 rounded-full shadow-inner">Score: 0</span>
+            </div>
+
+            <!-- Question Body -->
+            <div class="p-6 md:p-10">
+                <h3 id="question-text" class="text-xl md:text-2xl font-bold text-white mb-8 leading-relaxed drop-shadow-sm">
+                    <!-- Question goes here -->
+                </h3>
+
+                <!-- Options Grid -->
+                <div id="options-container" class="grid grid-cols-1 gap-4 mb-8">
+                    <!-- Buttons injected by JS -->
+                </div>
+
+                <!-- Feedback & Explanation Section -->
+                <div id="feedback-section" class="hidden mt-8 border-t border-slate-700/50 pt-8 animation-fade-in">
+                    <!-- Correct/Wrong Message -->
+                    <div id="feedback-message" class="flex items-center mb-6 p-4 rounded-xl border">
+                        <!-- Injected by JS -->
+                    </div>
+
+                    <!-- Toggle Explanation Button -->
+                    <button id="toggle-explanation-btn" onclick="toggleExplanation()" class="group text-green-400 hover:text-green-300 font-semibold text-sm flex items-center mb-4 focus:outline-none transition-colors">
+                        <span class="bg-green-500/10 p-2 rounded-lg mr-3 group-hover:bg-green-500/20 transition-colors"><i class="fas fa-lightbulb"></i></span>
+                        <span class="underline decoration-green-500/30 underline-offset-4 group-hover:decoration-green-500">See Detailed Solution</span>
+                    </button>
+
+                    <!-- Detailed Explanation Content -->
+                    <div id="explanation-content" class="hidden bg-slate-900/60 p-6 rounded-2xl border border-slate-700/50 text-slate-300 custom-scroll max-h-96 overflow-y-auto shadow-inner leading-relaxed">
+                        <!-- Explanation injected by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Navigation -->
+            <div class="bg-slate-900/40 px-6 py-5 border-t border-slate-700/50 flex justify-end">
+                <button id="next-btn" onclick="nextQuestion()" class="hidden bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-8 rounded-xl shadow-lg shadow-green-900/20 transition-all transform hover:-translate-y-0.5 flex items-center">
+                    Next Question <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+                <button id="finish-btn" onclick="finishQuiz()" class="hidden bg-yellow-600 hover:bg-yellow-500 text-white font-bold py-3 px-8 rounded-xl shadow-lg shadow-yellow-900/20 transition-all transform hover:-translate-y-0.5 flex items-center">
+                    Finish Test <i class="fas fa-flag-checkered ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Test Data (Test 01)
+        const questionsTest01 = [
+            {q: "Select the synonym of the word: ABET", options: ["Prevent", "Incite", "Pacify", "Deter"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Abet' means to encourage or assist someone to do something wrong, often a crime. 'Incite' also means to encourage or stir up violent or unlawful behavior.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Abet' মানে কোনো দুষ্কর্ম বা খারাপ কাজে সাহায্য করা বা উৎসাহ দেওয়া। 'Incite' মানেও খারাপ কাজে প্ররোচিত করা বা উস্কানি দেওয়া।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Prevent (বাধা দেওয়া), Pacify (শান্ত করা), Deter (ভয় দেখিয়ে নিবৃত্ত করা)।</p></div>`},
+            {q: "What is the meaning of ABEYANCE?", options: ["Permanent closure", "Temporary suspension", "Complete obedience", "False accusation"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Abeyance' refers to a state of temporary disuse or suspension. It means something is put "on hold" for a while.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Abeyance' মানে হলো কোনো কিছু সাময়িকভাবে স্থগিত বা অকেজো থাকা। এটি স্থায়ী সমাপ্তি নয়, বরং সাময়িক বিরতি।</p></div></div>`},
+            {q: "Choose the correct antonym (opposite) for ABJURE.", options: ["Renounce", "Embrace", "Reject", "Deny"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Abjure' means to solemnly renounce or give up a belief, cause, or claim. 'Embrace' means to accept or support something willingly, making it the antonym.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Abjure' মানে শপথ করে কোনো মত বা বিশ্বাস বর্জন করা। 'Embrace' মানে কোনো কিছুকে সাদরে গ্রহণ করা, যা এর ঠিক বিপরীত।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Renounce (বর্জন করা - Synonym), Reject (প্রত্যাখ্যান করা), Deny (অস্বীকার করা)।</p></div>`},
+            {q: "Which scenario best describes the word ABSCOND?", options: ["A thief surrendering to the police.", "A student arguing with a teacher.", "An employee leaving work early with permission.", "A cashier running away secretly with stolen money."], correct: 3, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Abscond' means to leave hurriedly and secretly, typically to avoid detection of or arrest for an unlawful action such as theft.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Abscond' মানে হলো ধরা পড়ার ভয়ে বা বিচার এড়াতে গোপনে পালিয়ে যাওয়া।</p></div></div>`},
+            {q: "Select the word that means 'difficult to understand; obscure'.", options: ["Abstruse", "Affable", "Adroit", "Aghast"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Abstruse' describes something that is difficult to understand or obscure.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Abstruse' মানে দুর্বোধ্য বা যা বোঝা খুব কঠিন।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Affable (বন্ধুভাবাপন্ন), Adroit (দক্ষ), Aghast (আতঙ্কিত)।</p></div>`},
+            {q: "Someone with great ACUMEN possesses:", options: ["Physical strength", "Keen insight and good judgment", "A friendly nature", "A tendency to argue"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Acumen' is the ability to make good judgments and quick decisions, typically in a particular domain.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Acumen' মানে হলো সূক্ষ্ম বিচারশক্তি বা ধীশক্তি।</p></div></div>`},
+            {q: "What does ADMONISH mean?", options: ["To praise highly", "To warn or reprimand firmly", "To assist in a crime", "To lessen pain"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Admonish' means to warn or reprimand someone firmly for a fault or wrong.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Admonish' মানে কাউকে সতর্ক করা বা ভর্ৎসনা (বকাঝকা) করা।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: To praise highly (Accolade/Adulation), To assist in a crime (Abet), To lessen pain (Alleviate).</p></div>`},
+            {q: "Which word is a synonym for ALLEVIATE?", options: ["Aggravate", "Mitigate", "Instigate", "Abrogate"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Alleviate' means to make suffering, deficiency, or a problem less severe. 'Mitigate' has a very similar meaning (to make less severe).</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Alleviate' মানে উপশম করা বা কমানো (যেমন ব্যথা বা কষ্ট)। 'Mitigate' মানেও প্রশমিত করা বা লাঘব করা।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Aggravate (বাড়িয়ে তোলা/অবনতি ঘটানো - Antonym), Instigate (উস্কানি দেওয়া), Abrogate (বাতিল করা)।</p></div>`},
+            {q: "An ALTERCATION is best described as:", options: ["A noisy argument or disagreement", "A modification or change", "A mutual agreement", "A high award"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">An 'Altercation' is a noisy argument or disagreement, especially in public.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Altercation' মানে হলো ঝগড়া, বিবাদ বা কথা কাটাকাটি।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Note: Don't confuse it with 'Alteration' (পরিবর্তন/Modification).</p></div>`},
+            {q: "What is the meaning of AGNOSTIC?", options: ["Someone who believes in many gods", "Someone who denies the existence of God", "Someone who believes that nothing is known about the existence of God", "Someone who has intense pain"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">An 'Agnostic' is a person who believes that nothing is known or can be known of the existence or nature of God or of anything beyond material phenomena.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Agnostic' বা অজ্ঞেয়বাদী হলেন তিনি, যিনি মনে করেন ঈশ্বরের অস্তিত্ব সম্পর্কে নিশ্চিতভাবে কিছু জানা সম্ভব নয়।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Polytheist (Believes in many gods), Atheist (Denies existence of God - নাস্তিক), Agony (Intense pain)।</p></div>`},
+            {q: "What is the meaning of ABROGATE?", options: ["To create a new law", "To repeal or abolish a law/custom", "To shorten a text", "To support a criminal"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Abrogate' means to repeal or do away with (a law, right, or formal agreement).</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Abrogate' মানে কোনো আইন বা প্রথা বাতিল বা রদ করা।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Shorten a text (Abridge), Support a criminal (Abet).</p></div>`},
+            {q: "If someone does something with ALACRITY, how are they doing it?", options: ["With hesitation and fear", "With brisk and cheerful readiness", "With extreme anger", "With suspicion"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Alacrity' means brisk and cheerful readiness or eagerness.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Alacrity' মানে হলো কোনো কাজ করার প্রবল উৎসাহ বা তৎপরতা।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Hesitation (দ্বিধা), Suspicion (সন্দেহ)।</p></div>`},
+            {q: "Choose the synonym for ADULATION.", options: ["Criticism", "Flattery", "Apathy", "Warning"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Adulation' refers to excessive admiration or praise, often insincere (flattery).</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Adulation' মানে হলো অতিপ্রশংসা বা তোষামোদ করা।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Criticism (সমালোচনা), Apathy (অনীহা), Warning (সতর্কবার্তা - Admonition)।</p></div>`},
+            {q: "The word AFFABLE is best defined as:", options: ["Difficult to talk to", "Friendly and good-natured", "Wealthy and powerful", "Skilled and clever"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Affable' means friendly, good-natured, or easy to talk to.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Affable' মানে হলো সদালাপী, মিশুকে বা বন্ধুভাবাপন্ন।</p></div></div>`},
+            {q: "An ADVERSARY is a person who:", options: ["Helps you in difficult times", "Is your opponent in a contest or conflict", "Gives you advice", "Praises your work"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">An 'Adversary' is one's opponent in a contest, conflict, or dispute.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Adversary' মানে হলো প্রতিপক্ষ বা শত্রু।</p></div></div>`},
+            {q: "Select the antonym for ABOMINABLE.", options: ["Detestable", "Delightful", "Loathsome", "Terrible"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Abominable' means causing moral revulsion; very bad or unpleasant. 'Delightful' implies something very pleasant, making it the antonym.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Abominable' মানে জঘন্য বা ঘৃণ্য। 'Delightful' মানে আনন্দদায়ক বা মনোরম, যা এর বিপরীত।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Detestable, Loathsome (ঘৃণ্য - Synonyms)।</p></div>`},
+            {q: "Which sentence uses the word ACCEDE correctly?", options: ["The king refused to accede to the demands of the rebels.", "He tried to accede the speed of the car.", "The doctor gave him a pill to accede the pain.", "He was arrested for accede to a crime."], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Accede' means to agree to a demand, request, or treaty (often used with 'to'). It can also mean to assume an office (e.g., accede to the throne).</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Accede' মানে কোনো দাবি বা অনুরোধে রাজি হওয়া।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Correction: Option B should be 'exceed/accelerate', C should be 'alleviate', D should be 'abetting'.</p></div>`},
+            {q: "What does ACCOLADES refer to?", options: ["Financial penalties", "Awards or privileges granted as a special honor", "A sharp slope on a hill", "A type of weapon"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Accolades' are awards, honors, or expressions of praise.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Accolades' মানে হলো প্রশংসা, সম্মান বা খেতাব।</p></div></div>`},
+            {q: "Someone who is ADROIT is:", options: ["Clumsy", "Clever or skillful in using the hands or mind", "Lazy and inactive", "Extremely tall"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Adroit' means clever or skillful in using the hands or mind.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Adroit' মানে হলো দক্ষ, নিপুণ বা কৌশলী।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Clumsy (আনাড়ি - Antonym)।</p></div>`},
+            {q: "The word AGHAST means:", options: ["Excited and happy", "Filled with horror or shock", "Moving quickly", "Completely exhausted"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Aghast' means filled with horror or shock.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Aghast' মানে ভয়ে বা বিস্ময়ে স্তম্ভিত বা আতঙ্কিত হয়ে যাওয়া।</p></div></div>`},
+            {q: "What is the meaning of ADVENT?", options: ["The departure of someone", "An adventure trip", "The arrival of a notable person, thing, or event", "A type of advertisement"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Advent' refers to the arrival of a notable person, thing, or event.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Advent' মানে হলো কোনো বিশেষ ব্যক্তি বা বস্তুর আগমন বা আবির্ভাব।</p></div></div>`},
+            {q: "An ALIBI is used to prove that:", options: ["A person is guilty", "A person was elsewhere when a crime was committed", "A person is mentally ill", "A person is very wealthy"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">An 'Alibi' is a claim or piece of evidence that one was elsewhere when an act, typically a criminal one, is alleged to have taken place.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Alibi' হলো একটি প্রমাণ বা অজুহাত যা দেখায় যে অপরাধ ঘটার সময় অভিযুক্ত ব্যক্তি অন্য কোনো স্থানে ছিলেন।</p></div></div>`},
+            {q: "Which word describes intense mental or physical suffering?", options: ["Agony", "Apathy", "Alibi", "Acumen"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Agony' means extreme physical or mental suffering.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Agony' মানে তীব্র যন্ত্রণা বা কষ্ট।</p></div></div>`},
+            {q: "Who is an ALTRUIST?", options: ["A person who loves money", "A person who eats too much", "A person who dislikes mankind", "A person who shows unselfish concern for the welfare of others"], correct: 3, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">An 'Altruist' is someone who cares about the well-being of others above their own interests. It is often used as a synonym for a philanthropist.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Altruist' বা পরার্থপর ব্যক্তি হলেন তিনি, যিনি নিজের স্বার্থের চেয়ে অন্যের মঙ্গলের কথা বেশি ভাবেন।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Dislikes mankind (Misanthrope), Loves money (Materialist/Miser), Eats too much (Glutton).</p></div>`},
+            {q: "Select the synonym for AMELIORATE.", options: ["Worsen", "Improve", "Freeze", "Hide"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Ameliorate' means to make something bad or unsatisfactory better.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Ameliorate' মানে কোনো খারাপ অবস্থা বা পরিস্থিতির উন্নতি ঘটানো বা ভালো করা।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Worsen (অবনতি ঘটানো - Antonym), Hide (লুকানো)।</p></div>`}
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let answered = false;
+        let startTime;
+
+        // Elements
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const currentQNum = document.getElementById('current-q-num');
+        const scoreDisplay = document.getElementById('score-display');
+        const progressBar = document.getElementById('progress-bar');
+        const feedbackSection = document.getElementById('feedback-section');
+        const feedbackMessage = document.getElementById('feedback-message');
+        const explanationContent = document.getElementById('explanation-content');
+        const toggleExplanationBtn = document.getElementById('toggle-explanation-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const finishBtn = document.getElementById('finish-btn');
+
+        // Functions
+        function loadQuestion() {
+            const q = questionsTest01[currentQuestion];
+            answered = false;
+            
+            // Update UI
+            currentQNum.innerText = currentQuestion + 1;
+            questionText.innerText = q.q;
+            scoreDisplay.innerText = `Score: ${score}`;
+            
+            // Update Progress Bar
+            const progress = ((currentQuestion) / questionsTest01.length) * 100;
+            progressBar.style.width = `${progress}%`;
+
+            // Reset Feedback
+            feedbackSection.classList.add('hidden');
+            explanationContent.classList.add('hidden');
+            explanationContent.innerHTML = q.explanation;
+            toggleExplanationBtn.innerHTML = '<span class="bg-green-500/10 p-2 rounded-lg mr-3"><i class="fas fa-lightbulb"></i></span><span class="underline decoration-green-500/30 underline-offset-4">See Detailed Solution</span>';
+            nextBtn.classList.add('hidden');
+            finishBtn.classList.add('hidden');
+
+            // Render Options
+            optionsContainer.innerHTML = '';
+            q.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-5 rounded-xl border border-slate-700/50 bg-slate-800/40 hover:bg-slate-700/60 hover:border-green-500/50 transition-all duration-200 font-medium text-slate-300 flex justify-between items-center group backdrop-blur-sm";
+                btn.innerHTML = `<span class="flex items-center"><span class="w-8 h-8 rounded-full bg-slate-700 text-slate-400 flex items-center justify-center font-bold mr-4 group-hover:bg-green-500 group-hover:text-slate-900 transition-colors text-sm">${String.fromCharCode(65 + index)}</span> ${opt}</span>`;
+                btn.onclick = () => checkAnswer(index, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selectedIndex, selectedBtn) {
+            if (answered) return;
+            answered = true;
+            
+            const q = questionsTest01[currentQuestion];
+            const allBtns = optionsContainer.children;
+            
+            if (selectedIndex === q.correct) {
+                score++;
+                selectedBtn.className = "w-full text-left p-5 rounded-xl border border-green-500 bg-green-500/10 flex justify-between items-center transition-all shadow-[0_0_15px_rgba(34,197,94,0.2)]";
+                selectedBtn.innerHTML = `<span class="flex items-center text-white font-bold"><span class="w-8 h-8 rounded-full bg-green-500 text-slate-900 flex items-center justify-center font-bold mr-4 text-sm">${String.fromCharCode(65 + selectedIndex)}</span> ${q.options[selectedIndex]}</span><i class="fas fa-check-circle text-green-400 text-2xl drop-shadow-lg"></i>`;
+                
+                feedbackMessage.className = "flex items-center mb-6 p-4 rounded-xl bg-green-900/20 border border-green-500/30 text-green-300";
+                feedbackMessage.innerHTML = '<div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center mr-4"><i class="fas fa-check text-green-400"></i></div> <span class="font-bold">Correct Answer! Well done.</span>';
+            } else {
+                selectedBtn.className = "w-full text-left p-5 rounded-xl border border-red-500 bg-red-500/10 flex justify-between items-center transition-all";
+                selectedBtn.innerHTML = `<span class="flex items-center text-red-100"><span class="w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center font-bold mr-4 text-sm">${String.fromCharCode(65 + selectedIndex)}</span> ${q.options[selectedIndex]}</span><i class="fas fa-times-circle text-red-400 text-2xl"></i>`;
+                
+                const correctBtn = allBtns[q.correct];
+                correctBtn.className = "w-full text-left p-5 rounded-xl border border-green-500 bg-green-500/10 flex justify-between items-center transition-all shadow-[0_0_15px_rgba(34,197,94,0.2)] opacity-100";
+                correctBtn.innerHTML = `<span class="flex items-center text-white font-bold"><span class="w-8 h-8 rounded-full bg-green-500 text-slate-900 flex items-center justify-center font-bold mr-4 text-sm">${String.fromCharCode(65 + q.correct)}</span> ${q.options[q.correct]}</span><i class="fas fa-check-circle text-green-400 text-2xl"></i>`;
+
+                feedbackMessage.className = "flex items-center mb-6 p-4 rounded-xl bg-red-900/20 border border-red-500/30 text-red-300";
+                feedbackMessage.innerHTML = `<div class="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center mr-4"><i class="fas fa-times text-red-400"></i></div> <span>Incorrect. The correct answer is <span class="font-bold text-green-400 border-b border-green-400/30 pb-0.5">${String.fromCharCode(65 + q.correct)}</span></span>`;
+            }
+
+            for (let btn of allBtns) {
+                btn.disabled = true;
+                if (!btn.className.includes('green') && !btn.className.includes('red')) {
+                     btn.classList.add('opacity-50', 'cursor-not-allowed');
+                     btn.classList.remove('hover:bg-slate-700/60', 'hover:border-green-500/50');
+                }
+            }
+
+            feedbackSection.classList.remove('hidden');
+            scoreDisplay.innerText = `Score: ${score}`;
+
+            if (currentQuestion < questionsTest01.length - 1) {
+                nextBtn.classList.remove('hidden');
+            } else {
+                finishBtn.classList.remove('hidden');
+            }
+        }
+
+        function toggleExplanation() {
+            if (explanationContent.classList.contains('hidden')) {
+                explanationContent.classList.remove('hidden');
+                explanationContent.classList.add('fade-in');
+                toggleExplanationBtn.innerHTML = '<span class="bg-green-500/10 p-2 rounded-lg mr-3"><i class="fas fa-eye-slash"></i></span><span class="underline decoration-green-500/30 underline-offset-4">Hide Solution</span>';
+            } else {
+                explanationContent.classList.add('hidden');
+                toggleExplanationBtn.innerHTML = '<span class="bg-green-500/10 p-2 rounded-lg mr-3"><i class="fas fa-lightbulb"></i></span><span class="underline decoration-green-500/30 underline-offset-4">See Detailed Solution</span>';
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            loadQuestion();
+        }
+
+        function finishQuiz() {
+            const endTime = new Date();
+            const timeDiff = Math.floor((endTime - startTime) / 1000); // seconds
+            const minutes = Math.floor(timeDiff / 60);
+            const seconds = timeDiff % 60;
+            const timeString = `${minutes}m ${seconds}s`;
+            
+            // Calc stats
+            const total = questionsTest01.length;
+            const accuracy = Math.round((score / total) * 100);
+            const wrongAnswers = total - score;
+            const sscScore = (score * 2) - (wrongAnswers * 0.5);
+            
+            // Get user name from URL params to pass it back
+            const urlParams = new URLSearchParams(window.location.search);
+            const name = urlParams.get('name') || "Student";
+
+            // Redirect to Master Index with results
+            const redirectUrl = `index.html?action=result&score=${score}&total=${total}&accuracy=${accuracy}&time=${encodeURIComponent(timeString)}&sscScore=${sscScore}&name=${encodeURIComponent(name)}&testId=test1`;
+            
+            window.location.href = redirectUrl;
+        }
+        
+        // Start on load
+        window.onload = function() {
+            startTime = new Date();
+            loadQuestion();
+        };
+
+        // Expose to window for buttons
+        window.checkAnswer = checkAnswer;
+        window.toggleExplanation = toggleExplanation;
+        window.nextQuestion = nextQuestion;
+        window.finishQuiz = finishQuiz;
+    </script>
+</body>
+</html>
