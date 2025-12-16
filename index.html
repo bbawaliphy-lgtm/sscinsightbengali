@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SSC INSIGHT BENGALI - Mock Test Series</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Added Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
@@ -69,10 +71,8 @@
 
         /* --- Utilities --- */
         .bengali-text { font-family: 'Noto Sans Bengali', sans-serif; }
-        
         .fade-in { animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
         .slide-up { animation: slideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
-        
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -101,14 +101,6 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             border-color: rgba(34, 197, 94, 0.3);
         }
-
-        /* Pulse Animation for Start Button */
-        @keyframes pulse-green {
-            0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
-        }
-        .btn-pulse { animation: pulse-green 2s infinite; }
 
         /* Mentor Image Ring */
         .mentor-ring {
@@ -214,6 +206,29 @@
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
         }
 
+        /* Locked Test Styling */
+        .locked-test {
+            opacity: 0.5;
+            filter: grayscale(0.8);
+            cursor: not-allowed;
+            position: relative;
+        }
+        .locked-test::after {
+            content: '\f023'; /* FontAwesome Lock */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+            color: rgba(255,255,255,0.2);
+        }
+        .unlocked-test {
+            opacity: 1;
+            filter: grayscale(0);
+            cursor: pointer;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -255,17 +270,13 @@
                 </a>
             </div>
         </div>
-        <!-- Progress Bar -->
-        <div class="h-1 w-full bg-slate-800/50">
-            <div id="progress-bar" class="h-full bg-gradient-to-r from-green-500 to-emerald-400 shadow-[0_0_10px_rgba(34,197,94,0.5)] transition-all duration-500 ease-out" style="width: 0%"></div>
-        </div>
     </header>
 
     <!-- Main Content Area -->
     <main class="flex-grow flex items-center justify-center p-4 relative z-10 w-full">
         
         <!-- Start Screen (Dashboard Layout) -->
-        <div id="start-screen" class="max-w-6xl w-full slide-up space-y-8">
+        <div id="start-screen" class="max-w-7xl w-full slide-up space-y-8">
             
             <!-- Promo Slider Section -->
             <div class="glass-panel rounded-3xl p-6 relative overflow-hidden border border-green-500/30">
@@ -351,54 +362,50 @@
                     </div>
                 </div>
 
-                <!-- Test Selection Section (UPDATED) -->
+                <!-- Test Selection Section -->
                 <div class="md:col-span-7 lg:col-span-8 flex flex-col justify-center">
-                    <div class="glass-panel rounded-3xl p-8 md:p-10 shadow-2xl relative overflow-hidden h-full flex flex-col justify-center">
+                    <div class="glass-panel rounded-3xl p-6 md:p-8 shadow-2xl relative overflow-hidden h-full flex flex-col">
                         <!-- Background glow effect -->
                         <div class="absolute -right-20 -top-20 w-64 h-64 bg-green-500/10 blur-[80px] rounded-full pointer-events-none"></div>
 
                         <div class="relative z-10">
-                            <span class="inline-block py-1 px-3 rounded-md bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold tracking-wider mb-4">
-                                MOCK TEST PORTAL
-                            </span>
-                            <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-2 tracking-tight">
-                                Select Your <span class="text-blue-500">Challenge</span>
-                            </h2>
-                            <p class="text-lg md:text-xl text-slate-300 italic font-light mb-8">
-                                "Consistency is the key to mastering vocabulary."
-                            </p>
-
-                            <!-- Name Input First -->
-                            <div class="mb-8">
-                                <label class="block text-slate-400 text-xs font-bold uppercase tracking-wider mb-2 ml-1">Enter Your Name to Unlock Tests</label>
-                                <input type="text" id="student-name" placeholder="Ex: Amit Roy" class="glass-input w-full p-4 rounded-xl text-lg placeholder-slate-500 transition-all border-slate-600 focus:border-blue-500" onkeyup="toggleTestButtons()">
+                            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-6">
+                                <div>
+                                    <h2 class="text-2xl md:text-3xl font-extrabold text-white mb-1 tracking-tight">
+                                        Mock Test <span class="text-blue-500">Series</span>
+                                    </h2>
+                                    <p class="text-sm text-slate-400">Enter your name to unlock the tests.</p>
+                                </div>
+                                <div class="w-full md:w-auto mt-4 md:mt-0">
+                                    <input type="text" id="student-name" placeholder="Your Full Name" class="glass-input w-full md:w-64 p-3 rounded-xl text-sm transition-all border-slate-600 focus:border-blue-500" onkeyup="toggleTestButtons()">
+                                </div>
                             </div>
 
-                            <!-- Test Selection Cards -->
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <!-- Test 01 Card -->
-                                <button onclick="startQuiz('test1')" id="btn-test-1" disabled class="test-card-hover text-left bg-slate-800/50 hover:bg-slate-800 border border-slate-700 hover:border-green-500 p-5 rounded-2xl transition-all duration-300 group disabled:opacity-50 disabled:cursor-not-allowed">
-                                    <div class="flex justify-between items-start mb-3">
-                                        <div class="p-3 bg-green-500/20 rounded-lg text-green-400 group-hover:bg-green-500 group-hover:text-slate-900 transition-colors">
-                                            <i class="fas fa-font text-xl"></i>
+                            <!-- Test Grid (Scrollable if many) -->
+                            <div class="max-h-[400px] overflow-y-auto custom-scroll pr-2">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="test-grid">
+                                    <!-- Test 01 -->
+                                    <button onclick="redirectToQuiz('test1')" id="btn-test1" disabled class="test-card-hover locked-test text-left bg-slate-800/50 hover:bg-slate-800 border border-slate-700 hover:border-green-500 p-4 rounded-xl transition-all duration-300 group">
+                                        <div class="flex justify-between items-center mb-2">
+                                            <span class="text-green-400 font-bold text-sm">TEST 01</span>
+                                            <span class="text-[10px] bg-slate-900 text-slate-400 px-2 py-0.5 rounded border border-slate-700">25 Qs</span>
                                         </div>
-                                        <span class="bg-slate-900 text-slate-400 text-[10px] font-bold px-2 py-1 rounded border border-slate-700">25 Qs</span>
-                                    </div>
-                                    <h3 class="text-lg font-bold text-white mb-1 group-hover:text-green-400 transition-colors">Syno/Anto Test 01</h3>
-                                    <p class="text-xs text-slate-400">Focus on words starting with 'A' and high frequency terms.</p>
-                                </button>
+                                        <h3 class="text-base font-bold text-white mb-1 group-hover:text-green-400 transition-colors">Synonyms (Start with A)</h3>
+                                        <div class="w-full h-1 bg-slate-700 rounded-full mt-2 overflow-hidden"><div class="h-full bg-green-500 w-full"></div></div>
+                                    </button>
 
-                                <!-- Test 02 Card -->
-                                <button onclick="startQuiz('test2')" id="btn-test-2" disabled class="test-card-hover text-left bg-slate-800/50 hover:bg-slate-800 border border-slate-700 hover:border-blue-500 p-5 rounded-2xl transition-all duration-300 group disabled:opacity-50 disabled:cursor-not-allowed">
-                                    <div class="flex justify-between items-start mb-3">
-                                        <div class="p-3 bg-blue-500/20 rounded-lg text-blue-400 group-hover:bg-blue-500 group-hover:text-slate-900 transition-colors">
-                                            <i class="fas fa-layer-group text-xl"></i>
+                                    <!-- Test 02 -->
+                                    <button onclick="redirectToQuiz('test2')" id="btn-test2" disabled class="test-card-hover locked-test text-left bg-slate-800/50 hover:bg-slate-800 border border-slate-700 hover:border-blue-500 p-4 rounded-xl transition-all duration-300 group">
+                                        <div class="flex justify-between items-center mb-2">
+                                            <span class="text-blue-400 font-bold text-sm">TEST 02</span>
+                                            <span class="text-[10px] bg-slate-900 text-slate-400 px-2 py-0.5 rounded border border-slate-700">25 Qs</span>
                                         </div>
-                                        <span class="bg-slate-900 text-slate-400 text-[10px] font-bold px-2 py-1 rounded border border-slate-700">25 Qs</span>
-                                    </div>
-                                    <h3 class="text-lg font-bold text-white mb-1 group-hover:text-blue-400 transition-colors">Syno/Anto Test 02</h3>
-                                    <p class="text-xs text-slate-400">Mixed bag vocabulary challenge (B-Z). Test your range!</p>
-                                </button>
+                                        <h3 class="text-base font-bold text-white mb-1 group-hover:text-blue-400 transition-colors">Mixed Synonyms (B-Z)</h3>
+                                        <div class="w-full h-1 bg-slate-700 rounded-full mt-2 overflow-hidden"><div class="h-full bg-blue-500 w-full"></div></div>
+                                    </button>
+
+                                    <!-- Placeholder loop for tests 3 to 30 will be generated by JS -->
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -407,6 +414,7 @@
 
             <!-- Website & App Integration Section -->
             <div id="eco-widget" class="glass-panel rounded-3xl overflow-hidden border border-slate-700/50 relative">
+                <!-- (Same content as before) -->
                 <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-blue-600/10 to-transparent pointer-events-none"></div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 p-6 md:p-8 items-center">
                     <!-- Text Content -->
@@ -447,7 +455,6 @@
                                 </div>
                             </div>
                             <div class="bg-slate-900 p-6 h-48 flex flex-col justify-center items-center relative overflow-hidden">
-                                <!-- Mock Content Inside Browser -->
                                 <div class="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-900 opacity-50"></div>
                                 <div class="grid grid-cols-2 gap-3 w-full max-w-xs relative z-10">
                                     <div class="bg-slate-700/50 h-20 rounded-lg border border-slate-600 p-3 flex flex-col justify-between hover:bg-slate-700 transition-colors">
@@ -468,20 +475,11 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Phone Mockup Element behind -->
-                        <div class="absolute -right-4 -bottom-10 w-32 h-64 bg-slate-800 rounded-3xl border-4 border-slate-900 shadow-xl transform -rotate-6 z-0 flex flex-col items-center pt-3 overflow-hidden">
-                             <div class="w-10 h-1 bg-slate-600 rounded-full mb-2"></div>
-                             <div class="w-full h-full bg-slate-700/30 grid grid-cols-2 gap-2 p-2">
-                                 <div class="bg-slate-600/50 rounded-lg h-12"></div>
-                                 <div class="bg-slate-600/50 rounded-lg h-12"></div>
-                                 <div class="bg-slate-600/50 rounded-lg h-24 col-span-2"></div>
-                             </div>
-                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- YouTube Showcase Section -->
+            <!-- YouTube Showcase Section (Hidden ID moved to generic container for cloning) -->
             <div id="yt-widget" class="glass-panel rounded-3xl p-6 md:p-8 border border-slate-700/50 relative overflow-hidden">
                 <div class="flex flex-col sm:flex-row justify-between items-center mb-6">
                     <div class="flex items-center space-x-4 mb-4 sm:mb-0">
@@ -497,9 +495,8 @@
                         <i class="fas fa-bell mr-2 animate-bounce"></i> Subscribe for More
                     </a>
                 </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <!-- Video 1 -->
+                <!-- YouTube Videos Grid -->
+                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     <a href="http://www.youtube.com/watch?v=Tp2WvaQz57I" target="_blank" class="yt-card group block bg-slate-900/50 rounded-xl overflow-hidden border border-slate-700 hover:border-red-500/50 transition-all shadow-lg">
                         <div class="relative overflow-hidden aspect-video">
                             <img src="https://img.youtube.com/vi/Tp2WvaQz57I/mqdefault.jpg" alt="Video Thumbnail" class="w-full h-full object-cover transition-transform duration-500">
@@ -511,11 +508,8 @@
                         </div>
                         <div class="p-4">
                             <h4 class="text-sm font-semibold text-white line-clamp-2 group-hover:text-red-400 transition-colors">BEST BOOKS For SSC 2025 Preparation In BENGALI</h4>
-                            <p class="text-xs text-slate-500 mt-2"><i class="far fa-clock mr-1"></i> 13:44 • Booklist</p>
                         </div>
                     </a>
-
-                    <!-- Video 2 -->
                     <a href="http://www.youtube.com/watch?v=BDSmrTwIluk" target="_blank" class="yt-card group block bg-slate-900/50 rounded-xl overflow-hidden border border-slate-700 hover:border-red-500/50 transition-all shadow-lg">
                         <div class="relative overflow-hidden aspect-video">
                             <img src="https://img.youtube.com/vi/BDSmrTwIluk/mqdefault.jpg" alt="Video Thumbnail" class="w-full h-full object-cover transition-transform duration-500">
@@ -526,14 +520,11 @@
                             </div>
                         </div>
                         <div class="p-4">
-                            <h4 class="text-sm font-semibold text-white line-clamp-2 group-hover:text-red-400 transition-colors">500+ Words Vocab Marathon Session | Important for SSC CGL</h4>
-                            <p class="text-xs text-slate-500 mt-2"><i class="far fa-clock mr-1"></i> 3:25:10 • Vocabulary</p>
+                            <h4 class="text-sm font-semibold text-white line-clamp-2 group-hover:text-red-400 transition-colors">500+ Words Vocab Marathon Session</h4>
                         </div>
                     </a>
-
-                    <!-- Video 3 -->
                     <a href="http://www.youtube.com/watch?v=aTDXXeNVn3M" target="_blank" class="yt-card group block bg-slate-900/50 rounded-xl overflow-hidden border border-slate-700 hover:border-red-500/50 transition-all shadow-lg">
-                        <div class="relative overflow-hidden aspect-video">
+                         <div class="relative overflow-hidden aspect-video">
                             <img src="https://img.youtube.com/vi/aTDXXeNVn3M/mqdefault.jpg" alt="Video Thumbnail" class="w-full h-full object-cover transition-transform duration-500">
                             <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors flex items-center justify-center">
                                 <div class="play-icon w-12 h-12 bg-red-600 rounded-full flex items-center justify-center shadow-lg transform transition-transform duration-300 group-hover:scale-110">
@@ -542,14 +533,11 @@
                             </div>
                         </div>
                         <div class="p-4">
-                            <h4 class="text-sm font-semibold text-white line-clamp-2 group-hover:text-red-400 transition-colors">SSC CGL 2024 Strategy | কিভাবে প্রস্তুতি নেবে | Dyutimala Datta</h4>
-                            <p class="text-xs text-slate-500 mt-2"><i class="far fa-clock mr-1"></i> 23:31 • Strategy</p>
+                            <h4 class="text-sm font-semibold text-white line-clamp-2 group-hover:text-red-400 transition-colors">SSC CGL 2024 Strategy</h4>
                         </div>
                     </a>
-
-                    <!-- Video 4 -->
                     <a href="http://www.youtube.com/watch?v=F51jOhOfXqA" target="_blank" class="yt-card group block bg-slate-900/50 rounded-xl overflow-hidden border border-slate-700 hover:border-red-500/50 transition-all shadow-lg">
-                        <div class="relative overflow-hidden aspect-video">
+                         <div class="relative overflow-hidden aspect-video">
                             <img src="https://img.youtube.com/vi/F51jOhOfXqA/mqdefault.jpg" alt="Video Thumbnail" class="w-full h-full object-cover transition-transform duration-500">
                             <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors flex items-center justify-center">
                                 <div class="play-icon w-12 h-12 bg-red-600 rounded-full flex items-center justify-center shadow-lg transform transition-transform duration-300 group-hover:scale-110">
@@ -558,8 +546,7 @@
                             </div>
                         </div>
                         <div class="p-4">
-                            <h4 class="text-sm font-semibold text-white line-clamp-2 group-hover:text-red-400 transition-colors">How to Prepare Maths for SSC CGL, CHSL, MTS</h4>
-                            <p class="text-xs text-slate-500 mt-2"><i class="far fa-clock mr-1"></i> 15:23 • Maths</p>
+                            <h4 class="text-sm font-semibold text-white line-clamp-2 group-hover:text-red-400 transition-colors">How to Prepare Maths</h4>
                         </div>
                     </a>
                 </div>
@@ -567,159 +554,140 @@
             
         </div>
 
-        <!-- Quiz Container (Enhanced) -->
-        <div id="quiz-container" class="hidden max-w-3xl w-full">
-            <div class="glass-panel rounded-3xl shadow-2xl overflow-hidden fade-in border border-slate-600/50">
-                <!-- Question Header -->
-                <div class="bg-slate-900/60 px-6 py-4 border-b border-slate-700 flex justify-between items-center backdrop-blur-sm">
-                    <div class="flex items-center space-x-2">
-                         <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                         <span class="text-sm font-bold text-slate-300 tracking-wide">Question <span id="current-q-num" class="text-white text-base">1</span><span class="text-slate-500">/25</span></span>
-                    </div>
-                    <span id="score-display" class="text-sm font-bold text-green-400 bg-green-900/20 border border-green-500/30 px-4 py-1.5 rounded-full shadow-inner">Score: 0</span>
-                </div>
-
-                <!-- Question Body -->
-                <div class="p-6 md:p-10">
-                    <h3 id="question-text" class="text-xl md:text-2xl font-bold text-white mb-8 leading-relaxed drop-shadow-sm">
-                        <!-- Question goes here -->
-                    </h3>
-
-                    <!-- Options Grid -->
-                    <div id="options-container" class="grid grid-cols-1 gap-4 mb-8">
-                        <!-- Buttons injected by JS -->
-                    </div>
-
-                    <!-- Feedback & Explanation Section -->
-                    <div id="feedback-section" class="hidden mt-8 border-t border-slate-700/50 pt-8 animation-fade-in">
-                        <!-- Correct/Wrong Message -->
-                        <div id="feedback-message" class="flex items-center mb-6 p-4 rounded-xl border">
-                            <!-- Injected by JS -->
-                        </div>
-
-                        <!-- Toggle Explanation Button -->
-                        <button id="toggle-explanation-btn" onclick="toggleExplanation()" class="group text-green-400 hover:text-green-300 font-semibold text-sm flex items-center mb-4 focus:outline-none transition-colors">
-                            <span class="bg-green-500/10 p-2 rounded-lg mr-3 group-hover:bg-green-500/20 transition-colors"><i class="fas fa-lightbulb"></i></span>
-                            <span class="underline decoration-green-500/30 underline-offset-4 group-hover:decoration-green-500">See Detailed Solution</span>
-                        </button>
-
-                        <!-- Detailed Explanation Content -->
-                        <div id="explanation-content" class="hidden bg-slate-900/60 p-6 rounded-2xl border border-slate-700/50 text-slate-300 custom-scroll max-h-96 overflow-y-auto shadow-inner leading-relaxed">
-                            <!-- Explanation injected by JS -->
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Footer Navigation -->
-                <div class="bg-slate-900/40 px-6 py-5 border-t border-slate-700/50 flex justify-end">
-                    <button id="next-btn" onclick="nextQuestion()" class="hidden bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-8 rounded-xl shadow-lg shadow-green-900/20 transition-all transform hover:-translate-y-0.5 flex items-center">
-                        Next Question <i class="fas fa-arrow-right ml-2"></i>
-                    </button>
-                    <button id="finish-btn" onclick="finishQuiz()" class="hidden bg-yellow-600 hover:bg-yellow-500 text-white font-bold py-3 px-8 rounded-xl shadow-lg shadow-yellow-900/20 transition-all transform hover:-translate-y-0.5 flex items-center">
-                        Finish Test <i class="fas fa-flag-checkered ml-2"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Result Screen with Leaderboard -->
-        <div id="result-screen" class="hidden w-full max-w-6xl space-y-8 fade-in slide-up">
+        <!-- Result Screen (Enhanced) -->
+        <div id="result-screen" class="hidden w-full max-w-7xl space-y-8 fade-in slide-up">
             
             <!-- Confetti Container -->
             <div id="confetti-container" class="fixed inset-0 pointer-events-none z-50 overflow-hidden"></div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <!-- Score Card -->
-                <div class="glass-panel rounded-3xl p-10 text-center relative border border-slate-600/50 h-full flex flex-col justify-center">
-                     <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-green-500/5 to-transparent pointer-events-none rounded-3xl"></div>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                
+                <!-- Left Column: Detailed Analysis (Pie Chart, Comparisons, Motivation) -->
+                <div class="lg:col-span-5 space-y-6">
                     
-                    <div class="relative z-10">
-                        <div class="w-24 h-24 bg-gradient-to-tr from-green-500/20 to-emerald-500/20 border border-green-500/30 rounded-full flex items-center justify-center mx-auto mb-6 shadow-[0_0_30px_rgba(34,197,94,0.2)]">
-                            <i class="fas fa-trophy text-4xl text-transparent bg-clip-text bg-gradient-to-br from-green-400 to-emerald-200"></i>
-                        </div>
-                        <h2 class="text-3xl font-extrabold text-white mb-2">Test Summary</h2>
-                        <p class="text-slate-400 mb-8" id="result-message">Here is how you performed</p>
-        
-                        <!-- Metrics Grid -->
-                        <div class="grid grid-cols-2 gap-4 mb-8 text-left">
-                            <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700">
-                                <p class="text-slate-500 text-[10px] uppercase font-bold tracking-widest mb-1">Time Taken</p>
-                                <p class="text-xl font-bold text-blue-400" id="time-taken">00m 00s</p>
-                            </div>
-                            <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700">
-                                <p class="text-slate-500 text-[10px] uppercase font-bold tracking-widest mb-1">SSC Score</p>
-                                <p class="text-xl font-bold text-yellow-400" id="ssc-score">0</p>
-                                <p class="text-[9px] text-slate-500">+2.0 / -0.5</p>
-                            </div>
-                            <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700">
-                                <p class="text-slate-500 text-[10px] uppercase font-bold tracking-widest mb-1">Total Score</p>
-                                <p class="text-xl font-bold text-green-400"><span id="final-score">0</span></p>
-                            </div>
-                            <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700">
-                                <p class="text-slate-500 text-[10px] uppercase font-bold tracking-widest mb-1">Accuracy</p>
-                                <p class="text-xl font-bold text-purple-400" id="final-accuracy">0%</p>
-                            </div>
+                    <!-- Main Score Card with Pie Chart -->
+                    <div class="glass-panel rounded-3xl p-6 relative border border-slate-600/50 text-center">
+                        <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-green-500/5 to-transparent pointer-events-none rounded-3xl"></div>
+                        
+                        <h2 class="text-2xl font-bold text-white mb-4"><i class="fas fa-chart-pie text-green-400 mr-2"></i>Performance Analysis</h2>
+                        
+                        <!-- Canvas for Chart -->
+                        <div class="relative w-48 h-48 mx-auto mb-6">
+                            <canvas id="scoreChart"></canvas>
                         </div>
 
-                        <!-- Recommendation Banner -->
-                        <div id="recommendation-card" class="hidden mb-8 bg-gradient-to-r from-blue-900/30 to-blue-800/20 border border-blue-500/30 rounded-xl p-5 text-left flex items-start gap-4">
-                            <div class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center shrink-0 mt-1">
-                                <i class="fas fa-lightbulb text-blue-400"></i>
+                        <!-- Data Grid -->
+                        <div class="grid grid-cols-2 gap-3 mb-4">
+                            <div class="bg-slate-800/50 p-3 rounded-xl border border-slate-700">
+                                <p class="text-slate-500 text-[10px] uppercase font-bold tracking-widest">SSC Score</p>
+                                <p class="text-2xl font-bold text-yellow-400" id="ssc-score">0.0</p>
                             </div>
-                            <div>
-                                <h4 class="text-white font-bold mb-1 text-sm md:text-base">Strengthen Your Concepts</h4>
-                                <p class="text-xs md:text-sm text-slate-300 mb-3">Your score indicates you might benefit from stronger fundamentals.</p>
-                                <a href="https://sscinsightbengali.akamai.net.in/zero-price-courses" target="_blank" class="text-xs font-bold text-blue-400 hover:text-blue-300 uppercase tracking-wide flex items-center">Explore Course <i class="fas fa-arrow-right ml-1"></i></a>
+                            <div class="bg-slate-800/50 p-3 rounded-xl border border-slate-700">
+                                <p class="text-slate-500 text-[10px] uppercase font-bold tracking-widest">Rank %</p>
+                                <p class="text-2xl font-bold text-blue-400" id="percentile-display">--</p>
                             </div>
                         </div>
-        
-                        <!-- Actions -->
-                        <div class="flex flex-col sm:flex-row gap-3 justify-center">
-                            <button onclick="shareTest()" class="flex-1 bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition-all flex items-center justify-center">
-                                <i class="fas fa-share-alt mr-2"></i> Share
+                        
+                        <!-- Navigation -->
+                         <div class="flex gap-2">
+                            <button onclick="shareTest()" class="flex-1 bg-green-600 hover:bg-green-500 text-white font-bold py-2.5 rounded-lg text-sm transition-all">
+                                <i class="fab fa-whatsapp mr-1"></i> Share
                             </button>
-                            <button onclick="location.reload()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 px-6 rounded-xl border border-slate-600 hover:border-slate-500 shadow-lg transition-all flex items-center justify-center">
-                                <i class="fas fa-redo-alt mr-2 text-slate-400"></i> Home
+                            <button onclick="window.location.href='index.html'" class="flex-1 bg-slate-800 hover:bg-slate-700 text-white font-bold py-2.5 rounded-lg border border-slate-600 text-sm transition-all">
+                                <i class="fas fa-home mr-1"></i> Home
                             </button>
                         </div>
                     </div>
+
+                    <!-- Comparison Card -->
+                    <div class="glass-panel rounded-2xl p-5 border border-purple-500/30">
+                        <h3 class="text-sm font-bold text-purple-400 mb-4 uppercase tracking-wider"><i class="fas fa-crown mr-1"></i> vs Topper</h3>
+                        <div class="space-y-4">
+                            <!-- Score Compare -->
+                            <div>
+                                <div class="flex justify-between text-xs text-slate-400 mb-1">
+                                    <span>Your Score</span>
+                                    <span>Topper's Score</span>
+                                </div>
+                                <div class="h-2 bg-slate-800 rounded-full flex overflow-hidden">
+                                    <div class="bg-blue-500 h-full" id="bar-your-score" style="width: 0%"></div>
+                                    <div class="bg-slate-700 h-full flex-grow"></div> <!-- Spacer -->
+                                </div>
+                                <div class="relative h-2 -mt-2">
+                                     <div class="absolute right-0 top-0 bg-yellow-500 h-2 rounded-full opacity-70" style="width: 100%"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Time Compare -->
+                            <div class="flex items-center justify-between bg-slate-800/50 p-3 rounded-lg">
+                                <div class="text-center">
+                                    <p class="text-[10px] text-slate-500">Your Time</p>
+                                    <p class="text-sm font-bold text-white" id="time-taken">0m 0s</p>
+                                </div>
+                                <div class="text-xs text-slate-500">vs</div>
+                                <div class="text-center">
+                                    <p class="text-[10px] text-slate-500">Topper's Time</p>
+                                    <p class="text-sm font-bold text-yellow-400" id="topper-time">--</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bengali Motivation & Share -->
+                    <div class="glass-panel rounded-2xl p-6 border-l-4 border-l-pink-500 bg-gradient-to-r from-pink-900/10 to-transparent">
+                        <div id="motivation-box" class="mb-4">
+                            <h3 class="text-xl font-bold text-white bengali-text mb-2" id="motivation-title">দারুণ করেছো!</h3>
+                            <p class="text-sm text-slate-300 bengali-text" id="motivation-text">তোমার এই স্কোর প্রমাণ করে তুমি সঠিক পথেই আছো।</p>
+                        </div>
+                        <p class="text-xs text-slate-400 bengali-text mb-3 border-t border-slate-700/50 pt-3">
+                            আমাদের এই উদ্যোগটি তোমার বন্ধুদের সাথে শেয়ার করো। বেশি প্রতিযোগী থাকলে তোমার নিজের অবস্থান আরও ভালো করে বুঝতে পারবে।
+                        </p>
+                        <button onclick="shareTest()" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-pink-400 border border-pink-500/30 rounded-lg text-xs font-bold transition-all">
+                            <i class="fas fa-share-alt mr-1"></i> বন্ধুদের জানাও (Share Initiative)
+                        </button>
+                    </div>
+
                 </div>
 
-                <!-- Leaderboard Section -->
-                <div class="glass-panel rounded-3xl p-8 relative border border-slate-600/50 flex flex-col">
-                    <div class="flex justify-between items-end mb-6">
-                        <div>
-                            <h3 class="text-2xl font-bold text-white flex items-center gap-2"><i class="fas fa-chart-line text-green-400"></i> Leaderboard</h3>
-                            <p class="text-xs text-slate-400 mt-1" id="leaderboard-title">Live Rankings (Test 01)</p>
+                <!-- Right Column: Leaderboard -->
+                <div class="lg:col-span-7">
+                    <div class="glass-panel rounded-3xl p-6 md:p-8 h-full flex flex-col border border-slate-600/50">
+                        <div class="flex justify-between items-end mb-6">
+                            <div>
+                                <h3 class="text-2xl font-bold text-white flex items-center gap-2"><i class="fas fa-list-ol text-green-400"></i> Leaderboard</h3>
+                                <p class="text-xs text-slate-400 mt-1" id="leaderboard-title">Live Rankings (Test 01)</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-xs text-slate-500 uppercase font-bold">Participants</p>
+                                <p class="text-xl font-bold text-white" id="participant-count-display">--</p>
+                            </div>
                         </div>
-                        <div class="text-right">
-                            <p class="text-xs text-slate-500 uppercase font-bold">Participants</p>
-                            <p class="text-xl font-bold text-white" id="participant-count-display">--</p>
-                        </div>
-                    </div>
 
-                    <div class="bg-slate-900/50 rounded-2xl border border-slate-700 flex-grow overflow-hidden flex flex-col">
-                        <div class="p-3 border-b border-slate-700 grid grid-cols-12 text-xs font-bold text-slate-500 uppercase tracking-wider">
-                            <div class="col-span-2 text-center">Rank</div>
-                            <div class="col-span-7">Student</div>
-                            <div class="col-span-3 text-right">Score</div>
-                        </div>
-                        <div class="overflow-y-auto custom-scroll flex-grow" id="leaderboard-list">
-                            <!-- Dynamic Content -->
-                            <div class="p-4 text-center text-slate-500 text-sm">Loading rankings...</div>
-                        </div>
-                        <!-- Current User Fixed at Bottom -->
-                        <div class="p-4 bg-green-900/20 border-t border-green-500/30 grid grid-cols-12 items-center" id="user-rank-row">
-                            <div class="col-span-2 text-center font-bold text-green-400" id="user-rank">#--</div>
-                            <div class="col-span-7 font-bold text-white" id="user-name-display">You</div>
-                            <div class="col-span-3 text-right font-bold text-yellow-400" id="user-final-score">0.0</div>
+                        <div class="bg-slate-900/50 rounded-2xl border border-slate-700 flex-grow overflow-hidden flex flex-col">
+                            <div class="p-3 border-b border-slate-700 grid grid-cols-12 text-xs font-bold text-slate-500 uppercase tracking-wider">
+                                <div class="col-span-2 text-center">Rank</div>
+                                <div class="col-span-6">Student</div>
+                                <div class="col-span-2 text-center">Time</div>
+                                <div class="col-span-2 text-right">Score</div>
+                            </div>
+                            <div class="overflow-y-auto custom-scroll flex-grow" id="leaderboard-list">
+                                <!-- Dynamic Content -->
+                                <div class="p-4 text-center text-slate-500 text-sm">Loading rankings...</div>
+                            </div>
+                            <!-- Current User Fixed at Bottom -->
+                            <div class="p-4 bg-green-900/20 border-t border-green-500/30 grid grid-cols-12 items-center text-sm" id="user-rank-row">
+                                <div class="col-span-2 text-center font-bold text-green-400" id="user-rank">#--</div>
+                                <div class="col-span-6 font-bold text-white truncate" id="user-name-display">You</div>
+                                <div class="col-span-2 text-center text-slate-300" id="user-time-display">--</div>
+                                <div class="col-span-2 text-right font-bold text-yellow-400" id="user-final-score">0.0</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Placeholders for widgets moved to end screen -->
-            <div id="end-screen-promos"></div>
+            <div id="end-screen-promos" class="space-y-8"></div>
         </div>
 
     </main>
@@ -729,12 +697,10 @@
     </footer>
 
     <script type="module">
-        // Import Firebase Functions
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js';
         import { getAuth, signInAnonymously, signInWithCustomToken } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js';
-        import { getFirestore, collection, addDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js';
+        import { getFirestore, collection, addDoc, onSnapshot, doc, getDoc } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js';
 
-        // Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyDZLWUMldpxj6K_tabkjmS6qcAYPy97FdI",
             authDomain: "sscinsight-test-portal.firebaseapp.com",
@@ -748,148 +714,199 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
         
-        // This will change based on selected test
         let currentAppId = 'ssc-insight-synonyms-test-01'; 
         let currentUserId = null;
         let unsubscribeLeaderboard = null;
+        let activeTestsMap = {};
 
-        // Initialize App & Auth
+        // Generate placeholders for Tests 3-30
+        const testGrid = document.getElementById('test-grid');
+        for (let i = 3; i <= 30; i++) {
+            const btn = document.createElement('button');
+            const testId = `test${i}`;
+            const paddedId = i.toString().padStart(2, '0');
+            btn.id = `btn-${testId}`;
+            btn.onclick = () => window.redirectToQuiz(testId);
+            btn.disabled = true;
+            btn.className = "test-card-hover locked-test text-left bg-slate-800/30 border border-slate-700 p-4 rounded-xl transition-all duration-300 group";
+            btn.innerHTML = `
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-slate-500 font-bold text-sm">TEST ${paddedId}</span>
+                    <i class="fas fa-lock text-slate-600 text-xs"></i>
+                </div>
+                <h3 class="text-base font-bold text-slate-500 mb-1">Coming Soon</h3>
+                <div class="w-full h-1 bg-slate-800 rounded-full mt-2"></div>
+            `;
+            testGrid.appendChild(btn);
+        }
+
         async function initApp() {
             try {
                 if (typeof window.__initial_auth_token !== 'undefined' && window.__initial_auth_token) {
                     await signInWithCustomToken(auth, window.__initial_auth_token);
                 } else {
-                    await signInAnonymously(auth).catch(e => {
-                        console.warn("Auth failed, leaderboard will be local-only.", e);
-                    });
+                    await signInAnonymously(auth);
                 }
                 
                 if (auth.currentUser) {
                     currentUserId = auth.currentUser.uid;
-                    // Log Visitor for Admin Dashboard
-                    logVisitor(auth.currentUser.uid);
-                } else {
-                    console.log("Running in offline mode.");
-                    currentUserId = 'local-user-' + Date.now();
+                    listenToTestConfig(); // Listen for admin toggles
                 }
-                
+                checkForResults();
             } catch (error) {
                 console.error("Auth Init Error:", error);
             }
         }
 
-        // New function to log visitors
-        async function logVisitor(uid) {
-            try {
-                // Use a general app ID for admin analytics
-                const adminAppId = 'ssc-insight-general';
-                const visitorsRef = collection(db, 'artifacts', adminAppId, 'public', 'data', 'visitors');
-                // We add a document for every visit. 
-                // In a real app, you might want to check if user visited today to avoid spam,
-                // but for this dashboard requirement, this is sufficient.
-                await addDoc(visitorsRef, {
-                    userId: uid,
-                    timestamp: new Date().toISOString(),
-                    userAgent: navigator.userAgent
-                });
-            } catch (e) {
-                console.error("Tracking error", e);
-            }
-        }
-        
-        initApp();
-
-        // Firestore Listener
-        const leaderboardList = document.getElementById('leaderboard-list');
-        const participantCountDisplay = document.getElementById('participant-count-display');
-        let allScoresLocal = []; 
-        
-        function setupLeaderboardListener(testId) {
-             if (!auth.currentUser) return; 
-             
-             // Unsubscribe previous listener if exists
-             if (unsubscribeLeaderboard) {
-                 unsubscribeLeaderboard();
-                 allScoresLocal = []; // Clear local cache when switching
-             }
-
-             // Determine Collection Path based on Test ID
-             currentAppId = testId === 'test1' ? 'ssc-insight-synonyms-test-01' : 'ssc-insight-synonyms-test-02';
-             const titleSuffix = testId === 'test1' ? '(Test 01)' : '(Test 02)';
-             document.getElementById('leaderboard-title').innerText = `Live Rankings ${titleSuffix}`;
-
-             const leaderboardRef = collection(db, 'artifacts', currentAppId, 'public', 'data', 'leaderboard');
-             
-             unsubscribeLeaderboard = onSnapshot(leaderboardRef, (snapshot) => {
-                 const scores = [];
-                 snapshot.forEach((doc) => {
-                     scores.push(doc.data());
-                 });
-                 allScoresLocal = scores;
-                 updateLeaderboardUI();
-             }, (error) => {
-                 console.error("Leaderboard fetch error:", error);
-             });
-        }
-        
-        function updateLeaderboardUI() {
-            // Sort by score descending
-            allScoresLocal.sort((a, b) => b.score - a.score);
-
-            // Update Count
-            participantCountDisplay.innerText = allScoresLocal.length.toLocaleString();
-
-            // Render List
-            renderLeaderboardList(allScoresLocal);
-            
-            // Update User Rank
-            if (window.finalUserScore !== undefined) {
-                const rank = allScoresLocal.findIndex(s => s.userId === currentUserId && s.score === window.finalUserScore) + 1;
-                document.getElementById('user-rank').innerText = rank > 0 ? `#${rank}` : '#--';
-            }
-        }
-        
-        function renderLeaderboardList(sortedScores) {
-            leaderboardList.innerHTML = '';
-            // Top 50
-            const top50 = sortedScores.slice(0, 50);
-            
-            if (top50.length === 0) {
-                leaderboardList.innerHTML = '<div class="p-4 text-center text-slate-500 text-sm">Be the first to join!</div>';
-                return;
-            }
-
-            top50.forEach((entry, index) => {
-                const isUser = entry.userId === currentUserId;
-                const row = document.createElement('div');
-                row.className = `p-3 border-b border-slate-700/50 grid grid-cols-12 items-center hover:bg-slate-800/30 transition-colors ${isUser ? 'bg-green-900/10' : ''}`;
-                
-                let rankIcon = `<span class="text-slate-400 font-bold">#${index + 1}</span>`;
-                if(index === 0) rankIcon = '<i class="fas fa-crown text-yellow-400"></i>';
-                if(index === 1) rankIcon = '<i class="fas fa-medal text-slate-300"></i>';
-                if(index === 2) rankIcon = '<i class="fas fa-medal text-amber-600"></i>';
-
-                row.innerHTML = `
-                    <div class="col-span-2 text-center">${rankIcon}</div>
-                    <div class="col-span-7 text-sm text-slate-200 font-medium truncate">${entry.name} ${isUser ? '(You)' : ''}</div>
-                    <div class="col-span-3 text-right text-sm font-bold text-green-400">${parseFloat(entry.score).toFixed(1)}</div>
-                `;
-                leaderboardList.appendChild(row);
+        // Listen to Admin Config
+        function listenToTestConfig() {
+            // FIXED PATH: Added 'data' to ensure 6 segments (even number)
+            const configRef = doc(db, 'artifacts', 'ssc-insight-general', 'public', 'data', 'config', 'test_status');
+            onSnapshot(configRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    activeTestsMap = docSnap.data().active_tests || {};
+                    applyTestConfig();
+                } else {
+                    // Default: only test 1 & 2
+                    activeTestsMap = { test1: true, test2: true };
+                    applyTestConfig();
+                }
             });
         }
 
-        async function saveScoreToFirestore(userName, score) {
+        function applyTestConfig() {
+            const name = document.getElementById('student-name').value.trim();
+            const hasName = name.length > 0;
+
+            for (let i = 1; i <= 30; i++) {
+                const testId = `test${i}`;
+                const btn = document.getElementById(`btn-${testId}`);
+                if (!btn) continue;
+
+                const isActive = activeTestsMap[testId] === true;
+                
+                if (isActive) {
+                    // It's available, but still needs name
+                    btn.classList.remove('locked-test');
+                    btn.classList.add('unlocked-test');
+                    // Styling updates for active tests
+                    if (btn.querySelector('h3').innerText === 'Coming Soon') {
+                        btn.querySelector('h3').innerText = `Practice Set ${i.toString().padStart(2,'0')}`;
+                        btn.querySelector('h3').classList.add('text-white');
+                        btn.querySelector('h3').classList.remove('text-slate-500');
+                        btn.querySelector('.fas.fa-lock')?.remove();
+                    }
+                    btn.disabled = !hasName;
+                    if(!hasName) btn.classList.add('opacity-50', 'cursor-not-allowed');
+                    else btn.classList.remove('opacity-50', 'cursor-not-allowed');
+
+                } else {
+                    // It's strictly locked by admin
+                    btn.disabled = true;
+                    btn.classList.add('locked-test');
+                    btn.classList.remove('unlocked-test', 'test-card-hover');
+                }
+            }
+        }
+
+        // Global toggle function called on input keyup
+        window.toggleTestButtons = () => {
+            applyTestConfig(); // Reuse the main config logic which checks name presence
+        };
+
+        // --- Result & Leaderboard Logic ---
+        let allScoresLocal = [];
+
+        function checkForResults() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const action = urlParams.get('action');
+
+            if (action === 'result') {
+                const score = parseFloat(urlParams.get('score'));
+                const total = parseInt(urlParams.get('total'));
+                const accuracy = parseInt(urlParams.get('accuracy'));
+                const sscScore = parseFloat(urlParams.get('sscScore'));
+                const time = urlParams.get('time') || "0m 0s";
+                const name = urlParams.get('name');
+                const testId = urlParams.get('testId');
+
+                // UI Switches
+                document.getElementById('start-screen').classList.add('hidden');
+                document.getElementById('result-screen').classList.remove('hidden');
+
+                // Fill Data
+                document.getElementById('ssc-score').innerText = sscScore.toFixed(1);
+                document.getElementById('time-taken').innerText = time;
+                document.getElementById('user-final-score').innerText = sscScore.toFixed(1);
+                document.getElementById('user-name-display').innerText = name + " (You)";
+                document.getElementById('user-time-display').innerText = time;
+
+                // Move Promo Widgets
+                const ecoWidget = document.getElementById('eco-widget');
+                const ytWidget = document.getElementById('yt-widget');
+                const endContainer = document.getElementById('end-screen-promos');
+                if (ecoWidget) endContainer.appendChild(ecoWidget.cloneNode(true));
+                if (ytWidget) endContainer.appendChild(ytWidget.cloneNode(true));
+
+                // 1. Render Pie Chart
+                const wrong = total - score;
+                const ctx = document.getElementById('scoreChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Correct', 'Wrong'],
+                        datasets: [{
+                            data: [score, wrong],
+                            backgroundColor: ['#22c55e', '#ef4444'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        cutout: '75%',
+                        plugins: { legend: { display: false } }
+                    }
+                });
+
+                // 2. Bengali Motivation Logic
+                const motTitle = document.getElementById('motivation-title');
+                const motText = document.getElementById('motivation-text');
+                
+                if (accuracy >= 80) {
+                    motTitle.innerText = "অসাধারণ! (Excellent!)";
+                    motText.innerText = "তোমার প্রস্তুতি খুবই ভালো। এভাবে চালিয়ে যাও, সাফল্য আসবেই।";
+                } else if (accuracy >= 50) {
+                    motTitle.innerText = "ভালো প্রচেষ্টা (Good Job)";
+                    motText.innerText = "তুমি ভালো করছো, কিন্তু ভোকাবুলারিতে আরও একটু জোর দিলে টপার হতে পারবে।";
+                } else {
+                    motTitle.innerText = "হাল ছেড়ো না (Don't Give Up)";
+                    motText.innerText = "ভুল থেকেই আমরা শিখি। সময় নিয়ে পড়ো, পরের বার নিশ্চয়ই ভালো করবে।";
+                }
+
+                // 3. Save Score & Load Leaderboard
+                window.finalUserScore = sscScore;
+                saveScoreToFirestore(name, sscScore, testId, time);
+                setupLeaderboardListener(testId, sscScore, time); // Pass current score for instant compare
+                
+                if (accuracy > 50) fireConfetti();
+            }
+        }
+
+        async function saveScoreToFirestore(userName, score, testId, timeString) {
+            currentAppId = testId === 'test1' ? 'ssc-insight-synonyms-test-01' : (testId === 'test2' ? 'ssc-insight-synonyms-test-02' : `ssc-insight-test-${testId}`);
+            
+            // Check if active before saving to prevent hacks (optional, but good)
+            if (activeTestsMap[testId] === false) return; 
+
             const data = {
                 name: userName,
                 score: score,
+                time: timeString, // Saving time
                 userId: currentUserId,
                 timestamp: new Date().toISOString()
             };
             
-            // Optimistic update
-            allScoresLocal.push(data);
-            updateLeaderboardUI();
-
+            // Local Optimistic update handled in listener usually, but pushed here
             if (auth.currentUser) {
                 try {
                     const leaderboardRef = collection(db, 'artifacts', currentAppId, 'public', 'data', 'leaderboard');
@@ -900,322 +917,97 @@
             }
         }
 
-        // Expose to window
-        window.saveScoreToFirestore = saveScoreToFirestore;
-        window.setupLeaderboardListener = setupLeaderboardListener;
-    </script>
+        function setupLeaderboardListener(testId, userScore, userTime) {
+             if (!auth.currentUser) return;
+             if (unsubscribeLeaderboard) unsubscribeLeaderboard();
 
-    <script>
-        // --- Questions Data ---
-        
-        // Test 01 (Previous Set)
-        const questionsTest01 = [
-            {q: "Select the synonym of the word: ABET", options: ["Prevent", "Incite", "Pacify", "Deter"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Abet' means to encourage or assist someone to do something wrong, often a crime. 'Incite' also means to encourage or stir up violent or unlawful behavior.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Abet' মানে কোনো দুষ্কর্ম বা খারাপ কাজে সাহায্য করা বা উৎসাহ দেওয়া। 'Incite' মানেও খারাপ কাজে প্ররোচিত করা বা উস্কানি দেওয়া।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Prevent (বাধা দেওয়া), Pacify (শান্ত করা), Deter (ভয় দেখিয়ে নিবৃত্ত করা)।</p></div>`},
-            {q: "What is the meaning of ABEYANCE?", options: ["Permanent closure", "Temporary suspension", "Complete obedience", "False accusation"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Abeyance' refers to a state of temporary disuse or suspension. It means something is put "on hold" for a while.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Abeyance' মানে হলো কোনো কিছু সাময়িকভাবে স্থগিত বা অকেজো থাকা। এটি স্থায়ী সমাপ্তি নয়, বরং সাময়িক বিরতি।</p></div></div>`},
-            {q: "Choose the correct antonym (opposite) for ABJURE.", options: ["Renounce", "Embrace", "Reject", "Deny"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Abjure' means to solemnly renounce or give up a belief, cause, or claim. 'Embrace' means to accept or support something willingly, making it the antonym.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Abjure' মানে শপথ করে কোনো মত বা বিশ্বাস বর্জন করা। 'Embrace' মানে কোনো কিছুকে সাদরে গ্রহণ করা, যা এর ঠিক বিপরীত।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Renounce (বর্জন করা - Synonym), Reject (প্রত্যাখ্যান করা), Deny (অস্বীকার করা)।</p></div>`},
-            {q: "Which scenario best describes the word ABSCOND?", options: ["A thief surrendering to the police.", "A student arguing with a teacher.", "An employee leaving work early with permission.", "A cashier running away secretly with stolen money."], correct: 3, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Abscond' means to leave hurriedly and secretly, typically to avoid detection of or arrest for an unlawful action such as theft.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Abscond' মানে হলো ধরা পড়ার ভয়ে বা বিচার এড়াতে গোপনে পালিয়ে যাওয়া।</p></div></div>`},
-            {q: "Select the word that means 'difficult to understand; obscure'.", options: ["Abstruse", "Affable", "Adroit", "Aghast"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Abstruse' describes something that is difficult to understand or obscure.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Abstruse' মানে দুর্বোধ্য বা যা বোঝা খুব কঠিন।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Affable (বন্ধুভাবাপন্ন), Adroit (দক্ষ), Aghast (আতঙ্কিত)।</p></div>`},
-            {q: "Someone with great ACUMEN possesses:", options: ["Physical strength", "Keen insight and good judgment", "A friendly nature", "A tendency to argue"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Acumen' is the ability to make good judgments and quick decisions, typically in a particular domain.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Acumen' মানে হলো সূক্ষ্ম বিচারশক্তি বা ধীশক্তি।</p></div></div>`},
-            {q: "What does ADMONISH mean?", options: ["To praise highly", "To warn or reprimand firmly", "To assist in a crime", "To lessen pain"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Admonish' means to warn or reprimand someone firmly for a fault or wrong.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Admonish' মানে কাউকে সতর্ক করা বা ভর্ৎসনা (বকাঝকা) করা।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: To praise highly (Accolade/Adulation), To assist in a crime (Abet), To lessen pain (Alleviate).</p></div>`},
-            {q: "Which word is a synonym for ALLEVIATE?", options: ["Aggravate", "Mitigate", "Instigate", "Abrogate"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Alleviate' means to make suffering, deficiency, or a problem less severe. 'Mitigate' has a very similar meaning (to make less severe).</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Alleviate' মানে উপশম করা বা কমানো (যেমন ব্যথা বা কষ্ট)। 'Mitigate' মানেও প্রশমিত করা বা লাঘব করা।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Aggravate (বাড়িয়ে তোলা/অবনতি ঘটানো - Antonym), Instigate (উস্কানি দেওয়া), Abrogate (বাতিল করা)।</p></div>`},
-            {q: "An ALTERCATION is best described as:", options: ["A noisy argument or disagreement", "A modification or change", "A mutual agreement", "A high award"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">An 'Altercation' is a noisy argument or disagreement, especially in public.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Altercation' মানে হলো ঝগড়া, বিবাদ বা কথা কাটাকাটি।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Note: Don't confuse it with 'Alteration' (পরিবর্তন/Modification).</p></div>`},
-            {q: "What is the meaning of AGNOSTIC?", options: ["Someone who believes in many gods", "Someone who denies the existence of God", "Someone who believes that nothing is known about the existence of God", "Someone who has intense pain"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">An 'Agnostic' is a person who believes that nothing is known or can be known of the existence or nature of God or of anything beyond material phenomena.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Agnostic' বা অজ্ঞেয়বাদী হলেন তিনি, যিনি মনে করেন ঈশ্বরের অস্তিত্ব সম্পর্কে নিশ্চিতভাবে কিছু জানা সম্ভব নয়।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Polytheist (Believes in many gods), Atheist (Denies existence of God - নাস্তিক), Agony (Intense pain)।</p></div>`},
-            {q: "What is the meaning of ABROGATE?", options: ["To create a new law", "To repeal or abolish a law/custom", "To shorten a text", "To support a criminal"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Abrogate' means to repeal or do away with (a law, right, or formal agreement).</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Abrogate' মানে কোনো আইন বা প্রথা বাতিল বা রদ করা।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Shorten a text (Abridge), Support a criminal (Abet).</p></div>`},
-            {q: "If someone does something with ALACRITY, how are they doing it?", options: ["With hesitation and fear", "With brisk and cheerful readiness", "With extreme anger", "With suspicion"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Alacrity' means brisk and cheerful readiness or eagerness.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Alacrity' মানে হলো কোনো কাজ করার প্রবল উৎসাহ বা তৎপরতা।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Hesitation (দ্বিধা), Suspicion (সন্দেহ)।</p></div>`},
-            {q: "Choose the synonym for ADULATION.", options: ["Criticism", "Flattery", "Apathy", "Warning"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Adulation' refers to excessive admiration or praise, often insincere (flattery).</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Adulation' মানে হলো অতিপ্রশংসা বা তোষামোদ করা।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Criticism (সমালোচনা), Apathy (অনীহা), Warning (সতর্কবার্তা - Admonition)।</p></div>`},
-            {q: "The word AFFABLE is best defined as:", options: ["Difficult to talk to", "Friendly and good-natured", "Wealthy and powerful", "Skilled and clever"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Affable' means friendly, good-natured, or easy to talk to.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Affable' মানে হলো সদালাপী, মিশুকে বা বন্ধুভাবাপন্ন।</p></div></div>`},
-            {q: "An ADVERSARY is a person who:", options: ["Helps you in difficult times", "Is your opponent in a contest or conflict", "Gives you advice", "Praises your work"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">An 'Adversary' is one's opponent in a contest, conflict, or dispute.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Adversary' মানে হলো প্রতিপক্ষ বা শত্রু।</p></div></div>`},
-            {q: "Select the antonym for ABOMINABLE.", options: ["Detestable", "Delightful", "Loathsome", "Terrible"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Abominable' means causing moral revulsion; very bad or unpleasant. 'Delightful' implies something very pleasant, making it the antonym.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Abominable' মানে জঘন্য বা ঘৃণ্য। 'Delightful' মানে আনন্দদায়ক বা মনোরম, যা এর বিপরীত।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Detestable, Loathsome (ঘৃণ্য - Synonyms)।</p></div>`},
-            {q: "Which sentence uses the word ACCEDE correctly?", options: ["The king refused to accede to the demands of the rebels.", "He tried to accede the speed of the car.", "The doctor gave him a pill to accede the pain.", "He was arrested for accede to a crime."], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Accede' means to agree to a demand, request, or treaty (often used with 'to'). It can also mean to assume an office (e.g., accede to the throne).</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Accede' মানে কোনো দাবি বা অনুরোধে রাজি হওয়া।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Correction: Option B should be 'exceed/accelerate', C should be 'alleviate', D should be 'abetting'.</p></div>`},
-            {q: "What does ACCOLADES refer to?", options: ["Financial penalties", "Awards or privileges granted as a special honor", "A sharp slope on a hill", "A type of weapon"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Accolades' are awards, honors, or expressions of praise.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Accolades' মানে হলো প্রশংসা, সম্মান বা খেতাব।</p></div></div>`},
-            {q: "Someone who is ADROIT is:", options: ["Clumsy", "Clever or skillful in using the hands or mind", "Lazy and inactive", "Extremely tall"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Adroit' means clever or skillful in using the hands or mind.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Adroit' মানে হলো দক্ষ, নিপুণ বা কৌশলী।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Clumsy (আনাড়ি - Antonym)।</p></div>`},
-            {q: "The word AGHAST means:", options: ["Excited and happy", "Filled with horror or shock", "Moving quickly", "Completely exhausted"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Aghast' means filled with horror or shock.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Aghast' মানে ভয়ে বা বিস্ময়ে স্তম্ভিত বা আতঙ্কিত হয়ে যাওয়া।</p></div></div>`},
-            {q: "What is the meaning of ADVENT?", options: ["The departure of someone", "An adventure trip", "The arrival of a notable person, thing, or event", "A type of advertisement"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Advent' refers to the arrival of a notable person, thing, or event.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Advent' মানে হলো কোনো বিশেষ ব্যক্তি বা বস্তুর আগমন বা আবির্ভাব।</p></div></div>`},
-            {q: "An ALIBI is used to prove that:", options: ["A person is guilty", "A person was elsewhere when a crime was committed", "A person is mentally ill", "A person is very wealthy"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">An 'Alibi' is a claim or piece of evidence that one was elsewhere when an act, typically a criminal one, is alleged to have taken place.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Alibi' হলো একটি প্রমাণ বা অজুহাত যা দেখায় যে অপরাধ ঘটার সময় অভিযুক্ত ব্যক্তি অন্য কোনো স্থানে ছিলেন।</p></div></div>`},
-            {q: "Which word describes intense mental or physical suffering?", options: ["Agony", "Apathy", "Alibi", "Acumen"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Agony' means extreme physical or mental suffering.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Agony' মানে তীব্র যন্ত্রণা বা কষ্ট।</p></div></div>`},
-            {q: "Who is an ALTRUIST?", options: ["A person who loves money", "A person who eats too much", "A person who dislikes mankind", "A person who shows unselfish concern for the welfare of others"], correct: 3, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">An 'Altruist' is someone who cares about the well-being of others above their own interests. It is often used as a synonym for a philanthropist.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Altruist' বা পরার্থপর ব্যক্তি হলেন তিনি, যিনি নিজের স্বার্থের চেয়ে অন্যের মঙ্গলের কথা বেশি ভাবেন।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Dislikes mankind (Misanthrope), Loves money (Materialist/Miser), Eats too much (Glutton).</p></div>`},
-            {q: "Select the synonym for AMELIORATE.", options: ["Worsen", "Improve", "Freeze", "Hide"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Ameliorate' means to make something bad or unsatisfactory better.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Ameliorate' মানে কোনো খারাপ অবস্থা বা পরিস্থিতির উন্নতি ঘটানো বা ভালো করা।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Worsen (অবনতি ঘটানো - Antonym), Hide (লুকানো)।</p></div>`}
-        ];
+             currentAppId = testId === 'test1' ? 'ssc-insight-synonyms-test-01' : (testId === 'test2' ? 'ssc-insight-synonyms-test-02' : `ssc-insight-test-${testId}`);
+             document.getElementById('leaderboard-title').innerText = `Live Rankings (${testId.toUpperCase()})`;
 
-        // Test 02 (New Set - Manually Shuffled Options)
-        const questionsTest02 = [
-            {q: "Select the synonym of BELLIGERENT.", options: ["Hostile", "Peaceful", "Lazy", "Weak"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Belligerent' means hostile and aggressive. It is often used to describe someone eager to fight.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Belligerent' মানে যুদ্ধংদেহী, মারমুখো বা ঝগড়াটে।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Peaceful (শান্তিপুর্ণ), Lazy (অলস), Weak (দুর্বল)।</p></div>`},
-            {q: "What is the meaning of BENEVOLENT?", options: ["Cruel", "Greedy", "Careless", "Kind and charitable"], correct: 3, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Benevolent' means well meaning and kindly; charitable.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Benevolent' মানে দয়ালু বা হিতৈষী।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Cruel (নিষ্ঠুর - Antonym), Greedy (লোভী), Careless (অযত্নশীল)।</p></div>`},
-            {q: "Select the word that means 'Frank and outspoken'.", options: ["Secretive", "Shy", "Candid", "Cunning"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Candid' means truthful and straightforward; frank.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Candid' মানে স্পষ্টবাদী বা অকপট।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Secretive (গোপনপ্রিয়), Shy (লাজুক), Cunning (ধূর্ত)।</p></div>`},
-            {q: "Choose the antonym for DILIGENT.", options: ["Hardworking", "Active", "Careful", "Lazy"], correct: 3, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Diligent' means having or showing care and conscientiousness in one's work or duties. 'Lazy' is the opposite.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Diligent' মানে পরিশ্রমী বা অধ্যবসায়ী। 'Lazy' মানে অলস, যা এর বিপরীত।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Hardworking (পরিশ্রমী - Synonym), Active (সক্রিয়), Careful (সতর্ক)।</p></div>`},
-            {q: "What does ELUSIVE mean?", options: ["Difficult to find or catch", "Easy to find", "Very heavy", "Bright and colorful"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Elusive' means difficult to find, catch, or achieve.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Elusive' মানে অধরা বা পলায়নপর, যা সহজে ধরা দেয় না।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Easy to find (সহজে পাওয়া যায়), Heavy (ভারী), Bright (উজ্জ্বল)।</p></div>`},
-            {q: "A person who is GREGARIOUS is:", options: ["Lonely", "Rude", "Sociable and likes groups", "Fearful"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Gregarious' describes a person who enjoys the company of others; sociable.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Gregarious' মানে মিশুকে বা যারা দলবদ্ধ হয়ে থাকতে ভালোবাসে।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Lonely (একাকী), Rude (অভদ্র), Fearful (ভীত)।</p></div>`},
-            {q: "Select the synonym for HAUGHTY.", options: ["Humble", "Scared", "Polite", "Arrogant"], correct: 3, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Haughty' means arrogantly superior and disdainful.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Haughty' মানে উদ্ধত বা অহংকারী।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Humble (বিনয়ী - Antonym), Scared (ভীত), Polite (ভদ্র)।</p></div>`},
-            {q: "If something is IMPECCABLE, it is:", options: ["Full of mistakes", "Broken", "Flawless or perfect", "Dirty"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Impeccable' means accordance with the highest standards; faultless.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Impeccable' মানে নিখুঁত বা দোষহীন।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Full of mistakes (ভুলে ভরা), Broken (ভাঙা), Dirty (নোংরা)।</p></div>`},
-            {q: "What is the meaning of JUVENILE?", options: ["Wise", "Young or childish", "Old", "Sick"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Juvenile' refers to young people or birds; childish or immature.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Juvenile' মানে কিশোর বা অপরিণত।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Wise (জ্ঞানী), Old (বৃদ্ধ), Sick (অসুস্থ)।</p></div>`},
-            {q: "Someone who is KEEN shows:", options: ["Indifference", "Stupidity", "Laziness", "Eagerness or sharpness"], correct: 3, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Keen' means having or showing eagerness or enthusiasm; sharp.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Keen' মানে প্রবল আগ্রহী বা তীক্ষ্ণ।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Indifference (উদাসীনতা), Stupidity (বোকামি), Laziness (অলসতা)।</p></div>`},
-            {q: "Select the synonym for LUCID.", options: ["Confusing", "Dark", "Clear", "Crazy"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Lucid' means expressed clearly; easy to understand.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Lucid' মানে সহজবোধ্য বা স্বচ্ছ।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Confusing (বিভ্রান্তিকর - Antonym), Dark (অন্ধকার), Crazy (পাগল)।</p></div>`},
-            {q: "A METICULOUS person is:", options: ["Careless", "Messy", "Rude", "Very careful and precise"], correct: 3, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Meticulous' means showing great attention to detail; very careful and precise.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Meticulous' মানে অতি সতর্ক বা খুঁতখুঁতে।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Careless (অযত্নশীল), Messy (অগোছালো), Rude (অভদ্র)।</p></div>`},
-            {q: "What is a NOVICE?", options: ["A beginner", "An expert", "A teacher", "A rich person"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">A 'Novice' is a person new to or inexperienced in a field or situation.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Novice' মানে শিক্ষানবিস বা অনভিজ্ঞ ব্যক্তি।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: An expert (বিশেষজ্ঞ - Antonym), A teacher (শিক্ষক), A rich person (ধনী ব্যক্তি)।</p></div>`},
-            {q: "Something that is OBSOLETE is:", options: ["Modern", "Popular", "Outdated or no longer used", "New"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Obsolete' means no longer produced or used; out of date.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Obsolete' মানে সেকেলে বা অপ্রচলিত।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Modern (আধুনিক), Popular (জনপ্রিয়), New (নতুন)।</p></div>`},
-            {q: "Select the synonym for PRUDENT.", options: ["Wise", "Foolish", "Fast", "Angry"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Prudent' means acting with or showing care and thought for the future; wise.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Prudent' মানে বিচক্ষণ বা দূরদর্শী।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Foolish (বোকা - Antonym), Fast (দ্রুত), Angry (রাগান্বিত)।</p></div>`},
-            {q: "To QUELL something means to:", options: ["Start it", "Increase it", "Watch it", "Suppress or put an end to it"], correct: 3, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Quell' means to put an end to (a rebellion or other disorder), typically by the use of force; to silence.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Quell' মানে দমন করা বা শান্ত করা।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Start it (শুরু করা), Increase it (বাড়ানো), Watch it (লক্ষ করা)।</p></div>`},
-            {q: "Which word best describes someone who is FRUGAL?", options: ["Spends money freely", "Very poor", "Economical and thrifty", "Dishonest"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Frugal' means sparing or economical with regard to money or food.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Frugal' মানে মিতব্যয়ী বা হিসেবী।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Spends money freely (বাজে খরচ করা - Antonym), Very poor (খুব গরিব), Dishonest (অসৎ)।</p></div>`},
-            {q: "If a person is ROBUST, they are:", options: ["Weak and sickly", "Small", "Scared", "Strong and healthy"], correct: 3, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Robust' means strong and healthy; vigorous.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Robust' মানে বলিষ্ঠ বা শক্তপোক্ত।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Weak and sickly (দুর্বল ও অসুস্থ), Small (ছোট), Scared (ভীত)।</p></div>`},
-            {q: "SPORADIC means:", options: ["Continuous", "Permanent", "Occasional or scattered", "Heavy"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Sporadic' means occurring at irregular intervals or only in a few places; scattered or isolated.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Sporadic' মানে বিক্ষিপ্ত বা অনিয়মিত।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Continuous (ধারাবাহিক - Antonym), Permanent (স্থায়ী), Heavy (ভারী)।</p></div>`},
-            {q: "Select the antonym for TRANSIENT.", options: ["Permanent", "Temporary", "Short-lived", "Fleeting"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Transient' means lasting only for a short time; impermanent. 'Permanent' is the opposite.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Transient' মানে ক্ষণস্থায়ী। 'Permanent' মানে স্থায়ী, যা এর বিপরীত।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Temporary (অস্থায়ী - Synonym), Short-lived (স্বল্পস্থায়ী), Fleeting (দ্রুত পলায়নপর)।</p></div>`},
-            {q: "What does UPROAR mean?", options: ["Silence", "A public expression of protest or outrage", "A type of bird", "Peaceful agreement"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Uproar' refers to a loud and impassioned noise or disturbance; a public expression of protest.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Uproar' মানে হট্টগোল, কলরোল বা গণঅসন্তোষ।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Silence (নিস্তব্ধতা), A type of bird (একধরণের পাখি), Peaceful agreement (শান্তিপূর্ণ চুক্তি)।</p></div>`},
-            {q: "A VIGILANT person is:", options: ["Careless", "Sleepy", "Watchful and alert", "Lazy"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Vigilant' means keeping careful watch for possible danger or difficulties.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Vigilant' মানে সতর্ক বা পাহারারত।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Careless (অসাবধান), Sleepy (ঘুমন্ত), Lazy (অলস)।</p></div>`},
-            {q: "To WAIVE a right means to:", options: ["Claim it", "Fight for it", "Sell it", "Refrain from insisting on or using it"], correct: 3, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Waive' means to refrain from insisting on or using (a right or claim).</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Waive' মানে কোনো অধিকার পরিত্যাগ করা বা মওকুফ করা।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Claim it (দাবি করা), Fight for it (লড়াই করা), Sell it (বিক্রি করা)।</p></div>`},
-            {q: "Which word is a synonym for YIELD?", options: ["Resist", "Attack", "Surrender", "Hide"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Yield' means to give way to arguments, demands, or pressure; surrender.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Yield' মানে নতি স্বীকার করা বা বশ্যতা মেনে নেওয়া।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: Resist (প্রতিরোধ করা - Antonym), Attack (আক্রমণ করা), Hide (লুকানো)।</p></div>`},
-            {q: "What is the ZENITH?", options: ["The lowest point", "The middle", "The end", "The time at which something is most powerful or successful"], correct: 3, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-green-400 text-xs uppercase mb-1">English Definition</p><p class="text-slate-200">'Zenith' is the time at which something is most powerful or successful; the highest point.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Zenith' মানে সুউচ্চ শিখর বা উন্নতির চরম সীমা।</p></div><p class="text-xs text-slate-500 italic border-t border-slate-700 pt-2">Other options: The lowest point (সর্বনিম্ন বিন্দু - Nadir), The middle (মাঝামাঝি), The end (সমাপ্তি)।</p></div>`}
-        ];
-
-        // Global State
-        let activeQuestions = [];
-        let currentQuestion = 0;
-        let score = 0;
-        let answered = false;
-        let startTime;
-        let endTime;
-        let userName = "";
-        let selectedTestId = "";
-
-        // DOM Elements
-        const startScreen = document.getElementById('start-screen');
-        const quizContainer = document.getElementById('quiz-container');
-        const resultScreen = document.getElementById('result-screen');
-        
-        const studentNameInput = document.getElementById('student-name');
-        const btnTest1 = document.getElementById('btn-test-1');
-        const btnTest2 = document.getElementById('btn-test-2');
-
-        const questionText = document.getElementById('question-text');
-        const optionsContainer = document.getElementById('options-container');
-        const currentQNum = document.getElementById('current-q-num');
-        const scoreDisplay = document.getElementById('score-display');
-        const progressBar = document.getElementById('progress-bar');
-        
-        const feedbackSection = document.getElementById('feedback-section');
-        const feedbackMessage = document.getElementById('feedback-message');
-        const explanationContent = document.getElementById('explanation-content');
-        const toggleExplanationBtn = document.getElementById('toggle-explanation-btn');
-        
-        const nextBtn = document.getElementById('next-btn');
-        const finishBtn = document.getElementById('finish-btn');
-        
-        const finalScore = document.getElementById('final-score');
-        const finalAccuracy = document.getElementById('final-accuracy');
-        const timeTakenDisplay = document.getElementById('time-taken');
-        const sscScoreDisplay = document.getElementById('ssc-score');
-        const resultMessage = document.getElementById('result-message');
-        const recommendationCard = document.getElementById('recommendation-card');
-
-        // Attach Functions to Window for Global Access
-        window.startQuiz = startQuiz;
-        window.checkAnswer = checkAnswer;
-        window.toggleExplanation = toggleExplanation;
-        window.nextQuestion = nextQuestion;
-        window.finishQuiz = finishQuiz;
-        window.shareTest = shareTest;
-        window.toggleTestButtons = toggleTestButtons;
-
-        // Enable/Disable test buttons based on input
-        function toggleTestButtons() {
-            const name = studentNameInput.value.trim();
-            const hasName = name.length > 0;
-            btnTest1.disabled = !hasName;
-            btnTest2.disabled = !hasName;
+             const leaderboardRef = collection(db, 'artifacts', currentAppId, 'public', 'data', 'leaderboard');
+             
+             unsubscribeLeaderboard = onSnapshot(leaderboardRef, (snapshot) => {
+                 const scores = [];
+                 snapshot.forEach((doc) => scores.push(doc.data()));
+                 allScoresLocal = scores;
+                 updateLeaderboardUI(userScore, userTime);
+             });
         }
 
-        function startQuiz(testId) {
-            userName = studentNameInput.value.trim();
-            if (!userName) {
-                alert("Please enter your name to unlock the tests.");
-                return;
-            }
+        function updateLeaderboardUI(currentUserScore, currentUserTime) {
+            allScoresLocal.sort((a, b) => b.score - a.score); // Sort Descending
             
-            selectedTestId = testId;
+            document.getElementById('participant-count-display').innerText = allScoresLocal.length.toLocaleString();
             
-            // Initialize leaderboard for this test immediately
-            // This prevents the race condition where finishing the test resets the listener
-            if(typeof window.setupLeaderboardListener === 'function') {
-                window.setupLeaderboardListener(selectedTestId);
-            }
+            // Render List
+            const listContainer = document.getElementById('leaderboard-list');
+            listContainer.innerHTML = '';
             
-            activeQuestions = testId === 'test1' ? questionsTest01 : questionsTest02;
-
-            startScreen.classList.add('hidden');
-            quizContainer.classList.remove('hidden');
-            startTime = new Date();
-            loadQuestion();
-        }
-
-        function loadQuestion() {
-            const q = activeQuestions[currentQuestion];
-            answered = false;
+            const top50 = allScoresLocal.slice(0, 50);
             
-            // Update UI
-            currentQNum.innerText = currentQuestion + 1;
-            questionText.innerText = q.q;
-            scoreDisplay.innerText = `Score: ${score}`;
-            
-            // Update Progress Bar
-            const progress = ((currentQuestion) / activeQuestions.length) * 100;
-            progressBar.style.width = `${progress}%`;
-
-            // Reset Feedback
-            feedbackSection.classList.add('hidden');
-            explanationContent.classList.add('hidden');
-            explanationContent.innerHTML = q.explanation;
-            toggleExplanationBtn.innerHTML = '<span class="bg-green-500/10 p-2 rounded-lg mr-3"><i class="fas fa-lightbulb"></i></span><span class="underline decoration-green-500/30 underline-offset-4">See Detailed Solution</span>';
-            nextBtn.classList.add('hidden');
-            finishBtn.classList.add('hidden');
-
-            // Render Options
-            optionsContainer.innerHTML = '';
-            q.options.forEach((opt, index) => {
-                const btn = document.createElement('button');
-                btn.className = "w-full text-left p-5 rounded-xl border border-slate-700/50 bg-slate-800/40 hover:bg-slate-700/60 hover:border-green-500/50 transition-all duration-200 font-medium text-slate-300 flex justify-between items-center group backdrop-blur-sm";
-                btn.innerHTML = `<span class="flex items-center"><span class="w-8 h-8 rounded-full bg-slate-700 text-slate-400 flex items-center justify-center font-bold mr-4 group-hover:bg-green-500 group-hover:text-slate-900 transition-colors text-sm">${String.fromCharCode(65 + index)}</span> ${opt}</span>`;
-                btn.onclick = () => checkAnswer(index, btn);
-                optionsContainer.appendChild(btn);
-            });
-        }
-
-        function checkAnswer(selectedIndex, selectedBtn) {
-            if (answered) return;
-            answered = true;
-            
-            const q = activeQuestions[currentQuestion];
-            const allBtns = optionsContainer.children;
-            
-            // Highlight Correct/Wrong
-            if (selectedIndex === q.correct) {
-                score++;
-                selectedBtn.className = "w-full text-left p-5 rounded-xl border border-green-500 bg-green-500/10 flex justify-between items-center transition-all shadow-[0_0_15px_rgba(34,197,94,0.2)]";
-                selectedBtn.innerHTML = `<span class="flex items-center text-white font-bold"><span class="w-8 h-8 rounded-full bg-green-500 text-slate-900 flex items-center justify-center font-bold mr-4 text-sm">${String.fromCharCode(65 + selectedIndex)}</span> ${q.options[selectedIndex]}</span><i class="fas fa-check-circle text-green-400 text-2xl drop-shadow-lg"></i>`;
+            // Topper Logic
+            if (top50.length > 0) {
+                const topper = top50[0];
                 
-                feedbackMessage.className = "flex items-center mb-6 p-4 rounded-xl bg-green-900/20 border border-green-500/30 text-green-300";
-                feedbackMessage.innerHTML = '<div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center mr-4"><i class="fas fa-check text-green-400"></i></div> <span class="font-bold">Correct Answer! Well done.</span>';
-            } else {
-                selectedBtn.className = "w-full text-left p-5 rounded-xl border border-red-500 bg-red-500/10 flex justify-between items-center transition-all";
-                selectedBtn.innerHTML = `<span class="flex items-center text-red-100"><span class="w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center font-bold mr-4 text-sm">${String.fromCharCode(65 + selectedIndex)}</span> ${q.options[selectedIndex]}</span><i class="fas fa-times-circle text-red-400 text-2xl"></i>`;
+                // Update comparison bar
+                const maxScore = topper.score > 0 ? topper.score : 1; // avoid div by 0
+                const userScore = currentUserScore || 0;
+                let pct = (userScore / maxScore) * 100;
+                if (pct > 100) pct = 100; // In case user is the new topper
+                if (pct < 0) pct = 0;
                 
-                // Show correct one
-                const correctBtn = allBtns[q.correct];
-                correctBtn.className = "w-full text-left p-5 rounded-xl border border-green-500 bg-green-500/10 flex justify-between items-center transition-all shadow-[0_0_15px_rgba(34,197,94,0.2)] opacity-100";
-                correctBtn.innerHTML = `<span class="flex items-center text-white font-bold"><span class="w-8 h-8 rounded-full bg-green-500 text-slate-900 flex items-center justify-center font-bold mr-4 text-sm">${String.fromCharCode(65 + q.correct)}</span> ${q.options[q.correct]}</span><i class="fas fa-check-circle text-green-400 text-2xl"></i>`;
+                document.getElementById('bar-your-score').style.width = `${pct}%`;
+                document.getElementById('topper-time').innerText = topper.time || '--';
 
-                feedbackMessage.className = "flex items-center mb-6 p-4 rounded-xl bg-red-900/20 border border-red-500/30 text-red-300";
-                feedbackMessage.innerHTML = `<div class="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center mr-4"><i class="fas fa-times text-red-400"></i></div> <span>Incorrect. The correct answer is <span class="font-bold text-green-400 border-b border-green-400/30 pb-0.5">${String.fromCharCode(65 + q.correct)}</span></span>`;
-            }
-
-            // Disable all buttons
-            for (let btn of allBtns) {
-                btn.disabled = true;
-                if (!btn.className.includes('green') && !btn.className.includes('red')) {
-                     btn.classList.add('opacity-50', 'cursor-not-allowed');
-                     btn.classList.remove('hover:bg-slate-700/60', 'hover:border-green-500/50');
+                // Percentile Calc
+                const myRank = allScoresLocal.findIndex(s => s.userId === currentUserId && s.score === currentUserScore) + 1;
+                if (myRank > 0) {
+                    const total = allScoresLocal.length;
+                    const percentile = ((total - myRank) / total) * 100;
+                    document.getElementById('percentile-display').innerText = Math.round(percentile);
+                    document.getElementById('user-rank').innerText = `#${myRank}`;
                 }
             }
 
-            // Show Feedback Section
-            feedbackSection.classList.remove('hidden');
-            scoreDisplay.innerText = `Score: ${score}`;
-
-            // Show Next or Finish Button
-            if (currentQuestion < activeQuestions.length - 1) {
-                nextBtn.classList.remove('hidden');
-            } else {
-                finishBtn.classList.remove('hidden');
-            }
+            // Render Rows
+            top50.forEach((entry, index) => {
+                const isUser = entry.userId === currentUserId && Math.abs(entry.score - currentUserScore) < 0.1; // Simple check
+                const row = document.createElement('div');
+                row.className = `p-3 border-b border-slate-700/50 grid grid-cols-12 items-center hover:bg-slate-800/30 transition-colors ${isUser ? 'bg-green-900/10' : ''}`;
+                
+                let rankDisplay = `#${index + 1}`;
+                if(index === 0) rankDisplay = '<i class="fas fa-crown text-yellow-400"></i>';
+                
+                row.innerHTML = `
+                    <div class="col-span-2 text-center text-slate-400 font-bold">${rankDisplay}</div>
+                    <div class="col-span-6 text-sm text-slate-200 font-medium truncate">${entry.name} ${isUser ? '(You)' : ''}</div>
+                    <div class="col-span-2 text-center text-xs text-slate-500">${entry.time || '-'}</div>
+                    <div class="col-span-2 text-right text-sm font-bold text-green-400">${parseFloat(entry.score).toFixed(1)}</div>
+                `;
+                listContainer.appendChild(row);
+            });
         }
 
-        function toggleExplanation() {
-            if (explanationContent.classList.contains('hidden')) {
-                explanationContent.classList.remove('hidden');
-                explanationContent.classList.add('fade-in');
-                toggleExplanationBtn.innerHTML = '<span class="bg-green-500/10 p-2 rounded-lg mr-3"><i class="fas fa-eye-slash"></i></span><span class="underline decoration-green-500/30 underline-offset-4">Hide Solution</span>';
-            } else {
-                explanationContent.classList.add('hidden');
-                toggleExplanationBtn.innerHTML = '<span class="bg-green-500/10 p-2 rounded-lg mr-3"><i class="fas fa-lightbulb"></i></span><span class="underline decoration-green-500/30 underline-offset-4">See Detailed Solution</span>';
-            }
-        }
+        window.redirectToQuiz = (testId) => {
+            const name = document.getElementById('student-name').value.trim();
+            if(!name) { alert("Please enter your name first!"); return; }
+            if(!activeTestsMap[testId]) { alert("This test is currently locked by Admin."); return; }
+            window.location.href = `${testId}.html?name=${encodeURIComponent(name)}`;
+        };
 
-        function nextQuestion() {
-            currentQuestion++;
-            loadQuestion();
-        }
-
-        function finishQuiz() {
-            endTime = new Date();
-            const timeDiff = Math.floor((endTime - startTime) / 1000); // seconds
-            const minutes = Math.floor(timeDiff / 60);
-            const seconds = timeDiff % 60;
-            const timeString = `${minutes}m ${seconds}s`;
-
-            quizContainer.classList.add('hidden');
-            resultScreen.classList.remove('hidden');
-            progressBar.style.width = '100%';
-            
-            // Move widgets to end screen
-            const ecoWidget = document.getElementById('eco-widget');
-            const ytWidget = document.getElementById('yt-widget');
-            const endContainer = document.getElementById('end-screen-promos');
-            // Cloning ensures they persist if user restarts
-            if (ecoWidget) endContainer.appendChild(ecoWidget.cloneNode(true));
-            if (ytWidget) endContainer.appendChild(ytWidget.cloneNode(true));
-
-            // Calculations
-            const total = activeQuestions.length;
-            const accuracy = Math.round((score / total) * 100);
-            const wrongAnswers = total - score;
-            const sscScore = (score * 2) - (wrongAnswers * 0.5);
-
-            // Populate Result Data
-            finalScore.innerText = `${score} / ${total}`;
-            finalAccuracy.innerText = `${accuracy}%`;
-            timeTakenDisplay.innerText = timeString;
-            sscScoreDisplay.innerText = sscScore.toFixed(1);
-
-            // Set global var for leaderboard logic
-            window.finalUserScore = parseFloat(sscScore.toFixed(1));
-
-            // UPDATE THE USER ROW IMMEDIATELY TO PREVENT 0.0 or #-- issue
-            const userScoreEl = document.getElementById('user-final-score');
-            const userNameEl = document.getElementById('user-name-display');
-            if(userScoreEl) userScoreEl.innerText = window.finalUserScore.toFixed(1);
-            if(userNameEl) userNameEl.innerText = userName + " (You)";
-
-            // Save Score
-            // Note: setupLeaderboardListener was already called in startQuiz, 
-            // so we don't call it here to avoid resetting the list
-            if(typeof window.saveScoreToFirestore === 'function') {
-                window.saveScoreToFirestore(userName, window.finalUserScore);
-            }
-            
-            // Suggestion Logic
-            if (accuracy < 60) {
-                recommendationCard.classList.remove('hidden');
-                resultMessage.innerText = "Don't give up! Focus on building strong concepts.";
-                resultMessage.className = "text-yellow-400 mb-8 font-semibold";
-            } else {
-                recommendationCard.classList.add('hidden');
-                resultMessage.innerText = "Excellent performance! Keep practicing to maintain this level.";
-                resultMessage.className = "text-green-400 mb-8 font-semibold";
-            }
-            
-            // Fire confetti if score is good
-            if(accuracy > 50) fireConfetti();
-        }
-
-        function shareTest() {
-            const text = `I scored ${document.getElementById('ssc-score').innerText} in the SSC Insight Synonyms Challenge! Can you beat me? #SSCPreparation`;
-            const url = window.location.href;
+        window.shareTest = () => {
+            const score = document.getElementById('ssc-score').innerText;
+            const text = `I just scored ${score} in the SSC Insight Bengali Mock Test! Can you beat my rank? Join now!`;
+            const url = window.location.origin + window.location.pathname;
             if (navigator.share) {
                 navigator.share({ title: 'SSC Insight Mock Test', text: text, url: url });
             } else {
                 navigator.clipboard.writeText(`${text} ${url}`);
                 alert('Link copied to clipboard!');
             }
-        }
-        
+        };
+
+        // --- Confetti ---
         function fireConfetti() {
             const container = document.getElementById('confetti-container');
             const colors = ['#4ade80', '#3b82f6', '#facc15', '#f87171'];
@@ -1229,81 +1021,19 @@
                 container.appendChild(c);
             }
         }
-
-        // --- Promo Slider Logic ---
+        
+        // --- Slider & Trivia (Legacy) ---
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
-        
         function nextSlide() {
             if (slides.length === 0) return;
             slides[currentSlide].classList.remove('active');
             currentSlide = (currentSlide + 1) % slides.length;
             slides[currentSlide].classList.add('active');
         }
-        
-        // Change slide every 3 seconds
-        if(slides.length > 0) {
-            setInterval(nextSlide, 3000);
-        }
+        if(slides.length > 0) setInterval(nextSlide, 3000);
 
-        // --- Knowledge Trivia Logic ---
-        const triviaFacts = [
-            "Singular subject হলে verb singular হয়।",
-            "Plural noun করতে বেশিরভাগ শব্দে s/es লাগে।",
-            "Countable noun-এর সাথে many আর uncountable-এর সাথে much বসে।",
-            "General meaning-এ a/an আর specific meaning-এ the ব্যবহৃত হয়।",
-            "Rivers, seas, holy books, superlatives-এর আগে অবশ্যই the লাগে।",
-            "এক বাক্যের মধ্যে tense mix হলে grammatical error ধরা পড়ে।",
-            "Present perfect ব্যবহার হয় যখন past কাজের প্রভাব এখনো থাকে।",
-            "দুইটা past action হলে যেটা আগে হয়েছে সেটা past perfect হয়।",
-            "‘Will’ sudden decision আর ‘going to’ আগের plan বোঝায়।",
-            "Can/could/may/might permission আর possibility দেখায়।",
-            "If + present হলে result clause-এ will বসে।",
-            "If + past হলে result clause-এ would বসে।",
-            "‘Than’-এর পরে object pronoun বসে—than me, than him।",
-            "Double comparative ভুল—more better, most best কখনো হয় না।",
-            "Each আলাদাভাবে বোঝায় আর every group-কে বোঝায়।",
-            "Either/Neither ব্যবহার করলে verb singular হয়।",
-            "Between দুইজনের জন্য আর among তিন বা তার বেশি জনের জন্য।",
-            "Very adjective-এর আগে বসে, কিন্তু much comparative-এর আগে।",
-            "Few = প্রায় নেই, a few = কিছু আছে, the few = যতটুকু আছে সব।",
-            "Little = প্রায় কিছুই নয়, a little = কিছুটা, the little = যতটুকু আছে সব।",
-            "Pronoun তার আগের noun-এর number আর gender-এর সাথে match করতে হয়।",
-            "Who subject, whom object, আর whose possession দেখায়।",
-            "Preposition-এর কিছু fixed combination আছে—good at, interested in, prefer to।",
-            "Do/does/did কখনো V2-এর সাথে বসে না—did + go, not did + went।",
-            "Passive voice করতে be verb + V3 ব্যবহার করতে হয়।",
-            "Reported speech-এ said to → told হয়।",
-            "Reported speech-এ tense এক ধাপ পিছিয়ে যায়।",
-            "Adverb of frequency (always, often) main verb-এর আগে বসে।",
-            "So…that adjective-এর সাথে আর such…that noun-এর সাথে।",
-            "Redundant words ভুল—return back, repeat again, join together ভুল।"
-        ];
-        
-        function showRandomNotification() {
-            const toast = document.getElementById('social-proof');
-            const msg = document.getElementById('proof-text');
-            
-            const randomFact = triviaFacts[Math.floor(Math.random() * triviaFacts.length)];
-            msg.innerText = `জানো কি? ${randomFact}`;
-            
-            toast.classList.add('show');
-            
-            // Hide after 8 seconds (Longer duration for reading)
-            setTimeout(() => {
-                toast.classList.remove('show');
-                scheduleNextNotification();
-            }, 8000); 
-        }
-
-        function scheduleNextNotification() {
-            const randomDelay = Math.floor(Math.random() * (40000 - 15000 + 1)) + 15000;
-            setTimeout(showRandomNotification, randomDelay);
-        }
-
-        // Initial start after 5 seconds
-        setTimeout(showRandomNotification, 5000);
-
+        initApp();
     </script>
 </body>
 </html>
