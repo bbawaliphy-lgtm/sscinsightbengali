@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SSC INSIGHT BENGALI - Mock Test Series</title>
+    
+    <!-- PWA Manifest & Meta -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#020617">
+    <link rel="apple-touch-icon" href="logo.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Added Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -695,6 +703,21 @@
     <footer class="bg-slate-950 py-6 border-t border-slate-900 text-center text-slate-500 text-xs relative z-10">
         <p>&copy; 2025 SSC INSIGHT BENGALI by <span class="text-slate-400 font-semibold">DYUTIMALA DATTA</span>. All rights reserved.</p>
     </footer>
+
+    <!-- Service Worker Registration Script -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    })
+                    .catch(err => {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
+    </script>
 
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js';
