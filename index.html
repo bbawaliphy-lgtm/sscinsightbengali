@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SSC INSIGHT BENGALI - Mock Test Series</title>
     
-    <!-- PWA Manifest & Meta -->
+    <!-- PWA Manifest & Meta (Added) -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#020617">
     <link rel="apple-touch-icon" href="logo.png">
@@ -246,6 +246,25 @@
         <ul class="circles">
             <li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
         </ul>
+    </div>
+
+    <!-- PWA Install Popup (Added) -->
+    <div id="install-modal" class="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm hidden fade-in">
+        <div class="glass-panel p-6 rounded-2xl max-w-sm w-full mx-4 text-center border border-green-500/30 shadow-2xl relative">
+            <button onclick="dismissInstall()" class="absolute top-3 right-3 text-slate-400 hover:text-white transition-colors">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="w-16 h-16 bg-slate-800 rounded-2xl mx-auto mb-4 flex items-center justify-center shadow-lg border border-slate-700">
+                <img src="logo.png" alt="App Icon" class="w-12 h-12 object-contain" onerror="this.onerror=null; this.parentNode.innerHTML='<i class=\'fas fa-mobile-alt text-green-500 text-3xl\'></i>'">
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">Install App</h3>
+            <p class="text-sm text-slate-300 mb-6 leading-relaxed">
+                Add <strong>SSC INSIGHT</strong> to your home screen for faster access, fullscreen mode, and offline capability!
+            </p>
+            <button id="install-button" class="w-full py-3 bg-green-600 hover:bg-green-500 text-white font-bold rounded-xl shadow-lg shadow-green-900/20 transition-all transform hover:scale-105 active:scale-95">
+                Install Now
+            </button>
+        </div>
     </div>
 
     <!-- Knowledge Trivia Pop-up -->
@@ -703,9 +722,52 @@
     <footer class="bg-slate-950 py-6 border-t border-slate-900 text-center text-slate-500 text-xs relative z-10">
         <p>&copy; 2025 SSC INSIGHT BENGALI by <span class="text-slate-400 font-semibold">DYUTIMALA DATTA</span>. All rights reserved.</p>
     </footer>
-
-    <!-- Service Worker Registration Script -->
+    
+    <!-- PWA Install & Service Worker Logic -->
     <script>
+        let deferredPrompt;
+        const installModal = document.getElementById('install-modal');
+        const installBtn = document.getElementById('install-button');
+
+        // 1. Listen for the install prompt event
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevent the mini-infobar from appearing on mobile
+            e.preventDefault();
+            // Stash the event so it can be triggered later.
+            deferredPrompt = e;
+            // Update UI notify the user they can install the PWA
+            installModal.classList.remove('hidden');
+        });
+
+        // 2. Function to close the modal
+        function dismissInstall() {
+            installModal.classList.add('hidden');
+        }
+
+        // 3. Handle Install Button Click
+        installBtn.addEventListener('click', async () => {
+            // Hide the app provided install promotion
+            dismissInstall();
+            // Show the install prompt
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                // Wait for the user to respond to the prompt
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`User response to the install prompt: ${outcome}`);
+                // We've used the prompt, and can't use it again, throw it away
+                deferredPrompt = null;
+            }
+        });
+
+        // 4. Handle successful installation
+        window.addEventListener('appinstalled', () => {
+            // Hide the app-provided install promotion
+            dismissInstall();
+            deferredPrompt = null;
+            console.log('PWA was installed');
+        });
+
+        // 5. Register Service Worker
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./service-worker.js')
