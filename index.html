@@ -704,6 +704,40 @@
         <p>&copy; 2025 SSC INSIGHT BENGALI by <span class="text-slate-400 font-semibold">DYUTIMALA DATTA</span>. All rights reserved.</p>
     </footer>
 
+    <button id="install-btn" ...>
+        <i class="fas fa-download animate-bounce"></i>
+        <span>Install App</span>
+    </button>
+    
+    <script>
+        let deferredPrompt;
+        const installBtn = document.getElementById('install-btn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+            if (!isStandalone) {
+                installBtn.classList.remove('hidden');
+            }
+        });
+
+        installBtn.addEventListener('click', async () => {
+            installBtn.classList.add('hidden');
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`User response to the install prompt: ${outcome}`);
+                deferredPrompt = null;
+            }
+        });
+
+        window.addEventListener('appinstalled', () => {
+            console.log('PWA was installed');
+            installBtn.classList.add('hidden');
+        });
+    </script>
+    
     <!-- Service Worker Registration Script -->
     <script>
         if ('serviceWorker' in navigator) {
@@ -1100,3 +1134,4 @@
     </script>
 </body>
 </html>
+
