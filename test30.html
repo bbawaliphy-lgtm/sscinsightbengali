@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test 30 - SSC INSIGHT BENGALI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        body {
+            font-family: 'Poppins', 'Noto Sans Bengali', sans-serif;
+            background: #020617;
+            color: #e2e8f0;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        /* Essential Styles */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        .bengali-text { font-family: 'Noto Sans Bengali', sans-serif; }
+        .fade-in { animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar-track { background: rgba(30, 41, 59, 0.5); border-radius: 10px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #475569; border-radius: 10px; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+
+    <!-- Header for Context -->
+    <header class="fixed top-0 left-0 right-0 p-4 flex justify-between items-center z-50 bg-slate-900/50 backdrop-blur">
+         <div class="flex items-center text-slate-300">
+             <i class="fas fa-arrow-left mr-2 cursor-pointer hover:text-white" onclick="history.back()"></i>
+             <span class="font-bold">Test 30: Spotting Errors (Set 3)</span>
+         </div>
+         <div class="w-1/3 max-w-xs bg-slate-800 h-2 rounded-full overflow-hidden">
+             <div id="progress-bar" class="h-full bg-red-600 transition-all duration-300" style="width: 0%"></div>
+         </div>
+    </header>
+
+    <!-- Quiz Container -->
+    <div id="quiz-container" class="max-w-3xl w-full mt-10">
+        <div class="glass-panel rounded-3xl shadow-2xl overflow-hidden fade-in border border-slate-600/50">
+            <!-- Question Header -->
+            <div class="bg-slate-900/60 px-6 py-4 border-b border-slate-700 flex justify-between items-center backdrop-blur-sm">
+                <div class="flex items-center space-x-2">
+                     <span class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
+                     <span class="text-sm font-bold text-slate-300 tracking-wide">Question <span id="current-q-num" class="text-white text-base">1</span><span class="text-slate-500">/25</span></span>
+                </div>
+                <span id="score-display" class="text-sm font-bold text-red-400 bg-red-900/20 border border-red-500/30 px-4 py-1.5 rounded-full shadow-inner">Score: 0</span>
+            </div>
+
+            <!-- Question Body -->
+            <div class="p-6 md:p-10">
+                <h3 id="question-text" class="text-xl md:text-2xl font-bold text-white mb-8 leading-relaxed drop-shadow-sm">
+                    <!-- Question goes here -->
+                </h3>
+
+                <!-- Options Grid -->
+                <div id="options-container" class="grid grid-cols-1 gap-4 mb-8">
+                    <!-- Buttons injected by JS -->
+                </div>
+
+                <!-- Feedback & Explanation Section -->
+                <div id="feedback-section" class="hidden mt-8 border-t border-slate-700/50 pt-8 animation-fade-in">
+                    <!-- Correct/Wrong Message -->
+                    <div id="feedback-message" class="flex items-center mb-6 p-4 rounded-xl border">
+                        <!-- Injected by JS -->
+                    </div>
+
+                    <!-- Toggle Explanation Button -->
+                    <button id="toggle-explanation-btn" onclick="toggleExplanation()" class="group text-red-400 hover:text-red-300 font-semibold text-sm flex items-center mb-4 focus:outline-none transition-colors">
+                        <span class="bg-red-500/10 p-2 rounded-lg mr-3 group-hover:bg-red-500/20 transition-colors"><i class="fas fa-lightbulb"></i></span>
+                        <span class="underline decoration-red-500/30 underline-offset-4 group-hover:decoration-red-500">See Detailed Solution</span>
+                    </button>
+
+                    <!-- Detailed Explanation Content -->
+                    <div id="explanation-content" class="hidden bg-slate-900/60 p-6 rounded-2xl border border-slate-700/50 text-slate-300 custom-scroll max-h-96 overflow-y-auto shadow-inner leading-relaxed">
+                        <!-- Explanation injected by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Navigation -->
+            <div class="bg-slate-900/40 px-6 py-5 border-t border-slate-700/50 flex justify-end">
+                <button id="next-btn" onclick="nextQuestion()" class="hidden bg-red-600 hover:bg-red-500 text-white font-bold py-3 px-8 rounded-xl shadow-lg shadow-red-900/20 transition-all transform hover:-translate-y-0.5 flex items-center">
+                    Next Question <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+                <button id="finish-btn" onclick="finishQuiz()" class="hidden bg-yellow-600 hover:bg-yellow-500 text-white font-bold py-3 px-8 rounded-xl shadow-lg shadow-yellow-900/20 transition-all transform hover:-translate-y-0.5 flex items-center">
+                    Finish Test <i class="fas fa-flag-checkered ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Test Data (Test 30 - Spotting Errors Set 3)
+        const questionsTest30 = [
+            {q: "Identify the error: 'My / hairs / are / black.'", options: ["My", "hairs", "are", "black"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Error Analysis</p><p class="text-slate-200">'Hair' is an uncountable noun when referring to all the hair on one's head. It does not take 's' and takes a singular verb.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Hair' শব্দটি Uncountable, তাই 'hairs' হয় না এবং verb singular (is) হয়। সঠিক: 'My hair is black'.</p></div></div>`},
+            {q: "Identify the error: 'He has / a five rupees / note / in his pocket.'", options: ["He has", "a five rupees", "note", "in his pocket"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Error Analysis</p><p class="text-slate-200">When a number + noun is used as an adjective (before another noun like 'note'), the noun remains singular. Correct: 'a five-rupee note'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">Hyphenated noun সর্বদা Singular হয়। 'Rupees' হবে না, 'Rupee' হবে।</p></div></div>`},
+            {q: "Identify the error: 'He is / the most / perfect / man.'", options: ["He is", "the most", "perfect", "man"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Error Analysis</p><p class="text-slate-200">'Perfect' is an absolute adjective and cannot be graded. 'Most perfect' is incorrect.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Perfect' নিজেই চরম অবস্থা বোঝায়, তাই এর আগে 'more' বা 'most' বসে না।</p></div></div>`},
+            {q: "Identify the error: 'I am / having / a car / since 2010.'", options: ["I am", "having", "a car", "since 2010"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Error Analysis</p><p class="text-slate-200">'Have' indicating possession is a stative verb and is not used in continuous tense. Correct: 'I have had a car'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">মালিকানা বোঝাতে 'have' এর সাথে ing যোগ হয় না।</p></div></div>`},
+            {q: "Identify the error: 'He acts / like / a coward / man.'", options: ["He acts", "like", "a coward", "man"], correct: 3, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Error Analysis</p><p class="text-slate-200">'Coward' is a noun. Saying 'coward man' is like saying 'man man'. Use 'coward' alone or 'cowardly man'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Coward' মানেই কাপুরুষ ব্যক্তি, তাই এর সাথে 'man' যোগ করা ভুল।</p></div></div>`},
+            {q: "Identify the error: 'The climate / of Pune / is better / than Mumbai.'", options: ["The climate", "of Pune", "is better", "than Mumbai"], correct: 3, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Error Analysis</p><p class="text-slate-200">Comparison must be between similar things. Climate of Pune vs Climate of Mumbai. Correct: 'than that of Mumbai'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">পুণে-র আবহাওয়ার সাথে মুম্বাইয়ের তুলনা করা ভুল। মুম্বাইয়ের আবহাওয়ার সাথে তুলনা করতে হবে ('than that of Mumbai')।</p></div></div>`},
+            {q: "Identify the error: 'Supposing / if / it rains, / what will we do?'", options: ["Supposing", "if", "it rains,", "what will we do?"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Error Analysis</p><p class="text-slate-200">'Supposing' and 'if' mean the same thing here. Using both is superfluous. Remove 'if'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Supposing' এবং 'if' একসাথে বসে না। যেকোনো একটি ব্যবহার করতে হবে।</p></div></div>`},
+            {q: "Identify the error: 'The reason / why he failed / is because / he was lazy.'", options: ["The reason", "why he failed", "is because", "he was lazy"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Error Analysis</p><p class="text-slate-200">'The reason... is' should be followed by 'that', not 'because'. Correct: 'The reason... is that...'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'The reason' দিয়ে বাক্য শুরু হলে পরে 'that' বসে, 'because' বসে না।</p></div></div>`},
+            {q: "Identify the error: 'He / does not / know / to swim.'", options: ["He", "does not", "know", "to swim"], correct: 3, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Error Analysis</p><p class="text-slate-200">'Know' is followed by 'how to' + V1 when referring to a skill. Correct: 'know how to swim'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">কোনো কিছু শেখা বা জানা অর্থে 'know' এর পর 'how to' বসে।</p></div></div>`},
+            {q: "Identify the error: 'He is / one of / my family / member.'", options: ["He is", "one of", "my family", "member"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Error Analysis</p><p class="text-slate-200">'Family member' is incorrect usage. Correct: 'a member of my family'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Family member' বলা ভুল। সঠিক হলো 'a member of my family'।</p></div></div>`},
+            {q: "Identify the error: 'Both / of them / did not / go.'", options: ["Both", "of them", "did not", "go"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Error Analysis</p><p class="text-slate-200">'Both' is not used in negative sentences. Use 'Neither'. Correct: 'Neither of them went'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">নেতিবাচক বাক্যে 'Both' বসে না, 'Neither' ব্যবহার করতে হয়।</p></div></div>`},
+            {q: "Identify the error: 'Sit / under / the shade / of a tree.'", options: ["Sit", "under", "the shade", "of a tree"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Error Analysis</p><p class="text-slate-200">You sit 'under' a tree, but 'in' the shade of a tree. Correct: 'in the shade'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">গাছের নিচে (under) কিন্তু ছায়ার মধ্যে (in) বসতে হয়।</p></div></div>`},
+            {q: "Identify the error: 'He / attacked / on / the enemy.'", options: ["He", "attacked", "on", "the enemy"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Error Analysis</p><p class="text-slate-200">'Attack' is a transitive verb and takes a direct object. 'On' is superfluous. Correct: 'He attacked the enemy'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Attack' এর পরে 'on' বসে না।</p></div></div>`},
+            {q: "Identify the error: 'It is / me / who am / guilty.'", options: ["It is", "me", "who am", "guilty"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Error Analysis</p><p class="text-slate-200">The verb 'to be' (is) takes the subjective case. Correct: 'It is I'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'It is' এর পরে Pronoun-এর Subjective form (I) বসে, Objective (me) নয়।</p></div></div>`},
+            {q: "Identify the error: 'A number of / students / is / absent.'", options: ["A number of", "students", "is", "absent"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Error Analysis</p><p class="text-slate-200">'A number of' takes a plural verb. 'The number of' takes a singular verb. Correct: 'are absent'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'A number of' থাকলে Verb Plural (are) হয়।</p></div></div>`},
+            {q: "Identify the error: 'He congratualted / me / for / my success.'", options: ["He congratualted", "me", "for", "my success"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Error Analysis</p><p class="text-slate-200">'Congratulate' takes the preposition 'on'. Correct: 'on my success'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">অভিনন্দন জানানোর ক্ষেত্রে 'Congratulate on' বসে।</p></div></div>`},
+            {q: "Identify the error: 'The Secretary / and Treasurer / are / absent.'", options: ["The Secretary", "and Treasurer", "are", "absent"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Error Analysis</p><p class="text-slate-200">The article 'The' is used only once, implying one person holds both posts. Verb should be singular. Correct: 'is absent'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">যেহেতু 'The' একবার ব্যবহার হয়েছে, তাই একজন ব্যক্তিকেই বোঝাচ্ছে। তাই Verb Singular (is) হবে।</p></div></div>`},
+            {q: "Identify the error: 'Whole / India / mourned / his death.'", options: ["Whole", "India", "mourned", "his death"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Error Analysis</p><p class="text-slate-200">'Whole' is used with 'The' and 'of' for proper nouns. Correct: 'The whole of India'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">Proper Noun-এর আগে 'The whole of' বসে।</p></div></div>`},
+            {q: "Identify the error: 'Nothing / but / books / were available.'", options: ["Nothing", "but", "books", "were available"], correct: 3, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Error Analysis</p><p class="text-slate-200">After 'Nothing but', the verb agrees with 'Nothing' (singular). Correct: 'was available'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Nothing but' দিয়ে বাক্য শুরু হলে Verb সর্বদা Singular হয়।</p></div></div>`},
+            {q: "Identify the error: 'He / behaves / as if / he is mad.'", options: ["He", "behaves", "as if", "he is mad"], correct: 3, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Error Analysis</p><p class="text-slate-200">'As if' introduces a subjunctive mood (unreal situation). Use 'were'. Correct: 'he were mad'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'As if' বা 'As though' থাকলে 'were' বসে।</p></div></div>`},
+            {q: "Identify the error: 'It is / no use / to cry / over spilt milk.'", options: ["It is", "no use", "to cry", "over spilt milk"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Error Analysis</p><p class="text-slate-200">'It is no use' is followed by a Gerund (V+ing). Correct: 'crying'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'It is no use' এর পরে Verb+ing বসে।</p></div></div>`},
+            {q: "Identify the error: 'The / gold / is a / precious metal.'", options: ["The", "gold", "is a", "precious metal"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Error Analysis</p><p class="text-slate-200">Material nouns (Gold) do not take 'The' in a general sense. Correct: 'Gold is a...'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">Material Noun-এর আগে সাধারণত Article বসে না।</p></div></div>`},
+            {q: "Identify the error: 'Tell / me / where is / the post office.'", options: ["Tell", "me", "where is", "the post office"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Error Analysis</p><p class="text-slate-200">This is an indirect question. The structure should be assertive (Subject + Verb). Correct: 'where the post office is'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">বাক্যের মাঝখানে প্রশ্ন থাকলে Subject-এর পরে Verb বসে।</p></div></div>`},
+            {q: "Identify the error: 'Between / you / and / I.'", options: ["Between", "you", "and", "I"], correct: 3, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Error Analysis</p><p class="text-slate-200">Prepositions (Between) are followed by the objective case of pronouns. Correct: 'me'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">Preposition-এর পরে Pronoun-এর Objective form (me) বসে।</p></div></div>`},
+            {q: "Identify the error: 'I visited / Ram's / and / Sita's house.'", options: ["I visited", "Ram's", "and", "Sita's house"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-red-400 text-xs uppercase mb-1">Error Analysis</p><p class="text-slate-200">For joint possession (same house), the apostrophe is added only to the last noun. Correct: 'Ram and Sita's house'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">যৌথ মালিকানা বোঝালে শেষের নামের সাথে 's' যুক্ত হয়।</p></div></div>`}
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let answered = false;
+        let startTime;
+
+        // Elements
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const currentQNum = document.getElementById('current-q-num');
+        const scoreDisplay = document.getElementById('score-display');
+        const progressBar = document.getElementById('progress-bar');
+        const feedbackSection = document.getElementById('feedback-section');
+        const feedbackMessage = document.getElementById('feedback-message');
+        const explanationContent = document.getElementById('explanation-content');
+        const toggleExplanationBtn = document.getElementById('toggle-explanation-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const finishBtn = document.getElementById('finish-btn');
+
+        // Functions
+        function loadQuestion() {
+            const q = questionsTest30[currentQuestion];
+            answered = false;
+            
+            // Update UI
+            currentQNum.innerText = currentQuestion + 1;
+            questionText.innerText = q.q;
+            scoreDisplay.innerText = `Score: ${score}`;
+            
+            // Update Progress Bar
+            const progress = ((currentQuestion) / questionsTest30.length) * 100;
+            progressBar.style.width = `${progress}%`;
+
+            // Reset Feedback
+            feedbackSection.classList.add('hidden');
+            explanationContent.classList.add('hidden');
+            explanationContent.innerHTML = q.explanation;
+            toggleExplanationBtn.innerHTML = '<span class="bg-red-500/10 p-2 rounded-lg mr-3"><i class="fas fa-lightbulb"></i></span><span class="underline decoration-red-500/30 underline-offset-4">See Detailed Solution</span>';
+            nextBtn.classList.add('hidden');
+            finishBtn.classList.add('hidden');
+
+            // Render Options
+            optionsContainer.innerHTML = '';
+            q.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-5 rounded-xl border border-slate-700/50 bg-slate-800/40 hover:bg-slate-700/60 hover:border-red-500/50 transition-all duration-200 font-medium text-slate-300 flex justify-between items-center group backdrop-blur-sm";
+                btn.innerHTML = `<span class="flex items-center"><span class="w-8 h-8 rounded-full bg-slate-700 text-slate-400 flex items-center justify-center font-bold mr-4 group-hover:bg-red-500 group-hover:text-slate-900 transition-colors text-sm">${String.fromCharCode(65 + index)}</span> ${opt}</span>`;
+                btn.onclick = () => checkAnswer(index, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selectedIndex, selectedBtn) {
+            if (answered) return;
+            answered = true;
+            
+            const q = questionsTest30[currentQuestion];
+            const allBtns = optionsContainer.children;
+            
+            if (selectedIndex === q.correct) {
+                score++;
+                selectedBtn.className = "w-full text-left p-5 rounded-xl border border-green-500 bg-green-500/10 flex justify-between items-center transition-all shadow-[0_0_15px_rgba(34,197,94,0.2)]";
+                selectedBtn.innerHTML = `<span class="flex items-center text-white font-bold"><span class="w-8 h-8 rounded-full bg-green-500 text-slate-900 flex items-center justify-center font-bold mr-4 text-sm">${String.fromCharCode(65 + selectedIndex)}</span> ${q.options[selectedIndex]}</span><i class="fas fa-check-circle text-green-400 text-2xl drop-shadow-lg"></i>`;
+                
+                feedbackMessage.className = "flex items-center mb-6 p-4 rounded-xl bg-green-900/20 border border-green-500/30 text-green-300";
+                feedbackMessage.innerHTML = '<div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center mr-4"><i class="fas fa-check text-green-400"></i></div> <span class="font-bold">Correct Answer! Well done.</span>';
+            } else {
+                selectedBtn.className = "w-full text-left p-5 rounded-xl border border-red-500 bg-red-500/10 flex justify-between items-center transition-all";
+                selectedBtn.innerHTML = `<span class="flex items-center text-red-100"><span class="w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center font-bold mr-4 text-sm">${String.fromCharCode(65 + selectedIndex)}</span> ${q.options[selectedIndex]}</span><i class="fas fa-times-circle text-red-400 text-2xl"></i>`;
+                
+                const correctBtn = allBtns[q.correct];
+                correctBtn.className = "w-full text-left p-5 rounded-xl border border-green-500 bg-green-500/10 flex justify-between items-center transition-all shadow-[0_0_15px_rgba(34,197,94,0.2)] opacity-100";
+                correctBtn.innerHTML = `<span class="flex items-center text-white font-bold"><span class="w-8 h-8 rounded-full bg-green-500 text-slate-900 flex items-center justify-center font-bold mr-4 text-sm">${String.fromCharCode(65 + q.correct)}</span> ${q.options[q.correct]}</span><i class="fas fa-check-circle text-green-400 text-2xl"></i>`;
+
+                feedbackMessage.className = "flex items-center mb-6 p-4 rounded-xl bg-red-900/20 border border-red-500/30 text-red-300";
+                feedbackMessage.innerHTML = `<div class="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center mr-4"><i class="fas fa-times text-red-400"></i></div> <span>Incorrect. The correct answer is <span class="font-bold text-green-400 border-b border-green-400/30 pb-0.5">${q.options[q.correct]}</span></span>`;
+            }
+
+            for (let btn of allBtns) {
+                btn.disabled = true;
+                if (!btn.className.includes('green') && !btn.className.includes('red')) {
+                     btn.classList.add('opacity-50', 'cursor-not-allowed');
+                     btn.classList.remove('hover:bg-slate-700/60', 'hover:border-red-500/50');
+                }
+            }
+
+            feedbackSection.classList.remove('hidden');
+            scoreDisplay.innerText = `Score: ${score}`;
+
+            if (currentQuestion < questionsTest30.length - 1) {
+                nextBtn.classList.remove('hidden');
+            } else {
+                finishBtn.classList.remove('hidden');
+            }
+        }
+
+        function toggleExplanation() {
+            if (explanationContent.classList.contains('hidden')) {
+                explanationContent.classList.remove('hidden');
+                explanationContent.classList.add('fade-in');
+                toggleExplanationBtn.innerHTML = '<span class="bg-red-500/10 p-2 rounded-lg mr-3"><i class="fas fa-eye-slash"></i></span><span class="underline decoration-red-500/30 underline-offset-4">Hide Solution</span>';
+            } else {
+                explanationContent.classList.add('hidden');
+                toggleExplanationBtn.innerHTML = '<span class="bg-red-500/10 p-2 rounded-lg mr-3"><i class="fas fa-lightbulb"></i></span><span class="underline decoration-red-500/30 underline-offset-4">See Detailed Solution</span>';
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            loadQuestion();
+        }
+
+        function finishQuiz() {
+            const endTime = new Date();
+            const timeDiff = Math.floor((endTime - startTime) / 1000); // seconds
+            const minutes = Math.floor(timeDiff / 60);
+            const seconds = timeDiff % 60;
+            const timeString = `${minutes}m ${seconds}s`;
+            
+            // Calc stats
+            const total = questionsTest30.length;
+            const accuracy = Math.round((score / total) * 100);
+            const wrongAnswers = total - score;
+            const sscScore = (score * 2) - (wrongAnswers * 0.5);
+            
+            // Get user name from URL params to pass it back
+            const urlParams = new URLSearchParams(window.location.search);
+            const name = urlParams.get('name') || "Student";
+
+            // Redirect to Master Index with results (Action = result)
+            // Note: testId is set to test30
+            const redirectUrl = `index.html?action=result&score=${score}&total=${total}&accuracy=${accuracy}&time=${encodeURIComponent(timeString)}&sscScore=${sscScore}&name=${encodeURIComponent(name)}&testId=test30`;
+            
+            window.location.href = redirectUrl;
+        }
+        
+        // Start on load
+        window.onload = function() {
+            startTime = new Date();
+            loadQuestion();
+        };
+
+        // Expose to window for buttons
+        window.checkAnswer = checkAnswer;
+        window.toggleExplanation = toggleExplanation;
+        window.nextQuestion = nextQuestion;
+        window.finishQuiz = finishQuiz;
+    </script>
+</body>
+</html>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test 16 - SSC INSIGHT BENGALI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        body {
+            font-family: 'Poppins', 'Noto Sans Bengali', sans-serif;
+            background: #020617;
+            color: #e2e8f0;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        /* Essential Styles */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        .bengali-text { font-family: 'Noto Sans Bengali', sans-serif; }
+        .fade-in { animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar-track { background: rgba(30, 41, 59, 0.5); border-radius: 10px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #475569; border-radius: 10px; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+
+    <!-- Header for Context -->
+    <header class="fixed top-0 left-0 right-0 p-4 flex justify-between items-center z-50 bg-slate-900/50 backdrop-blur">
+         <div class="flex items-center text-slate-300">
+             <i class="fas fa-arrow-left mr-2 cursor-pointer hover:text-white" onclick="history.back()"></i>
+             <span class="font-bold">Test 16: Sentence Improvement (Set 2)</span>
+         </div>
+         <div class="w-1/3 max-w-xs bg-slate-800 h-2 rounded-full overflow-hidden">
+             <div id="progress-bar" class="h-full bg-amber-500 transition-all duration-300" style="width: 0%"></div>
+         </div>
+    </header>
+
+    <!-- Quiz Container -->
+    <div id="quiz-container" class="max-w-3xl w-full mt-10">
+        <div class="glass-panel rounded-3xl shadow-2xl overflow-hidden fade-in border border-slate-600/50">
+            <!-- Question Header -->
+            <div class="bg-slate-900/60 px-6 py-4 border-b border-slate-700 flex justify-between items-center backdrop-blur-sm">
+                <div class="flex items-center space-x-2">
+                     <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                     <span class="text-sm font-bold text-slate-300 tracking-wide">Question <span id="current-q-num" class="text-white text-base">1</span><span class="text-slate-500">/25</span></span>
+                </div>
+                <span id="score-display" class="text-sm font-bold text-amber-400 bg-amber-900/20 border border-amber-500/30 px-4 py-1.5 rounded-full shadow-inner">Score: 0</span>
+            </div>
+
+            <!-- Question Body -->
+            <div class="p-6 md:p-10">
+                <h3 id="question-text" class="text-xl md:text-2xl font-bold text-white mb-8 leading-relaxed drop-shadow-sm">
+                    <!-- Question goes here -->
+                </h3>
+
+                <!-- Options Grid -->
+                <div id="options-container" class="grid grid-cols-1 gap-4 mb-8">
+                    <!-- Buttons injected by JS -->
+                </div>
+
+                <!-- Feedback & Explanation Section -->
+                <div id="feedback-section" class="hidden mt-8 border-t border-slate-700/50 pt-8 animation-fade-in">
+                    <!-- Correct/Wrong Message -->
+                    <div id="feedback-message" class="flex items-center mb-6 p-4 rounded-xl border">
+                        <!-- Injected by JS -->
+                    </div>
+
+                    <!-- Toggle Explanation Button -->
+                    <button id="toggle-explanation-btn" onclick="toggleExplanation()" class="group text-amber-400 hover:text-amber-300 font-semibold text-sm flex items-center mb-4 focus:outline-none transition-colors">
+                        <span class="bg-amber-500/10 p-2 rounded-lg mr-3 group-hover:bg-amber-500/20 transition-colors"><i class="fas fa-lightbulb"></i></span>
+                        <span class="underline decoration-amber-500/30 underline-offset-4 group-hover:decoration-amber-500">See Detailed Solution</span>
+                    </button>
+
+                    <!-- Detailed Explanation Content -->
+                    <div id="explanation-content" class="hidden bg-slate-900/60 p-6 rounded-2xl border border-slate-700/50 text-slate-300 custom-scroll max-h-96 overflow-y-auto shadow-inner leading-relaxed">
+                        <!-- Explanation injected by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Navigation -->
+            <div class="bg-slate-900/40 px-6 py-5 border-t border-slate-700/50 flex justify-end">
+                <button id="next-btn" onclick="nextQuestion()" class="hidden bg-amber-600 hover:bg-amber-500 text-white font-bold py-3 px-8 rounded-xl shadow-lg shadow-amber-900/20 transition-all transform hover:-translate-y-0.5 flex items-center">
+                    Next Question <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+                <button id="finish-btn" onclick="finishQuiz()" class="hidden bg-yellow-600 hover:bg-yellow-500 text-white font-bold py-3 px-8 rounded-xl shadow-lg shadow-yellow-900/20 transition-all transform hover:-translate-y-0.5 flex items-center">
+                    Finish Test <i class="fas fa-flag-checkered ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Test Data (Test 16 - Sentence Improvement Set 2)
+        const questionsTest16 = [
+            {q: "Being a rainy day, I decided to stay at home.", options: ["It being a rainy day", "Due to rainy day", "As it is rainy day", "No improvement"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-amber-400 text-xs uppercase mb-1">Grammar Rule</p><p class="text-slate-200">Dangling Participle: 'Being' needs a subject. Without 'It', the subject becomes 'I', implying 'I was a rainy day', which is wrong.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Being' এর আগে Subject (It) না বসালে পরবর্তী Subject (I) এর সাথে ভুল সম্পর্ক তৈরি হয়। তাই 'It being a rainy day' হবে।</p></div></div>`},
+            {q: "The number of students are increasing day by day.", options: ["is increasing", "have increased", "were increasing", "No improvement"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-amber-400 text-xs uppercase mb-1">Grammar Rule</p><p class="text-slate-200">'The number of' is followed by a plural noun but takes a singular verb. (Contrast with 'A number of' which takes plural verb).</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'The number of' থাকলে Verb singular (is) হয়। কিন্তু 'A number of' থাকলে Verb plural (are) হতো।</p></div></div>`},
+            {q: "Let us go for a walk, shall we?", options: ["will we?", "do we?", "should we?", "No improvement"], correct: 3, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-amber-400 text-xs uppercase mb-1">Grammar Rule</p><p class="text-slate-200">The correct question tag for 'Let us' is 'shall we?'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Let us' (Let's) দিয়ে বাক্য শুরু হলে Question Tag সর্বদা 'shall we?' হয়।</p></div></div>`},
+            {q: "He is enough intelligent to solve this problem.", options: ["intelligent enough", "too intelligent", "very intelligent", "No improvement"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-amber-400 text-xs uppercase mb-1">Grammar Rule</p><p class="text-slate-200">'Enough' is placed AFTER the adjective it modifies. (Adjective + Enough).</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">Adjective-এর পরে 'enough' বসে। যেমন: Good enough, Intelligent enough.</p></div></div>`},
+            {q: "Never I have seen such a beautiful sight.", options: ["Never have I seen", "I have never seen", "Did I never see", "No improvement"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-amber-400 text-xs uppercase mb-1">Grammar Rule</p><p class="text-slate-200">When a sentence starts with a negative adverb (Never, Seldom, Hardly), inversion is used (Auxiliary Verb before Subject).</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">বাক্যের শুরুতে 'Never' থাকলে Inversion হয়, অর্থাৎ Subject-এর আগে Verb বসে (Never have I)।</p></div></div>`},
+            {q: "He enjoys reading, writing, and to swim.", options: ["to swimming", "swimming", "swim", "No improvement"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-amber-400 text-xs uppercase mb-1">Grammar Rule</p><p class="text-slate-200">Parallelism: All items in a list should follow the same grammatical structure. Reading (Gerund), Writing (Gerund), so Swimming (Gerund).</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">তালিকার সব শব্দ একই ফর্মে হতে হবে। যেহেতু বাকিগুলো Gerund (ing), তাই শেষেরটিও 'swimming' হবে।</p></div></div>`},
+            {q: "I made him to do the work.", options: ["do the work", "done the work", "doing the work", "No improvement"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-amber-400 text-xs uppercase mb-1">Grammar Rule</p><p class="text-slate-200">The causative verb 'make' is followed by the bare infinitive (verb without 'to') in Active Voice.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Make' এর পর Verb-এর সাথে 'to' বসে না (Bare Infinitive হয়)। তাই 'make him do' হবে।</p></div></div>`},
+            {q: "If he would have invited me, I would have gone.", options: ["If he had invited me", "If he has invited me", "If he invited me", "No improvement"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-amber-400 text-xs uppercase mb-1">Grammar Rule</p><p class="text-slate-200">Third Conditional: If + Past Perfect (had + V3), ... would have + V3. 'Would have' is never used in the 'If' clause.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'If' যুক্ত অংশে 'would have' বসে না, 'had + V3' বসে।</p></div></div>`},
+            {q: "It is I who is responsible for this mistake.", options: ["am responsible", "are responsible", "was responsible", "No improvement"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-amber-400 text-xs uppercase mb-1">Grammar Rule</p><p class="text-slate-200">The verb after a relative pronoun (who) must agree with its antecedent (I). 'I' takes 'am'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Who' এর আগের শব্দ (Antecedent) 'I', তাই এর পরে 'am' হবে।</p></div></div>`},
+            {q: "The two brothers love one another.", options: ["each other", "everyone", "themselves", "No improvement"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-amber-400 text-xs uppercase mb-1">Grammar Rule</p><p class="text-slate-200">'Each other' is used for two people. 'One another' is used for more than two.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">দুইজন বোঝালে 'each other' বসে। দুইয়ের অধিক হলে 'one another' বসে।</p></div></div>`},
+            {q: "He is my older brother.", options: ["elder", "big", "oldest", "No improvement"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-amber-400 text-xs uppercase mb-1">Grammar Rule</p><p class="text-slate-200">'Elder' is used for family members (blood relations). 'Older' is used for general age comparison or things.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">রক্তের সম্পর্ক বা পরিবারের ক্ষেত্রে 'elder' বসে। অন্য ক্ষেত্রে 'older' বসে।</p></div></div>`},
+            {q: "Mathematics are a difficult subject.", options: ["is", "were", "have", "No improvement"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-amber-400 text-xs uppercase mb-1">Grammar Rule</p><p class="text-slate-200">Names of subjects ending in 's' (Mathematics, Physics, Politics) are singular and take a singular verb.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">বিষয়ের নাম দেখতে Plural হলেও তা Singular, তাই Verb 'is' হবে।</p></div></div>`},
+            {q: "He has a black big dog.", options: ["big black", "black huge", "big dark", "No improvement"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-amber-400 text-xs uppercase mb-1">Grammar Rule</p><p class="text-slate-200">Adjective Order: Size comes before Color (SASCOMP rule - Size, Age, Shape, Color...).</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">Adjective সাজানোর নিয়মে 'Size' আগে আসে এবং 'Color' পরে। তাই 'big black dog' হবে।</p></div></div>`},
+            {q: "I, you and he went to the market.", options: ["You, he and I", "He, I and you", "You, I and he", "No improvement"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-amber-400 text-xs uppercase mb-1">Grammar Rule</p><p class="text-slate-200">Order of Pronouns: For normal sentences, use 2-3-1 (2nd Person, 3rd Person, 1st Person). For confession of guilt, use 1-2-3.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">সাধারণ বাক্যে Pronoun-এর ক্রম হলো 2-3-1 (You, he and I)।</p></div></div>`},
+            {q: "He is an European.", options: ["a European", "the European", "one European", "No improvement"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-amber-400 text-xs uppercase mb-1">Grammar Rule</p><p class="text-slate-200">'European' starts with a vowel letter but a consonant sound ('Yoo'). So, it takes the article 'a'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">উচ্চারণ 'ইউ' (Yu) এর মতো হলে তার আগে 'a' বসে, 'an' নয়।</p></div></div>`},
+            {q: "Although he is poor, but he is honest.", options: ["yet", "and", "so", "No improvement"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-amber-400 text-xs uppercase mb-1">Grammar Rule</p><p class="text-slate-200">'Although' or 'Though' is followed by 'yet' or a comma. 'But' is never used with 'Although'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Although' থাকলে 'but' বসে না, 'yet' বসে বা কমা (,) দিয়ে কাজ চালানো যায়।</p></div></div>`},
+            {q: "The leg of the table is broken.", options: ["The table's leg", "Leg of table", "Table leg", "No improvement"], correct: 3, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-amber-400 text-xs uppercase mb-1">Grammar Rule</p><p class="text-slate-200">We do not usually use 's (apostrophe s) with non-living things. 'The leg of the table' is correct.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">জড় বস্তুর ক্ষেত্রে apostrophe 's' বসে না, 'of' ব্যবহার করতে হয়। বাক্যটি সঠিক।</p></div></div>`},
+            {q: "I am knowing him for a long time.", options: ["have known", "know", "knew", "No improvement"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-amber-400 text-xs uppercase mb-1">Grammar Rule</p><p class="text-slate-200">'Know' is a stative verb and is generally not used in continuous tenses. Also, 'for a long time' implies Perfect tense.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Know' এর সাথে ing হয় না। এবং দীর্ঘ সময় বোঝালে Perfect Tense (have known) হবে।</p></div></div>`},
+            {q: "He gave me an advice.", options: ["a piece of advice", "some advices", "many advice", "No improvement"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-amber-400 text-xs uppercase mb-1">Grammar Rule</p><p class="text-slate-200">'Advice' is an uncountable noun. It cannot take 'an' or 's'. Use 'a piece of advice'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Advice' গণনা করা যায় না, তাই 'an advice' ভুল। সঠিক হলো 'a piece of advice'।</p></div></div>`},
+            {q: "He lay the book on the table.", options: ["laid", "lain", "lie", "No improvement"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-amber-400 text-xs uppercase mb-1">Grammar Rule</p><p class="text-slate-200">To put something down is 'Lay' (V1) -> 'Laid' (V2). 'Lie' (V2 'Lay') means to rest/recline. Past tense is needed here.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">কোনো কিছু রাখা বোঝালে 'Laid' (Past of Lay) বসবে। 'Lay' (Past of Lie) মানে শুয়ে থাকা।</p></div></div>`},
+            {q: "The gentry of the town was invited.", options: ["were", "has been", "is", "No improvement"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-amber-400 text-xs uppercase mb-1">Grammar Rule</p><p class="text-slate-200">'Gentry' (meaning people of good social position) is a plural noun and takes a plural verb.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Gentry' শব্দটি Plural, তাই Verb Plural (were) হবে।</p></div></div>`},
+            {q: "This book is worth to read.", options: ["worth reading", "worthy to read", "worth read", "No improvement"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-amber-400 text-xs uppercase mb-1">Grammar Rule</p><p class="text-slate-200">'Worth' is followed by a Gerund (V+ing).</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Worth' এর পরে সর্বদা Verb+ing বসে।</p></div></div>`},
+            {q: "He came lately to the class.", options: ["late", "later", "latest", "No improvement"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-amber-400 text-xs uppercase mb-1">Grammar Rule</p><p class="text-slate-200">'Lately' means recently. 'Late' means not on time. Here the context is time.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Lately' মানে সম্প্রতি। দেরিতে বোঝালে 'late' হবে।</p></div></div>`},
+            {q: "He is famous with his honesty.", options: ["for", "in", "at", "No improvement"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-amber-400 text-xs uppercase mb-1">Grammar Rule</p><p class="text-slate-200">The correct phrase is 'Famous for'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">কোনো গুণের জন্য বিখ্যাত হলে 'famous for' বসে।</p></div></div>`},
+            {q: "He is the most strongest boy in the class.", options: ["strongest", "more strongest", "most strong", "No improvement"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-amber-400 text-xs uppercase mb-1">Grammar Rule</p><p class="text-slate-200">Double superlative ('most strongest') is incorrect. 'Strongest' is already superlative.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Strongest' নিজেই Superlative, তাই এর আগে 'most' বসানো ভুল (Double Superlative)।</p></div></div>`}
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let answered = false;
+        let startTime;
+
+        // Elements
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const currentQNum = document.getElementById('current-q-num');
+        const scoreDisplay = document.getElementById('score-display');
+        const progressBar = document.getElementById('progress-bar');
+        const feedbackSection = document.getElementById('feedback-section');
+        const feedbackMessage = document.getElementById('feedback-message');
+        const explanationContent = document.getElementById('explanation-content');
+        const toggleExplanationBtn = document.getElementById('toggle-explanation-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const finishBtn = document.getElementById('finish-btn');
+
+        // Functions
+        function loadQuestion() {
+            const q = questionsTest16[currentQuestion];
+            answered = false;
+            
+            // Update UI
+            currentQNum.innerText = currentQuestion + 1;
+            questionText.innerText = q.q;
+            scoreDisplay.innerText = `Score: ${score}`;
+            
+            // Update Progress Bar
+            const progress = ((currentQuestion) / questionsTest16.length) * 100;
+            progressBar.style.width = `${progress}%`;
+
+            // Reset Feedback
+            feedbackSection.classList.add('hidden');
+            explanationContent.classList.add('hidden');
+            explanationContent.innerHTML = q.explanation;
+            toggleExplanationBtn.innerHTML = '<span class="bg-amber-500/10 p-2 rounded-lg mr-3"><i class="fas fa-lightbulb"></i></span><span class="underline decoration-amber-500/30 underline-offset-4">See Detailed Solution</span>';
+            nextBtn.classList.add('hidden');
+            finishBtn.classList.add('hidden');
+
+            // Render Options
+            optionsContainer.innerHTML = '';
+            q.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-5 rounded-xl border border-slate-700/50 bg-slate-800/40 hover:bg-slate-700/60 hover:border-amber-500/50 transition-all duration-200 font-medium text-slate-300 flex justify-between items-center group backdrop-blur-sm";
+                btn.innerHTML = `<span class="flex items-center"><span class="w-8 h-8 rounded-full bg-slate-700 text-slate-400 flex items-center justify-center font-bold mr-4 group-hover:bg-amber-500 group-hover:text-slate-900 transition-colors text-sm">${String.fromCharCode(65 + index)}</span> ${opt}</span>`;
+                btn.onclick = () => checkAnswer(index, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selectedIndex, selectedBtn) {
+            if (answered) return;
+            answered = true;
+            
+            const q = questionsTest16[currentQuestion];
+            const allBtns = optionsContainer.children;
+            
+            if (selectedIndex === q.correct) {
+                score++;
+                selectedBtn.className = "w-full text-left p-5 rounded-xl border border-green-500 bg-green-500/10 flex justify-between items-center transition-all shadow-[0_0_15px_rgba(34,197,94,0.2)]";
+                selectedBtn.innerHTML = `<span class="flex items-center text-white font-bold"><span class="w-8 h-8 rounded-full bg-green-500 text-slate-900 flex items-center justify-center font-bold mr-4 text-sm">${String.fromCharCode(65 + selectedIndex)}</span> ${q.options[selectedIndex]}</span><i class="fas fa-check-circle text-green-400 text-2xl drop-shadow-lg"></i>`;
+                
+                feedbackMessage.className = "flex items-center mb-6 p-4 rounded-xl bg-green-900/20 border border-green-500/30 text-green-300";
+                feedbackMessage.innerHTML = '<div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center mr-4"><i class="fas fa-check text-green-400"></i></div> <span class="font-bold">Correct Answer! Well done.</span>';
+            } else {
+                selectedBtn.className = "w-full text-left p-5 rounded-xl border border-red-500 bg-red-500/10 flex justify-between items-center transition-all";
+                selectedBtn.innerHTML = `<span class="flex items-center text-red-100"><span class="w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center font-bold mr-4 text-sm">${String.fromCharCode(65 + selectedIndex)}</span> ${q.options[selectedIndex]}</span><i class="fas fa-times-circle text-red-400 text-2xl"></i>`;
+                
+                const correctBtn = allBtns[q.correct];
+                correctBtn.className = "w-full text-left p-5 rounded-xl border border-green-500 bg-green-500/10 flex justify-between items-center transition-all shadow-[0_0_15px_rgba(34,197,94,0.2)] opacity-100";
+                correctBtn.innerHTML = `<span class="flex items-center text-white font-bold"><span class="w-8 h-8 rounded-full bg-green-500 text-slate-900 flex items-center justify-center font-bold mr-4 text-sm">${String.fromCharCode(65 + q.correct)}</span> ${q.options[q.correct]}</span><i class="fas fa-check-circle text-green-400 text-2xl"></i>`;
+
+                feedbackMessage.className = "flex items-center mb-6 p-4 rounded-xl bg-red-900/20 border border-red-500/30 text-red-300";
+                feedbackMessage.innerHTML = `<div class="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center mr-4"><i class="fas fa-times text-red-400"></i></div> <span>Incorrect. The correct option is <span class="font-bold text-green-400 border-b border-green-400/30 pb-0.5">${q.options[q.correct]}</span></span>`;
+            }
+
+            for (let btn of allBtns) {
+                btn.disabled = true;
+                if (!btn.className.includes('green') && !btn.className.includes('red')) {
+                     btn.classList.add('opacity-50', 'cursor-not-allowed');
+                     btn.classList.remove('hover:bg-slate-700/60', 'hover:border-amber-500/50');
+                }
+            }
+
+            feedbackSection.classList.remove('hidden');
+            scoreDisplay.innerText = `Score: ${score}`;
+
+            if (currentQuestion < questionsTest16.length - 1) {
+                nextBtn.classList.remove('hidden');
+            } else {
+                finishBtn.classList.remove('hidden');
+            }
+        }
+
+        function toggleExplanation() {
+            if (explanationContent.classList.contains('hidden')) {
+                explanationContent.classList.remove('hidden');
+                explanationContent.classList.add('fade-in');
+                toggleExplanationBtn.innerHTML = '<span class="bg-amber-500/10 p-2 rounded-lg mr-3"><i class="fas fa-eye-slash"></i></span><span class="underline decoration-amber-500/30 underline-offset-4">Hide Solution</span>';
+            } else {
+                explanationContent.classList.add('hidden');
+                toggleExplanationBtn.innerHTML = '<span class="bg-amber-500/10 p-2 rounded-lg mr-3"><i class="fas fa-lightbulb"></i></span><span class="underline decoration-amber-500/30 underline-offset-4">See Detailed Solution</span>';
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            loadQuestion();
+        }
+
+        function finishQuiz() {
+            const endTime = new Date();
+            const timeDiff = Math.floor((endTime - startTime) / 1000); // seconds
+            const minutes = Math.floor(timeDiff / 60);
+            const seconds = timeDiff % 60;
+            const timeString = `${minutes}m ${seconds}s`;
+            
+            // Calc stats
+            const total = questionsTest16.length;
+            const accuracy = Math.round((score / total) * 100);
+            const wrongAnswers = total - score;
+            const sscScore = (score * 2) - (wrongAnswers * 0.5);
+            
+            // Get user name from URL params to pass it back
+            const urlParams = new URLSearchParams(window.location.search);
+            const name = urlParams.get('name') || "Student";
+
+            // Redirect to Master Index with results (Action = result)
+            // Note: testId is set to test16
+            const redirectUrl = `index.html?action=result&score=${score}&total=${total}&accuracy=${accuracy}&time=${encodeURIComponent(timeString)}&sscScore=${sscScore}&name=${encodeURIComponent(name)}&testId=test16`;
+            
+            window.location.href = redirectUrl;
+        }
+        
+        // Start on load
+        window.onload = function() {
+            startTime = new Date();
+            loadQuestion();
+        };
+
+        // Expose to window for buttons
+        window.checkAnswer = checkAnswer;
+        window.toggleExplanation = toggleExplanation;
+        window.nextQuestion = nextQuestion;
+        window.finishQuiz = finishQuiz;
+    </script>
+</body>
+</html>

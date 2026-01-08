@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test 23 - SSC INSIGHT BENGALI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        body {
+            font-family: 'Poppins', 'Noto Sans Bengali', sans-serif;
+            background: #020617;
+            color: #e2e8f0;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        /* Essential Styles */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        .bengali-text { font-family: 'Noto Sans Bengali', sans-serif; }
+        .fade-in { animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar-track { background: rgba(30, 41, 59, 0.5); border-radius: 10px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #475569; border-radius: 10px; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+
+    <!-- Header for Context -->
+    <header class="fixed top-0 left-0 right-0 p-4 flex justify-between items-center z-50 bg-slate-900/50 backdrop-blur">
+         <div class="flex items-center text-slate-300">
+             <i class="fas fa-arrow-left mr-2 cursor-pointer hover:text-white" onclick="history.back()"></i>
+             <span class="font-bold">Test 23: Active & Passive Voice (Set 2)</span>
+         </div>
+         <div class="w-1/3 max-w-xs bg-slate-800 h-2 rounded-full overflow-hidden">
+             <div id="progress-bar" class="h-full bg-orange-500 transition-all duration-300" style="width: 0%"></div>
+         </div>
+    </header>
+
+    <!-- Quiz Container -->
+    <div id="quiz-container" class="max-w-3xl w-full mt-10">
+        <div class="glass-panel rounded-3xl shadow-2xl overflow-hidden fade-in border border-slate-600/50">
+            <!-- Question Header -->
+            <div class="bg-slate-900/60 px-6 py-4 border-b border-slate-700 flex justify-between items-center backdrop-blur-sm">
+                <div class="flex items-center space-x-2">
+                     <span class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
+                     <span class="text-sm font-bold text-slate-300 tracking-wide">Question <span id="current-q-num" class="text-white text-base">1</span><span class="text-slate-500">/25</span></span>
+                </div>
+                <span id="score-display" class="text-sm font-bold text-orange-400 bg-orange-900/20 border border-orange-500/30 px-4 py-1.5 rounded-full shadow-inner">Score: 0</span>
+            </div>
+
+            <!-- Question Body -->
+            <div class="p-6 md:p-10">
+                <h3 id="question-text" class="text-xl md:text-2xl font-bold text-white mb-8 leading-relaxed drop-shadow-sm">
+                    <!-- Question goes here -->
+                </h3>
+
+                <!-- Options Grid -->
+                <div id="options-container" class="grid grid-cols-1 gap-4 mb-8">
+                    <!-- Buttons injected by JS -->
+                </div>
+
+                <!-- Feedback & Explanation Section -->
+                <div id="feedback-section" class="hidden mt-8 border-t border-slate-700/50 pt-8 animation-fade-in">
+                    <!-- Correct/Wrong Message -->
+                    <div id="feedback-message" class="flex items-center mb-6 p-4 rounded-xl border">
+                        <!-- Injected by JS -->
+                    </div>
+
+                    <!-- Toggle Explanation Button -->
+                    <button id="toggle-explanation-btn" onclick="toggleExplanation()" class="group text-orange-400 hover:text-orange-300 font-semibold text-sm flex items-center mb-4 focus:outline-none transition-colors">
+                        <span class="bg-orange-500/10 p-2 rounded-lg mr-3 group-hover:bg-orange-500/20 transition-colors"><i class="fas fa-lightbulb"></i></span>
+                        <span class="underline decoration-orange-500/30 underline-offset-4 group-hover:decoration-orange-500">See Detailed Solution</span>
+                    </button>
+
+                    <!-- Detailed Explanation Content -->
+                    <div id="explanation-content" class="hidden bg-slate-900/60 p-6 rounded-2xl border border-slate-700/50 text-slate-300 custom-scroll max-h-96 overflow-y-auto shadow-inner leading-relaxed">
+                        <!-- Explanation injected by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Navigation -->
+            <div class="bg-slate-900/40 px-6 py-5 border-t border-slate-700/50 flex justify-end">
+                <button id="next-btn" onclick="nextQuestion()" class="hidden bg-orange-600 hover:bg-orange-500 text-white font-bold py-3 px-8 rounded-xl shadow-lg shadow-orange-900/20 transition-all transform hover:-translate-y-0.5 flex items-center">
+                    Next Question <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+                <button id="finish-btn" onclick="finishQuiz()" class="hidden bg-yellow-600 hover:bg-yellow-500 text-white font-bold py-3 px-8 rounded-xl shadow-lg shadow-yellow-900/20 transition-all transform hover:-translate-y-0.5 flex items-center">
+                    Finish Test <i class="fas fa-flag-checkered ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Test Data (Test 23 - Active & Passive Voice Set 2)
+        const questionsTest23 = [
+            {q: "Change the voice: 'Who taught you English?'", options: ["By whom English was taught to you?", "By whom were you taught English?", "Who was taught you English?", "English was taught by whom?"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-orange-400 text-xs uppercase mb-1">Voice Rule</p><p class="text-slate-200">Interrogative with 'Who' changes to 'By whom'. Structure: By whom + was/were + Subject + V3 + (Object)?</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Who' দিয়ে প্রশ্ন শুরু হলে Passive-এ 'By whom' বসে। Tense অনুযায়ী 'were' এবং Subject 'you' বসে।</p></div></div>`},
+            {q: "Change the voice: 'Someone has lit the fire.'", options: ["The fire has been lit by someone.", "The fire has been lit.", "The fire had been lit.", "The fire was lit."], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-orange-400 text-xs uppercase mb-1">Voice Rule</p><p class="text-slate-200">Indefinite pronouns (Someone, People) are usually omitted in Passive Voice if the meaning is clear.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Someone' থাকলে Passive-এ সাধারণত 'by someone' লেখার প্রয়োজন হয় না। Present Perfect Tense এর নিয়ম (has/have been + V3) প্রযোজ্য।</p></div></div>`},
+            {q: "Change the voice: 'We must endure what we cannot cure.'", options: ["What cannot be cured must be endured.", "What could not be cured must be endured.", "What cannot be cured should be endured.", "What cannot cured must be endured."], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-orange-400 text-xs uppercase mb-1">Voice Rule</p><p class="text-slate-200">This is a complex sentence. Both clauses change voice. 'Must endure' -> 'Must be endured'. 'Cannot cure' -> 'Cannot be cured'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">এটি একটি প্রবাদবাক্য। উভয় অংশেরই Voice change হবে। Modals (must, can) এর সাথে 'be' + V3 যুক্ত হয়।</p></div></div>`},
+            {q: "Change the voice: 'The news alarmed us.'", options: ["We were alarmed by the news.", "We were alarmed at the news.", "We were alarmed with the news.", "We are alarmed at the news."], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-orange-400 text-xs uppercase mb-1">Voice Rule</p><p class="text-slate-200">Certain verbs take specific prepositions instead of 'by'. 'Alarmed' takes 'at'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Alarmed', 'Surprised', 'Shocked' ইত্যাদি শব্দের পর 'at' বসে, 'by' নয়।</p></div></div>`},
+            {q: "Change the voice: 'She is writing a novel.'", options: ["A novel is being written by her.", "A novel was being written by her.", "A novel has been written by her.", "A novel is written by her."], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-orange-400 text-xs uppercase mb-1">Voice Rule</p><p class="text-slate-200">Present Continuous Tense: Object + am/is/are + being + V3 + by + Subject.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">Continuous Tense থাকলে Passive-এ 'being' যুক্ত হয়।</p></div></div>`},
+            {q: "Change the voice: 'Close the window.'", options: ["Let the window be closed.", "Let the window closed.", "The window should be closed.", "You are requested to close the window."], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-orange-400 text-xs uppercase mb-1">Voice Rule</p><p class="text-slate-200">Imperative Sentence (Order/Command): Let + Object + be + V3.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">আদেশমূলক বাক্যে 'Let' দিয়ে শুরু করতে হয় এবং 'be' + V3 ব্যবহার করতে হয়।</p></div></div>`},
+            {q: "Change the voice: 'I remember my sister taking me to the museum.'", options: ["I remember taken to the museum by my sister.", "I remember being taken to the museum by my sister.", "I remember myself being taken to the museum.", "I remember to be taken to the museum."], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-orange-400 text-xs uppercase mb-1">Voice Rule</p><p class="text-slate-200">Gerund (V+ing) changes to 'being + V3' in Passive Voice. 'Taking' becomes 'being taken'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Taking' (Gerund) এর Passive রূপ হলো 'being taken'।</p></div></div>`},
+            {q: "Change the voice: 'They say that he is a spy.'", options: ["He is said that he is a spy.", "It is said that he is a spy.", "He is said to be a spy.", "He was said to be a spy."], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-orange-400 text-xs uppercase mb-1">Voice Rule</p><p class="text-slate-200">Sentences starting with 'They say/People say' can be changed to 'Subject + is said + to be...'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'They say' থাকলে 'Subject + is said + to be' স্ট্রাকচারটি বেশি গ্রহণযোগ্য। (Option B is also correct but C is more advanced/concise).</p></div></div>`},
+            {q: "Change the voice: 'One should not give unsolicited advice.'", options: ["Unsolicited advice is not to be given.", "Unsolicited advice should not be given.", "Unsolicited advice should not have been given.", "Unsolicited advice may not be given."], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-orange-400 text-xs uppercase mb-1">Voice Rule</p><p class="text-slate-200">Modal Verb (Should) + V1 changes to Modal + be + V3. The agent 'one' is omitted.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Should give' পরিবর্তিত হয়ে 'should be given' হবে। 'One' উহ্য থাকবে।</p></div></div>`},
+            {q: "Change the voice: 'Who is creating this mess?'", options: ["By whom has this mess been created?", "By whom is this mess being created?", "By whom was this mess being created?", "Who is being created this mess?"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-orange-400 text-xs uppercase mb-1">Voice Rule</p><p class="text-slate-200">Present Continuous Interrogative: By whom + is/am/are + Object + being + V3?</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'is creating' থাকলে Passive-এ 'is being created' হয়। Who -> By whom.</p></div></div>`},
+            {q: "Change the voice: 'They named the child Ravi.'", options: ["The child was named Ravi.", "Ravi was named by them.", "The child is named Ravi.", "The child has been named Ravi."], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-orange-400 text-xs uppercase mb-1">Voice Rule</p><p class="text-slate-200">Factitive verbs (name, elect, make) take an object complement. Passive subject is the direct object (the child).</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'named' (Past Indefinite) তাই 'was named' হবে। 'by them' সাধারণত উহ্য রাখা হয় যদি অপ্রয়োজনীয় হয়।</p></div></div>`},
+            {q: "Change the voice: 'Prepare yourself for the worst.'", options: ["You be prepared for the worst.", "The worst should be prepared by you.", "Be prepared for the worst.", "For the worst, prepare yourself."], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-orange-400 text-xs uppercase mb-1">Voice Rule</p><p class="text-slate-200">Imperative sentences with reflexive objects usually take 'Be + V3'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Prepare yourself' জাতীয় বাক্যে 'Be prepared' ব্যবহার করা হয়।</p></div></div>`},
+            {q: "Change the voice: 'Please enter by the left door.'", options: ["Let the left door be entered.", "You are requested to enter by the left door.", "You are ordered to enter by the left door.", "The left door is requested to be entered."], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-orange-400 text-xs uppercase mb-1">Voice Rule</p><p class="text-slate-200">'Please' indicates a request. Use 'You are requested to' + V1.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Please' থাকলে 'You are requested to' দিয়ে বাক্য শুরু করতে হয়।</p></div></div>`},
+            {q: "Change the voice: 'The judge inquired into the case.'", options: ["The case was inquired by the judge.", "The case was inquired into by the judge.", "The case is inquired into by the judge.", "The case inquired into by the judge."], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-orange-400 text-xs uppercase mb-1">Voice Rule</p><p class="text-slate-200">When a verb + preposition (phrasal verb) is used, the preposition must be retained in Passive Voice.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Inquired into' একটি গ্রুপ ভার্ব, তাই Passive করার সময় 'into' বাদ দেওয়া যাবে না।</p></div></div>`},
+            {q: "Change the voice: 'He handed her a chair.'", options: ["She was handed a chair by him.", "A chair was handed her by him.", "He handed a chair to her.", "She handed a chair by him."], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-orange-400 text-xs uppercase mb-1">Voice Rule</p><p class="text-slate-200">Double object sentence. Either object can be the subject, but the person (indirect object) is preferred as the subject.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">দুটি Object থাকলে ব্যক্তিবাচক Object (her -> She) কে Subject করা শ্রেয়।</p></div></div>`},
+            {q: "Change the voice: 'They are going to build a new bridge.'", options: ["A new bridge is being built.", "A new bridge is going to be built.", "A new bridge is gone to be built.", "A new bridge will be built."], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-orange-400 text-xs uppercase mb-1">Voice Rule</p><p class="text-slate-200">'Going to' indicates future intention. Structure: Subject + is/am/are + going to be + V3.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Going to' থাকলে Passive-এ 'going to be' + V3 (built) ব্যবহৃত হয়।</p></div></div>`},
+            {q: "Change the voice: 'We prohibit smoking.'", options: ["Smoking is prohibited.", "Smoking has been prohibited.", "Smoking will be prohibited.", "Smoking was prohibited."], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-orange-400 text-xs uppercase mb-1">Voice Rule</p><p class="text-slate-200">Present Indefinite: Object + is + V3. 'By us' is general and omitted.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">Prohibit (Present Tense) তাই 'is prohibited' হবে।</p></div></div>`},
+            {q: "Change the voice: 'Paint the windows.'", options: ["Let the windows be painted.", "Let the windows painted.", "Windows should be painted.", "Let the windows being painted."], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-orange-400 text-xs uppercase mb-1">Voice Rule</p><p class="text-slate-200">Imperative Sentence: Let + Object + be + V3.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">আদেশ বোঝালে 'Let... be... V3' স্ট্রাকচার হয়।</p></div></div>`},
+            {q: "Change the voice: 'Who can count the stars?'", options: ["By whom can the stars be counted?", "By whom can the stars counted?", "By whom could the stars be counted?", "Who can be counted the stars?"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-orange-400 text-xs uppercase mb-1">Voice Rule</p><p class="text-slate-200">Modal Interrogative with Who: By whom + Modal + Object + be + V3?</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">Can (Modal) থাকলে Passive-এ 'be' যুক্ত হয়। Who -> By whom.</p></div></div>`},
+            {q: "Change the voice: 'Did he buy a car?'", options: ["Was a car bought by him?", "Did a car bought by him?", "Had a car been bought by him?", "Was a car being bought by him?"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-orange-400 text-xs uppercase mb-1">Voice Rule</p><p class="text-slate-200">Past Indefinite Interrogative: Was/Were + Object + V3 + by + Subject?</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Did' থাকলে Passive বাক্য 'Was' বা 'Were' দিয়ে শুরু হয়।</p></div></div>`},
+            {q: "Change the voice: 'I expect you to complete this work.'", options: ["You are expected to complete this work.", "I am expected you to complete this work.", "This work is expected to be completed by you.", "You are expected to be completed this work."], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-orange-400 text-xs uppercase mb-1">Voice Rule</p><p class="text-slate-200">The main verb 'expect' is changed to passive. 'You are expected to...' implies 'I expect you to...'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">এখানে প্রধান Verb 'expect' এর Passive হবে 'You are expected'।</p></div></div>`},
+            {q: "Change the voice: 'The fire engulfed the building.'", options: ["The building was engulfed by the fire.", "The building was engulfed in the fire.", "The building was engulfed with the fire.", "The building was engulfed at the fire."], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-orange-400 text-xs uppercase mb-1">Voice Rule</p><p class="text-slate-200">'Engulfed' takes the preposition 'in', not 'by'.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Engulfed' (গ্রাস করা) এর পর 'in' বসে।</p></div></div>`},
+            {q: "Change the voice: 'Had she solved the problem?'", options: ["Had the problem solved by her?", "Had the problem been solved by her?", "Was the problem solved by her?", "Has the problem been solved by her?"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-orange-400 text-xs uppercase mb-1">Voice Rule</p><p class="text-slate-200">Past Perfect Interrogative: Had + Object + been + V3 + by + Subject?</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">Perfect Tense থাকলে Passive-এ 'been' যুক্ত হয়। 'Had' অপরিবর্তিত থাকে।</p></div></div>`},
+            {q: "Change the voice: 'Do not laugh at the poor.'", options: ["Let the poor not be laughed at.", "The poor are not laughed at.", "Let the poor not be laughed.", "The poor should not be laughed at."], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-orange-400 text-xs uppercase mb-1">Voice Rule</p><p class="text-slate-200">Negative Imperative: Let + Object + not + be + V3. Preposition 'at' must be retained.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Let... not be' স্ট্রাকচার হবে এবং 'at' বজায় থাকবে।</p></div></div>`},
+            {q: "Change the voice: 'I saw him conducting the rehearsal.'", options: ["He was seen conducting the rehearsal.", "I saw the rehearsal to be conducted by him.", "He was seen by me to conduct the rehearsal.", "He was seen to be conducting the rehearsal."], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-orange-400 text-xs uppercase mb-1">Voice Rule</p><p class="text-slate-200">Verb of perception (saw) + object + participle. Passive: Subject + was/were seen + participle.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'I saw him conducting' -> 'He was seen conducting'. Participle (conducting) অপরিবর্তিত থাকে।</p></div></div>`}
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let answered = false;
+        let startTime;
+
+        // Elements
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const currentQNum = document.getElementById('current-q-num');
+        const scoreDisplay = document.getElementById('score-display');
+        const progressBar = document.getElementById('progress-bar');
+        const feedbackSection = document.getElementById('feedback-section');
+        const feedbackMessage = document.getElementById('feedback-message');
+        const explanationContent = document.getElementById('explanation-content');
+        const toggleExplanationBtn = document.getElementById('toggle-explanation-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const finishBtn = document.getElementById('finish-btn');
+
+        // Functions
+        function loadQuestion() {
+            const q = questionsTest23[currentQuestion];
+            answered = false;
+            
+            // Update UI
+            currentQNum.innerText = currentQuestion + 1;
+            questionText.innerText = q.q;
+            scoreDisplay.innerText = `Score: ${score}`;
+            
+            // Update Progress Bar
+            const progress = ((currentQuestion) / questionsTest23.length) * 100;
+            progressBar.style.width = `${progress}%`;
+
+            // Reset Feedback
+            feedbackSection.classList.add('hidden');
+            explanationContent.classList.add('hidden');
+            explanationContent.innerHTML = q.explanation;
+            toggleExplanationBtn.innerHTML = '<span class="bg-orange-500/10 p-2 rounded-lg mr-3"><i class="fas fa-lightbulb"></i></span><span class="underline decoration-orange-500/30 underline-offset-4">See Detailed Solution</span>';
+            nextBtn.classList.add('hidden');
+            finishBtn.classList.add('hidden');
+
+            // Render Options
+            optionsContainer.innerHTML = '';
+            q.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-5 rounded-xl border border-slate-700/50 bg-slate-800/40 hover:bg-slate-700/60 hover:border-orange-500/50 transition-all duration-200 font-medium text-slate-300 flex justify-between items-center group backdrop-blur-sm";
+                btn.innerHTML = `<span class="flex items-center"><span class="w-8 h-8 rounded-full bg-slate-700 text-slate-400 flex items-center justify-center font-bold mr-4 group-hover:bg-orange-500 group-hover:text-slate-900 transition-colors text-sm">${String.fromCharCode(65 + index)}</span> ${opt}</span>`;
+                btn.onclick = () => checkAnswer(index, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selectedIndex, selectedBtn) {
+            if (answered) return;
+            answered = true;
+            
+            const q = questionsTest23[currentQuestion];
+            const allBtns = optionsContainer.children;
+            
+            if (selectedIndex === q.correct) {
+                score++;
+                selectedBtn.className = "w-full text-left p-5 rounded-xl border border-green-500 bg-green-500/10 flex justify-between items-center transition-all shadow-[0_0_15px_rgba(34,197,94,0.2)]";
+                selectedBtn.innerHTML = `<span class="flex items-center text-white font-bold"><span class="w-8 h-8 rounded-full bg-green-500 text-slate-900 flex items-center justify-center font-bold mr-4 text-sm">${String.fromCharCode(65 + selectedIndex)}</span> ${q.options[selectedIndex]}</span><i class="fas fa-check-circle text-green-400 text-2xl drop-shadow-lg"></i>`;
+                
+                feedbackMessage.className = "flex items-center mb-6 p-4 rounded-xl bg-green-900/20 border border-green-500/30 text-green-300";
+                feedbackMessage.innerHTML = '<div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center mr-4"><i class="fas fa-check text-green-400"></i></div> <span class="font-bold">Correct Answer! Well done.</span>';
+            } else {
+                selectedBtn.className = "w-full text-left p-5 rounded-xl border border-red-500 bg-red-500/10 flex justify-between items-center transition-all";
+                selectedBtn.innerHTML = `<span class="flex items-center text-red-100"><span class="w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center font-bold mr-4 text-sm">${String.fromCharCode(65 + selectedIndex)}</span> ${q.options[selectedIndex]}</span><i class="fas fa-times-circle text-red-400 text-2xl"></i>`;
+                
+                const correctBtn = allBtns[q.correct];
+                correctBtn.className = "w-full text-left p-5 rounded-xl border border-green-500 bg-green-500/10 flex justify-between items-center transition-all shadow-[0_0_15px_rgba(34,197,94,0.2)] opacity-100";
+                correctBtn.innerHTML = `<span class="flex items-center text-white font-bold"><span class="w-8 h-8 rounded-full bg-green-500 text-slate-900 flex items-center justify-center font-bold mr-4 text-sm">${String.fromCharCode(65 + q.correct)}</span> ${q.options[q.correct]}</span><i class="fas fa-check-circle text-green-400 text-2xl"></i>`;
+
+                feedbackMessage.className = "flex items-center mb-6 p-4 rounded-xl bg-red-900/20 border border-red-500/30 text-red-300";
+                feedbackMessage.innerHTML = `<div class="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center mr-4"><i class="fas fa-times text-red-400"></i></div> <span>Incorrect. The correct answer is <span class="font-bold text-green-400 border-b border-green-400/30 pb-0.5">${q.options[q.correct]}</span></span>`;
+            }
+
+            for (let btn of allBtns) {
+                btn.disabled = true;
+                if (!btn.className.includes('green') && !btn.className.includes('red')) {
+                     btn.classList.add('opacity-50', 'cursor-not-allowed');
+                     btn.classList.remove('hover:bg-slate-700/60', 'hover:border-orange-500/50');
+                }
+            }
+
+            feedbackSection.classList.remove('hidden');
+            scoreDisplay.innerText = `Score: ${score}`;
+
+            if (currentQuestion < questionsTest23.length - 1) {
+                nextBtn.classList.remove('hidden');
+            } else {
+                finishBtn.classList.remove('hidden');
+            }
+        }
+
+        function toggleExplanation() {
+            if (explanationContent.classList.contains('hidden')) {
+                explanationContent.classList.remove('hidden');
+                explanationContent.classList.add('fade-in');
+                toggleExplanationBtn.innerHTML = '<span class="bg-orange-500/10 p-2 rounded-lg mr-3"><i class="fas fa-eye-slash"></i></span><span class="underline decoration-orange-500/30 underline-offset-4">Hide Solution</span>';
+            } else {
+                explanationContent.classList.add('hidden');
+                toggleExplanationBtn.innerHTML = '<span class="bg-orange-500/10 p-2 rounded-lg mr-3"><i class="fas fa-lightbulb"></i></span><span class="underline decoration-orange-500/30 underline-offset-4">See Detailed Solution</span>';
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            loadQuestion();
+        }
+
+        function finishQuiz() {
+            const endTime = new Date();
+            const timeDiff = Math.floor((endTime - startTime) / 1000); // seconds
+            const minutes = Math.floor(timeDiff / 60);
+            const seconds = timeDiff % 60;
+            const timeString = `${minutes}m ${seconds}s`;
+            
+            // Calc stats
+            const total = questionsTest23.length;
+            const accuracy = Math.round((score / total) * 100);
+            const wrongAnswers = total - score;
+            const sscScore = (score * 2) - (wrongAnswers * 0.5);
+            
+            // Get user name from URL params to pass it back
+            const urlParams = new URLSearchParams(window.location.search);
+            const name = urlParams.get('name') || "Student";
+
+            // Redirect to Master Index with results (Action = result)
+            // Note: testId is set to test23
+            const redirectUrl = `index.html?action=result&score=${score}&total=${total}&accuracy=${accuracy}&time=${encodeURIComponent(timeString)}&sscScore=${sscScore}&name=${encodeURIComponent(name)}&testId=test23`;
+            
+            window.location.href = redirectUrl;
+        }
+        
+        // Start on load
+        window.onload = function() {
+            startTime = new Date();
+            loadQuestion();
+        };
+
+        // Expose to window for buttons
+        window.checkAnswer = checkAnswer;
+        window.toggleExplanation = toggleExplanation;
+        window.nextQuestion = nextQuestion;
+        window.finishQuiz = finishQuiz;
+    </script>
+</body>
+</html>

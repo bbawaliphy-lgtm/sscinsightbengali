@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test 25 - SSC INSIGHT BENGALI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        body {
+            font-family: 'Poppins', 'Noto Sans Bengali', sans-serif;
+            background: #020617;
+            color: #e2e8f0;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        /* Essential Styles */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        .bengali-text { font-family: 'Noto Sans Bengali', sans-serif; }
+        .fade-in { animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar-track { background: rgba(30, 41, 59, 0.5); border-radius: 10px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #475569; border-radius: 10px; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+
+    <header class="fixed top-0 left-0 right-0 p-4 flex justify-between items-center z-50 bg-slate-900/50 backdrop-blur">
+         <div class="flex items-center text-slate-300">
+             <i class="fas fa-arrow-left mr-2 cursor-pointer hover:text-white" onclick="history.back()"></i>
+             <span class="font-bold">Test 25: Sentence Rearrangement (PQRS)</span>
+         </div>
+         <div class="w-1/3 max-w-xs bg-slate-800 h-2 rounded-full overflow-hidden">
+             <div id="progress-bar" class="h-full bg-indigo-500 transition-all duration-300" style="width: 0%"></div>
+         </div>
+    </header>
+
+    <div id="quiz-container" class="max-w-3xl w-full mt-10">
+        <div class="glass-panel rounded-3xl shadow-2xl overflow-hidden fade-in border border-slate-600/50">
+            <div class="bg-slate-900/60 px-6 py-4 border-b border-slate-700 flex justify-between items-center backdrop-blur-sm">
+                <div class="flex items-center space-x-2">
+                     <span class="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
+                     <span class="text-sm font-bold text-slate-300 tracking-wide">Question <span id="current-q-num" class="text-white text-base">1</span><span class="text-slate-500">/25</span></span>
+                </div>
+                <span id="score-display" class="text-sm font-bold text-indigo-400 bg-indigo-900/20 border border-indigo-500/30 px-4 py-1.5 rounded-full shadow-inner">Score: 0</span>
+            </div>
+
+            <div class="p-6 md:p-10">
+                <h3 id="question-text" class="text-lg md:text-xl font-medium text-white mb-8 leading-relaxed drop-shadow-sm font-mono bg-slate-800/50 p-4 rounded-lg border border-slate-700">
+                    </h3>
+
+                <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                    </div>
+
+                <div id="feedback-section" class="hidden mt-8 border-t border-slate-700/50 pt-8 animation-fade-in">
+                    <div id="feedback-message" class="flex items-center mb-6 p-4 rounded-xl border">
+                        </div>
+
+                    <button id="toggle-explanation-btn" onclick="toggleExplanation()" class="group text-indigo-400 hover:text-indigo-300 font-semibold text-sm flex items-center mb-4 focus:outline-none transition-colors">
+                        <span class="bg-indigo-500/10 p-2 rounded-lg mr-3 group-hover:bg-indigo-500/20 transition-colors"><i class="fas fa-lightbulb"></i></span>
+                        <span class="underline decoration-indigo-500/30 underline-offset-4 group-hover:decoration-indigo-500">See Detailed Solution</span>
+                    </button>
+
+                    <div id="explanation-content" class="hidden bg-slate-900/60 p-6 rounded-2xl border border-slate-700/50 text-slate-300 custom-scroll max-h-96 overflow-y-auto shadow-inner leading-relaxed">
+                        </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-900/40 px-6 py-5 border-t border-slate-700/50 flex justify-end">
+                <button id="next-btn" onclick="nextQuestion()" class="hidden bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-8 rounded-xl shadow-lg shadow-indigo-900/20 transition-all transform hover:-translate-y-0.5 flex items-center">
+                    Next Question <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+                <button id="finish-btn" onclick="finishQuiz()" class="hidden bg-yellow-600 hover:bg-yellow-500 text-white font-bold py-3 px-8 rounded-xl shadow-lg shadow-yellow-900/20 transition-all transform hover:-translate-y-0.5 flex items-center">
+                    Finish Test <i class="fas fa-flag-checkered ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Test Data (Test 25 - Sentence Rearrangement PQRS)
+        const questionsTest25 = [
+            {q: "P: we saw<br>Q: the movie<br>R: last night<br>S: which was great", options: ["PQRS", "RQPS", "PRQS", "PQSR"], correct: 3, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-indigo-400 text-xs uppercase mb-1">Logic</p><p class="text-slate-200">Order: Subject + Verb (We saw) -> Object (the movie) -> Adjective/Clause (which was great) -> Time (last night). Or 'We saw the movie last night which was great'. Option PQSR fits best structure.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">সঠিক ক্রম: 'We saw the movie which was great last night' অথবা 'We saw the movie last night which was great'. এখানে PQSR (We saw the movie which was great) অর্থপূর্ণ।</p></div></div>`},
+            {q: "P: he failed<br>Q: although<br>R: very hard<br>S: he worked", options: ["QSPR", "SRPQ", "QSRP", "PQRS"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-indigo-400 text-xs uppercase mb-1">Logic</p><p class="text-slate-200">Connector 'Although' starts the clause: 'Although he worked very hard' (QSR), then the result 'he failed' (P).</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">'Although' দিয়ে বাক্য শুরু হবে। Q (Although) -> S (he worked) -> R (very hard) -> P (he failed)।</p></div></div>`},
+            {q: "P: of the problem<br>Q: the solution<br>R: lies in<br>S: diligent work", options: ["QPRS", "QSRP", "QRPS", "PQRS"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-indigo-400 text-xs uppercase mb-1">Logic</p><p class="text-slate-200">Subject: 'The solution of the problem' (QP). Verb: 'lies in' (R). Object: 'diligent work' (S).</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">Subject হলো 'সমস্যার সমাধান' (QP), Verb হলো 'নিহিত আছে' (R), কোথায়? 'পরিশ্রমে' (S)।</p></div></div>`},
+            {q: "P: to the market<br>Q: my mother<br>R: went<br>S: to buy vegetables", options: ["QRPS", "QPRS", "PQRS", "SQRP"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-indigo-400 text-xs uppercase mb-1">Logic</p><p class="text-slate-200">Subject: 'My mother' (Q). Verb: 'went' (R). Place: 'to the market' (P). Purpose: 'to buy vegetables' (S).</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">Subject (Q) -> Verb (R) -> Place (P) -> Purpose (S)।</p></div></div>`},
+            {q: "P: has been<br>Q: working here<br>R: she<br>S: for two years", options: ["RQPS", "RPQS", "PQRS", "SRPQ"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-indigo-400 text-xs uppercase mb-1">Logic</p><p class="text-slate-200">Subject: 'She' (R). Aux Verb: 'has been' (P). Main Verb: 'working here' (Q). Time: 'for two years' (S).</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">সঠিক গঠন: Subject + has been + verb + time. (R-P-Q-S)।</p></div></div>`},
+            {q: "P: is a<br>Q: doctor<br>R: my brother<br>S: who lives in Delhi", options: ["RPQS", "RQPS", "PQRS", "SPRQ"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-indigo-400 text-xs uppercase mb-1">Logic</p><p class="text-slate-200">'My brother' (R) 'is a' (P) 'doctor' (Q) 'who lives in Delhi' (S).</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">Subject (R) -> Verb (P) -> Object (Q) -> Relative Clause (S)।</p></div></div>`},
+            {q: "P: extreme poverty<br>Q: the village<br>R: suffers from<br>S: people of", options: ["SQRP", "SRQP", "PQRS", "QSRP"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-indigo-400 text-xs uppercase mb-1">Logic</p><p class="text-slate-200">Subject phrase: 'People of the village' (SQ). Verb: 'suffers from' (R). Object: 'extreme poverty' (P). Note: 'People' is plural, but the sentence implies the group.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">গ্রামের মানুষেরা (SQ) চরম দারিদ্র্যে ভুগছে (RP)।</p></div></div>`},
+            {q: "P: reading books<br>Q: is a<br>R: good habit<br>S: which improves knowledge", options: ["PQRS", "PRQS", "QPRS", "SQRP"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-indigo-400 text-xs uppercase mb-1">Logic</p><p class="text-slate-200">'Reading books' (P) 'is a' (Q) 'good habit' (R) 'which improves knowledge' (S).</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">বই পড়া (P) হয় একটি (Q) ভালো অভ্যাস (R) যা জ্ঞান বাড়ায় (S)।</p></div></div>`},
+            {q: "P: not only<br>Q: but also<br>R: he is<br>S: intelligent<br>T: hardworking", options: ["RPSQT", "PRQST", "RPS QT is implicit", "R P S Q T"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-indigo-400 text-xs uppercase mb-1">Logic</p><p class="text-slate-200">Subject + Verb: 'He is' (R). Correlative Conjunction: 'not only' (P) 'intelligent' (S) 'but also' (Q) 'hardworking' (T). Sequence: R-P-S-Q-T.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">He is (R) not only (P) intelligent (S) but also (Q) hardworking (T). (Note: Options simplified to 4 parts in typical questions, here combined logic).</p></div><p class="text-xs text-slate-500">Correct Option A: RPSQT (Matches 'He is not only intelligent but also hardworking').</p></div>`},
+            {q: "P: in the world<br>Q: the highest peak<br>R: Mount Everest<br>S: is", options: ["RSQP", "RQSP", "PQRS", "SRPQ"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-indigo-400 text-xs uppercase mb-1">Logic</p><p class="text-slate-200">'Mount Everest' (R) 'is' (S) 'the highest peak' (Q) 'in the world' (P).</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">মাউন্ট এভারেস্ট (R) হয় (S) সর্বোচ্চ শৃঙ্গ (Q) পৃথিবীতে (P)।</p></div></div>`},
+            {q: "P: without<br>Q: cannot live<br>R: water<br>S: we", options: ["SQRP", "PQRS", "SQPR", "RSQP"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-indigo-400 text-xs uppercase mb-1">Logic</p><p class="text-slate-200">'We' (S) 'cannot live' (Q) 'without' (P) 'water' (R).</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">আমরা (S) বাঁচতে পারি না (Q) ছাড়া (P) জল (R)।</p></div></div>`},
+            {q: "P: honesty<br>Q: is<br>R: the best<br>S: policy", options: ["PQRS", "QPRS", "RSQP", "PQSR"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-indigo-400 text-xs uppercase mb-1">Logic</p><p class="text-slate-200">Proverb: 'Honesty' (P) 'is' (Q) 'the best' (R) 'policy' (S).</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">সততাই সর্বোৎকৃষ্ট পন্থা (PQRS)।</p></div></div>`},
+            {q: "P: to success<br>Q: hard work<br>R: is the<br>S: key", options: ["QRSP", "PQRS", "QPRS", "SRPQ"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-indigo-400 text-xs uppercase mb-1">Logic</p><p class="text-slate-200">'Hard work' (Q) 'is the' (R) 'key' (S) 'to success' (P).</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">কঠোর পরিশ্রম (Q) হলো (R) চাবিকাঠি (S) সাফল্যের (P)।</p></div></div>`},
+            {q: "P: by the teacher<br>Q: was punished<br>R: the boy<br>S: for being late", options: ["RQPS", "PQRS", "SRPQ", "QPRS"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-indigo-400 text-xs uppercase mb-1">Logic</p><p class="text-slate-200">'The boy' (R) 'was punished' (Q) 'by the teacher' (P) 'for being late' (S).</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">বালকটি (R) শাস্তি পেয়েছিল (Q) শিক্ষকের দ্বারা (P) দেরি করার জন্য (S)।</p></div></div>`},
+            {q: "P: beautiful<br>Q: a<br>R: she painted<br>S: picture", options: ["RQPS", "PRQS", "RQSP", "PQRS"], correct: 2, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-indigo-400 text-xs uppercase mb-1">Logic</p><p class="text-slate-200">'She painted' (R) 'a' (Q) 'beautiful' (P) 'picture' (S).</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">সে এঁকেছিল (R) একটি (Q) সুন্দর (P) ছবি (S)।</p></div></div>`},
+            {q: "P: pollution<br>Q: is a<br>R: global problem<br>S: environmental", options: ["SQRP", "SPQR", "PQRS", "PSQR"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-indigo-400 text-xs uppercase mb-1">Logic</p><p class="text-slate-200">'Environmental' (S) modifies 'pollution' (P). 'Environmental pollution' (SP) 'is a' (Q) 'global problem' (R).</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">পরিবেশ দূষণ (SP) হয় একটি (Q) বৈশ্বিক সমস্যা (R)।</p></div></div>`},
+            {q: "P: as soon as<br>Q: the thief ran away<br>R: he saw<br>S: the police", options: ["PQRS", "QPRS", "SQRP", "PRSQ"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-indigo-400 text-xs uppercase mb-1">Logic</p><p class="text-slate-200">'The thief ran away' (Q) 'as soon as' (P) 'he saw' (R) 'the police' (S). Or P-R-S, Q. Here QPRS fits.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">চোরটি পালিয়ে গেল (Q) যেইমাত্র (P) সে দেখল (R) পুলিশকে (S)।</p></div></div>`},
+            {q: "P: playing football<br>Q: in the<br>R: boys are<br>S: ground", options: ["RPQS", "RQPS", "PQRS", "SRPQ"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-indigo-400 text-xs uppercase mb-1">Logic</p><p class="text-slate-200">'Boys are' (R) 'playing football' (P) 'in the' (Q) 'ground' (S).</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">ছেলেরা (R) ফুটবল খেলছে (P) মাঠে (QS)।</p></div></div>`},
+            {q: "P: please<br>Q: give me<br>R: a glass<br>S: of water", options: ["PQRS", "QPRS", "SQRP", "RSQP"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-indigo-400 text-xs uppercase mb-1">Logic</p><p class="text-slate-200">'Please' (P) 'give me' (Q) 'a glass' (R) 'of water' (S).</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">দয়া করে (P) আমাকে দিন (Q) এক গ্লাস (R) জল (S)।</p></div></div>`},
+            {q: "P: very<br>Q: he is<br>R: a<br>S: honest man", options: ["QPSR", "QRSP", "PQRS", "SQRP"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-indigo-400 text-xs uppercase mb-1">Logic</p><p class="text-slate-200">'He is' (Q) 'a' (R) 'very' (P) 'honest man' (S). Wait, 'an honest' is correct, but if 'very' is present, 'a very' is correct.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">Q (সে হয়) R (একজন) P (খুব) S (সৎ মানুষ)। *Note: Article 'a' fits because of 'very'.</p></div></div>`},
+            {q: "P: that glitters<br>Q: is not<br>R: all<br>S: gold", options: ["RPSQ", "RPQS", "PQRS", "SRPQ"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-indigo-400 text-xs uppercase mb-1">Logic</p><p class="text-slate-200">Proverb: 'All' (R) 'that glitters' (P) 'is not' (Q) 'gold' (S).</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">চকচক করলেই সোনা হয় না (RPQS)।</p></div></div>`},
+            {q: "P: the sun<br>Q: in the east<br>R: rises<br>S: and sets in the west", options: ["PRQS", "PQRS", "SRPQ", "RQPS"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-indigo-400 text-xs uppercase mb-1">Logic</p><p class="text-slate-200">'The sun' (P) 'rises' (R) 'in the east' (Q) 'and sets in the west' (S).</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">সূর্য (P) ওঠে (R) পূর্ব দিকে (Q) এবং অস্ত যায় পশ্চিমে (S)।</p></div></div>`},
+            {q: "P: my country<br>Q: I love<br>R: very much<br>S: and respect it", options: ["QPRS", "PQRS", "SQRP", "RQPS"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-indigo-400 text-xs uppercase mb-1">Logic</p><p class="text-slate-200">'I love' (Q) 'my country' (P) 'very much' (R) 'and respect it' (S). Or 'I love my country and respect it very much'. QPRS is standard.</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">আমি আমার দেশকে ভালোবাসি (QP) খুব বেশি (R) এবং সম্মান করি (S)।</p></div></div>`},
+            {q: "P: exercise<br>Q: daily<br>R: take<br>S: you should", options: ["SRPQ", "SRQP", "PQRS", "QPRS"], correct: 1, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-indigo-400 text-xs uppercase mb-1">Logic</p><p class="text-slate-200">'You should' (S) 'take' (R) 'exercise' (P) 'daily' (Q).</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">তোমার (S) উচিত নেওয়া (R) ব্যায়াম (P) প্রতিদিন (Q)।</p></div></div>`},
+            {q: "P: reading<br>Q: is<br>R: hobby<br>S: my favorite", options: ["PQSR", "PQRS", "SRQP", "QPRS"], correct: 0, explanation: `<div class="space-y-4"><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-indigo-400 text-xs uppercase mb-1">Logic</p><p class="text-slate-200">'Reading' (P) 'is' (Q) 'my favorite' (S) 'hobby' (R).</p></div><div class="bg-slate-800/50 p-3 rounded-lg border border-slate-700"><p class="font-bold text-blue-400 text-xs uppercase mb-1">Bengali Explanation</p><p class="text-slate-200 bengali-text">পড়া (P) হয় (Q) আমার প্রিয় (S) শখ (R)।</p></div></div>`}
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let answered = false;
+        let startTime;
+
+        // Elements
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const currentQNum = document.getElementById('current-q-num');
+        const scoreDisplay = document.getElementById('score-display');
+        const progressBar = document.getElementById('progress-bar');
+        const feedbackSection = document.getElementById('feedback-section');
+        const feedbackMessage = document.getElementById('feedback-message');
+        const explanationContent = document.getElementById('explanation-content');
+        const toggleExplanationBtn = document.getElementById('toggle-explanation-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const finishBtn = document.getElementById('finish-btn');
+
+        // Functions
+        function loadQuestion() {
+            const q = questionsTest25[currentQuestion];
+            answered = false;
+            
+            // Update UI
+            currentQNum.innerText = currentQuestion + 1;
+            // Render PQRS layout
+            questionText.innerHTML = `<span class="block text-indigo-200 mb-2 border-b border-indigo-500/30 pb-2 text-sm uppercase tracking-widest">Rearrange the parts:</span>${q.q}`;
+            scoreDisplay.innerText = `Score: ${score}`;
+            
+            // Update Progress Bar
+            const progress = ((currentQuestion) / questionsTest25.length) * 100;
+            progressBar.style.width = `${progress}%`;
+
+            // Reset Feedback
+            feedbackSection.classList.add('hidden');
+            explanationContent.classList.add('hidden');
+            explanationContent.innerHTML = q.explanation;
+            toggleExplanationBtn.innerHTML = '<span class="bg-indigo-500/10 p-2 rounded-lg mr-3"><i class="fas fa-lightbulb"></i></span><span class="underline decoration-indigo-500/30 underline-offset-4">See Detailed Solution</span>';
+            nextBtn.classList.add('hidden');
+            finishBtn.classList.add('hidden');
+
+            // Render Options
+            optionsContainer.innerHTML = '';
+            q.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-center p-4 rounded-xl border border-slate-700/50 bg-slate-800/40 hover:bg-slate-700/60 hover:border-indigo-500/50 transition-all duration-200 font-bold text-slate-300 text-lg group backdrop-blur-sm shadow-md";
+                btn.innerHTML = `<span class="group-hover:text-indigo-400 transition-colors">${opt}</span>`;
+                btn.onclick = () => checkAnswer(index, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selectedIndex, selectedBtn) {
+            if (answered) return;
+            answered = true;
+            
+            const q = questionsTest25[currentQuestion];
+            const allBtns = optionsContainer.children;
+            
+            if (selectedIndex === q.correct) {
+                score++;
+                selectedBtn.className = "w-full text-center p-4 rounded-xl border border-green-500 bg-green-500/10 transition-all shadow-[0_0_15px_rgba(34,197,94,0.2)] font-bold text-white";
+                selectedBtn.innerHTML = `${q.options[selectedIndex]} <i class="fas fa-check-circle ml-2"></i>`;
+                
+                feedbackMessage.className = "flex items-center mb-6 p-4 rounded-xl bg-green-900/20 border border-green-500/30 text-green-300";
+                feedbackMessage.innerHTML = '<div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center mr-4"><i class="fas fa-check text-green-400"></i></div> <span class="font-bold">Correct Sequence!</span>';
+            } else {
+                selectedBtn.className = "w-full text-center p-4 rounded-xl border border-red-500 bg-red-500/10 transition-all font-bold text-red-100";
+                selectedBtn.innerHTML = `${q.options[selectedIndex]} <i class="fas fa-times-circle ml-2"></i>`;
+                
+                const correctBtn = allBtns[q.correct];
+                correctBtn.className = "w-full text-center p-4 rounded-xl border border-green-500 bg-green-500/10 transition-all shadow-[0_0_15px_rgba(34,197,94,0.2)] font-bold text-white opacity-100";
+                correctBtn.innerHTML = `${q.options[q.correct]} <i class="fas fa-check-circle ml-2"></i>`;
+
+                feedbackMessage.className = "flex items-center mb-6 p-4 rounded-xl bg-red-900/20 border border-red-500/30 text-red-300";
+                feedbackMessage.innerHTML = `<div class="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center mr-4"><i class="fas fa-times text-red-400"></i></div> <span>Incorrect. The correct order is <span class="font-bold text-green-400 border-b border-green-400/30 pb-0.5">${q.options[q.correct]}</span></span>`;
+            }
+
+            for (let btn of allBtns) {
+                btn.disabled = true;
+                if (!btn.className.includes('green') && !btn.className.includes('red')) {
+                     btn.classList.add('opacity-50', 'cursor-not-allowed');
+                     btn.classList.remove('hover:bg-slate-700/60', 'hover:border-indigo-500/50');
+                }
+            }
+
+            feedbackSection.classList.remove('hidden');
+            scoreDisplay.innerText = `Score: ${score}`;
+
+            if (currentQuestion < questionsTest25.length - 1) {
+                nextBtn.classList.remove('hidden');
+            } else {
+                finishBtn.classList.remove('hidden');
+            }
+        }
+
+        function toggleExplanation() {
+            if (explanationContent.classList.contains('hidden')) {
+                explanationContent.classList.remove('hidden');
+                explanationContent.classList.add('fade-in');
+                toggleExplanationBtn.innerHTML = '<span class="bg-indigo-500/10 p-2 rounded-lg mr-3"><i class="fas fa-eye-slash"></i></span><span class="underline decoration-indigo-500/30 underline-offset-4">Hide Solution</span>';
+            } else {
+                explanationContent.classList.add('hidden');
+                toggleExplanationBtn.innerHTML = '<span class="bg-indigo-500/10 p-2 rounded-lg mr-3"><i class="fas fa-lightbulb"></i></span><span class="underline decoration-indigo-500/30 underline-offset-4">See Detailed Solution</span>';
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            loadQuestion();
+        }
+
+        function finishQuiz() {
+            const endTime = new Date();
+            const timeDiff = Math.floor((endTime - startTime) / 1000); // seconds
+            const minutes = Math.floor(timeDiff / 60);
+            const seconds = timeDiff % 60;
+            const timeString = `${minutes}m ${seconds}s`;
+            
+            // Calc stats
+            const total = questionsTest25.length;
+            const accuracy = Math.round((score / total) * 100);
+            const wrongAnswers = total - score;
+            const sscScore = (score * 2) - (wrongAnswers * 0.5);
+            
+            // Get user name from URL params to pass it back
+            const urlParams = new URLSearchParams(window.location.search);
+            const name = urlParams.get('name') || "Student";
+
+            // Redirect to Master Index with results (Action = result)
+            // Note: testId is set to test25
+            const redirectUrl = `index.html?action=result&score=${score}&total=${total}&accuracy=${accuracy}&time=${encodeURIComponent(timeString)}&sscScore=${sscScore}&name=${encodeURIComponent(name)}&testId=test25`;
+            
+            window.location.href = redirectUrl;
+        }
+        
+        // Start on load
+        window.onload = function() {
+            startTime = new Date();
+            loadQuestion();
+        };
+
+        // Expose to window for buttons
+        window.checkAnswer = checkAnswer;
+        window.toggleExplanation = toggleExplanation;
+        window.nextQuestion = nextQuestion;
+        window.finishQuiz = finishQuiz;
+    </script>
+</body>
+</html>
